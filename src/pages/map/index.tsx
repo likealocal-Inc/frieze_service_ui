@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import Layout from "@/components/layouts/Layout";
-import MapPage from "@/components/MapPage";
+import Layout from "@/components/layouts/LayoutWithLogo";
 
 export default function Map() {
   const [myLocation, setMyLocation] = useState({

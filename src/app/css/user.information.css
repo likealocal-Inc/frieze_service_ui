@@ -1,0 +1,215 @@
+.i-phone-14-1,
+.i-phone-14-1 * {
+  box-sizing: border-box;
+}
+.i-phone-14-1 {
+  background: #ffffff;
+  width: 390px;
+  height: 844px;
+  position: relative;
+  overflow: hidden;
+}
+.frame-1171274604 {
+  background: #ffffff;
+  border-radius: 4px;
+  border-style: solid;
+  border-color: #dadada;
+  border-width: 1px;
+  padding: 12px 20px 12px 20px;
+  width: 350px;
+  height: 48px;
+  position: absolute;
+  left: 20px;
+  top: 348px;
+}
+.agree-to-all-the-terms-and-conditions {
+  color: #1a1a1a;
+  text-align: left;
+  font: 700 14px/20px "Pretendard", sans-serif;
+  position: absolute;
+  left: calc(50% - 100px);
+  top: calc(50% - 10px);
+}
+.frame-1171274614 {
+  padding: 4px 4px 4px 4px;
+  display: flex;
+  flex-direction: row;
+  gap: 0px;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 24px;
+  top: 13px;
+  overflow: visible;
+}
+.terms-and-conditions {
+  color: #828282;
+  text-align: left;
+  font: 400 14px/20px "Pretendard", sans-serif;
+  position: absolute;
+  left: 74px;
+  top: 420px;
+}
+.privacy-policy {
+  color: #828282;
+  text-align: left;
+  font: 400 14px/20px "Pretendard", sans-serif;
+  position: absolute;
+  left: 74px;
+  top: 458px;
+}
+.location-service-terms-and-conditions {
+  color: #828282;
+  text-align: left;
+  font: 400 14px/20px "Pretendard", sans-serif;
+  position: absolute;
+  left: calc(50% - 120px);
+  top: calc(50% - -74px);
+}
+.frame-11712746142 {
+  padding: 4px 4px 4px 4px;
+  display: flex;
+  flex-direction: row;
+  gap: 0px;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 40px;
+  top: 419px;
+  overflow: visible;
+}
+.frame-1171274615 {
+  padding: 4px 4px 4px 4px;
+  display: flex;
+  flex-direction: row;
+  gap: 0px;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 40px;
+  top: 457px;
+  overflow: visible;
+}
+.frame-1171274616 {
+  padding: 4px 4px 4px 4px;
+  display: flex;
+  flex-direction: row;
+  gap: 0px;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 40px;
+  top: 495px;
+  overflow: visible;
+}
+.icon-next {
+  position: absolute;
+  left: 312px;
+  top: 418px;
+  overflow: visible;
+}
+.icon-next2 {
+  position: absolute;
+  left: 312px;
+  top: 456px;
+  overflow: visible;
+}
+.icon-next3 {
+  position: absolute;
+  left: 312px;
+  top: 494px;
+  overflow: visible;
+}
+.please-enter-your-id-or-real-name-on-your-passport {
+  color: #c4c4c4;
+  text-align: left;
+  font: 500 12px/17px "Pretendard", sans-serif;
+  position: absolute;
+  left: 30px;
+  top: 152px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.please-enter-your-email {
+  color: #c4c4c4;
+  text-align: left;
+  font: 500 12px/17px "Pretendard", sans-serif;
+  position: absolute;
+  left: 30px;
+  top: 238px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.rectangle-806 {
+  background: #f5f6fa;
+  border-radius: 8px;
+  width: 350px;
+  height: 48px;
+  position: absolute;
+  left: 20px;
+  top: 174px;
+}
+.rectangle-807 {
+  background: #f5f6fa;
+  border-radius: 8px;
+  width: 350px;
+  height: 48px;
+  position: absolute;
+  left: 20px;
+  top: 260px;
+}
+.required {
+  color: #c5c5c5;
+  text-align: left;
+  font: 400 14px/22px "Pretendard", sans-serif;
+  position: absolute;
+  left: 30px;
+  top: 187px;
+}
+.required2 {
+  color: #c5c5c5;
+  text-align: left;
+  font: 400 14px/22px "Pretendard", sans-serif;
+  position: absolute;
+  left: 30px;
+  top: 273px;
+}
+.frame-1171274617 {
+  background: #000000;
+  border-radius: 4px;
+  padding: 12px 40px 12px 40px;
+  display: flex;
+  flex-direction: row;
+  gap: 64px;
+  align-items: center;
+  justify-content: center;
+  width: 350px;
+  height: 56px;
+  position: absolute;
+  left: calc(50% - 175px);
+  bottom: 216px;
+}
+.confirm {
+  color: #ffffff;
+  text-align: center;
+  font: 700 16px "Pretendard", sans-serif;
+  position: relative;
+}
+.versioning {
+  color: #000000;
+  text-align: center;
+  font: 700 20px "Pretendard", sans-serif;
+  position: absolute;
+  left: calc(50% - 87px);
+  top: 104px;
+}
+.versioning2 {
+  color: #000000;
+  text-align: left;
+  font: 700 20px "Helvetica", sans-serif;
+  position: absolute;
+  left: calc(50% - 47px);
+  top: 65px;
+}

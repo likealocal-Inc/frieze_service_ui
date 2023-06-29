@@ -1,5 +1,5 @@
-import { AutoCompleteComponent } from "@/components/AutoCompleteComponent";
-import Layout from "@/components/layouts/Layout";
+import { AutoCompleteComponent } from "@/components/map/AutoCompleteComponent";
+import Layout from "@/components/layouts/LayoutWithLogo";
 import { useEffect, useState } from "react";
 import {
   GoogleMapComponent,

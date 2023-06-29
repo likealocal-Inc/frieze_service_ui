@@ -1,60 +1,68 @@
-import usePlacesAutocomplete from "use-places-autocomplete";
+import axios from "axios";
+import { useState } from "react";
 
-export const AutoCompleteComponent = ({
-  onAddressSelect,
-}: {
-  onAddressSelect?: (address: string) => void;
-}) => {
-  const {
-    ready,
-    value,
-    suggestions: { status, data },
-    setValue,
-    clearSuggestions,
-  } = usePlacesAutocomplete({
-    requestOptions: { componentRestrictions: { country: "ko" } },
-    debounce: 300,
-    cache: 86400,
-  });
+export interface AutoCompleteComponentProp {
+  setLatLng: Function;
+}
 
-  const renderSuggestions = () => {
-    return data.map((suggestion: any) => {
-      const {
-        place_id,
-        structured_formatting: { main_text, secondary_text },
-        description,
-      } = suggestion;
+export function AutoCompleteComponent({
+  setLatLng,
+}: AutoCompleteComponentProp) {
+  const [places, setPlaces] = useState([]);
+  const [show, setShow] = useState(false);
+  const [add, setAdd] = useState<any>({});
+  const onChange = async (txt: string) => {
+    setAdd(txt);
+    if (txt.trim() === "") return;
+    const res = await axios.get(`/api/google.map/search?word=${txt}`);
+    setPlaces(res.data.predictions);
+    setShow(true);
+  };
 
-      return (
-        <li
-          key={place_id}
-          onClick={() => {
-            setValue(description, false);
-            clearSuggestions();
-            onAddressSelect && onAddressSelect(description);
-            const input = document.getElementById("googleMap");
-            input!.style.display = "block";
-          }}
-        >
-          <strong>{main_text}</strong> <small>{secondary_text}</small>
-        </li>
-      );
-    });
+  const onSelectAddr = async (d: any) => {
+    setAdd(d);
+    setPlaces([]);
+    const placeId = d["place_id"];
+    const res = await axios.get(`api/google.map/latlng?place_id=${placeId}`);
+    setLatLng(res.data.result.geometry.location);
   };
 
   return (
-    <div className=''>
-      <input
-        value={value}
-        className='px-4 py-2 mb-4 rounded-md w-96 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-100'
-        onChange={(e) => {
-          setValue(e.target.value);
-        }}
-        placeholder='검색어 입력'
-      />
-      {status === "OK" && (
-        <ul className='text-slate-600'>{renderSuggestions()}</ul>
-      )}
-    </div>
+    <>
+      <div className='relative flex flex-col'>
+        <input
+          type='text'
+          value={add["description"]}
+          className='p-2 text-lg border-0 border-b border-spacing-2 focus:border-slate-200'
+          onChange={(e) => onChange(e.target.value)}
+          onClick={() => setShow(true)}
+        />
+        {show === true && places.length > 0 ? (
+          <ul className='absolute z-50 p-3 space-y-1 text-gray-500 list-disc list-inside bg-slate-100 top-10'>
+            {places.map((d, k) => (
+              <li
+                key={k}
+                className='p-2 hover:bg-red-200'
+                onClick={() => {
+                  onSelectAddr(d);
+                }}
+              >
+                {d["description"]}
+              </li>
+            ))}
+            <button
+              className='px-3 py-1 mb-2 mr-2 text-sm font-medium text-white bg-gray-500 rounded-lg hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700'
+              onClick={(e) => {
+                setShow(false);
+              }}
+            >
+              닫기
+            </button>
+          </ul>
+        ) : (
+          ""
+        )}
+      </div>
+    </>
   );
-};
+}
