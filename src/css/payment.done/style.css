@@ -1,0 +1,40 @@
+.label {
+  background-color: transparent;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.label .further-dispatch-wrapper {
+  border: 0px none;
+  height: 40px;
+  width: 241px;
+}
+
+.label .further-dispatch {
+  color: #ffffff;
+  font-family: "Noto Sans KR-Regular", Helvetica;
+  font-size: 13px;
+  font-weight: 400;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 19.5px;
+  position: fixed;
+  text-align: center;
+  top: 0;
+}
+
+.label .text-wrapper {
+  color: #ffffff;
+  font-family: "Noto Sans KR-Regular", Helvetica;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 19.5px;
+}
+
+.label .span {
+  font-family: "Noto Sans KR-Bold", Helvetica;
+  font-weight: 700;
+}

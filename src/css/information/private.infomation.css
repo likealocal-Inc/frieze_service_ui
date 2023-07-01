@@ -1,0 +1,33 @@
+.label {
+  background-color: transparent;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.label .element-CI-CS-wrapper {
+  border: 0px none;
+  height: 286px;
+  width: 350px;
+}
+
+.label .element-CI-CS {
+  color: #000000;
+  font-family: "Pretendard-Bold", Helvetica;
+  font-size: 14px;
+  font-weight: 400;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 22px;
+  top: 0;
+  width: 350px;
+}
+
+.label .text-wrapper {
+  font-weight: 700;
+}
+
+.label .span {
+  font-family: "Pretendard-Regular", Helvetica;
+}
