@@ -77,6 +77,7 @@ export function GoogleMapComponent({
           setCenter({ lat, lng });
         },
         function (err) {
+          console.log(err);
           alert("위치 정보를 가져오는데 실패했습니다. 오류: " + err);
         }
       );
