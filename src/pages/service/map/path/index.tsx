@@ -4,6 +4,12 @@ import InformationModal from "@/components/modal/InformationModal";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import "../../../../css/information/private.infomation.css";
+import axios from "axios";
+import { LatLng } from "use-places-autocomplete";
+import { GoogleMap } from "@react-google-maps/api";
+import { GooglePathMapComponent } from "@/components/map/GooglePathMapComponent";
+import { AddressInfo } from "@/components/modal/AddressModal";
+import { ElseUtils } from "@/libs/else.utils";
 
 export default function MapPathPage() {
   const [showPayModal, setShowPayModal] = useState(false);
@@ -11,8 +17,29 @@ export default function MapPathPage() {
   const [showAgreement, setShowAgreement] = useState(false);
   const [orderAgreement, setOrderAgreement] = useState(0);
 
+  const [startLocation, setStartLocation] = useState<AddressInfo>();
+  const [goalLocation, setGoalLocation] = useState<AddressInfo>();
+
+  // 경로 로딩
+  const [isLoading, setIsLoading] = useState(false);
+
   const [isOk, setIsOk] = useState(false);
-  useEffect(() => {}, []);
+
+  useEffect(() => {
+    const start = localStorage.getItem("startInfo");
+    const goal = localStorage.getItem("goalInfo");
+
+    if (start === null || goal === null) {
+      location.href = "/service/map";
+      return;
+    }
+
+    const startJson = JSON.parse(start);
+    const goalJaon = JSON.parse(goal);
+
+    setStartLocation(startJson);
+    setGoalLocation(goalJaon);
+  }, []);
 
   return (
     <>
@@ -24,7 +51,10 @@ export default function MapPathPage() {
 
           <div className=''>
             <div className='ml-[-29px]'>
-              <GoogleMapComponent size={{ width: "430px", height: "480px" }} />
+              <GooglePathMapComponent
+                size={{ width: "430px", height: "480px" }}
+              />
+
               <div className='bg-white top-[-30px] rounded-[16px_16px_0px_0px] h-[100px] relative w-[430px]'>
                 <div className='pt-[20px]' />
                 <div className='flex'>
@@ -49,7 +79,7 @@ export default function MapPathPage() {
                       className='text-[#262628] text-left relative flex items-center justify-start'
                       style={{ font: "500 15px/140% 'Pretendard', sans-serif" }}
                     >
-                      Coex
+                      {ElseUtils.truncateString(startLocation?.desc!, 45)}
                     </div>
                     <div className='mt-[16px]' />
                     <div
@@ -63,7 +93,7 @@ export default function MapPathPage() {
                       className='text-[#262628] text-left relative flex items-center justify-start'
                       style={{ font: "500 15px/140% 'Pretendard', sans-serif" }}
                     >
-                      Incheon International Airport Terminal 1
+                      {ElseUtils.truncateString(goalLocation?.desc!, 45)}
                     </div>
                   </div>
                 </div>
