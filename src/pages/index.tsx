@@ -5,5 +5,5 @@ export default function Home() {
     location.href = "/service/agreement";
   }, []);
 
-  return <main className=''>cc</main>;
+  return <main className=''></main>;
 }
