@@ -16,17 +16,6 @@ const LayoutWithLogo = ({
 }: AdminProps) => {
   const [loading, setLoading] = useState(false);
 
-  function setViewportHeight() {
-    let vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty("--vh", `${vh}px`);
-  }
-
-  // 윈도우의 resize 이벤트에 핸들러 추가
-  window.addEventListener("resize", setViewportHeight);
-
-  // 초기 뷰포트 높이 설정
-  setViewportHeight();
-
   return (
     <>
       <Head>
@@ -38,7 +27,7 @@ const LayoutWithLogo = ({
             ""
           ) : (
             <>
-              <div className='w-[375px] pl-[20px] pr-[20px] md:h-[calc(100*var(--vh))]'>
+              <div className='w-[375px] pl-[20px] pr-[20px]'>
                 {/* Header */}
                 <div className='pt-[40px] flex items-center h-[46px] justify-between'>
                   <div className='flex items-center'>
