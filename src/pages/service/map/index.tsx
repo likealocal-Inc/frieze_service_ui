@@ -10,7 +10,7 @@ export default function MapPage() {
   const [isMove, setIsMove] = useState(false);
 
   const [startLocation, setStartLocation] = useState<AddressInfo>({
-    desc: "현재위치",
+    desc: "Current location",
     key: -1,
     placeId: "",
   });
@@ -20,9 +20,7 @@ export default function MapPage() {
     placeId: "",
   });
 
-  useEffect(() => {
-    console.log("startLocation", startLocation);
-  }, [startLocation]);
+  useEffect(() => {}, [startLocation]);
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -95,7 +93,7 @@ export default function MapPage() {
                   fill='none'
                   xmlns='http://www.w3.org/2000/svg'
                   onClick={(e) => {
-                    if (startLocation.desc === "현재위치") return;
+                    if (startLocation.desc === "Current location") return;
 
                     setIsMove(true);
                     setShowAddressModal(true);
@@ -118,11 +116,21 @@ export default function MapPage() {
               className='h-[43px] w-[111px] bg-white rounded-lg absolute top-[285px] left-[20px] z-50'
               onClick={(e) => {}}
             >
-              <div className='text-[#000000] text-center relative font-sans text-[16px] top-3'>
+              <div
+                className='text-[#000000] text-center relative font-sans text-[16px] top-3'
+                onClick={(e) => {
+                  setStartLocation({
+                    desc: "Coex",
+                    key: -1,
+                    location: { lat: 37.513364, lng: 127.058262 },
+                    placeId: "",
+                  });
+                }}
+              >
                 Frieze Seoul
               </div>
             </div>
-            {startLocation.desc === "현재위치" ? (
+            {startLocation.desc === "Current location" ? (
               <div className='flex flex-col items-center justify-center h-[425px] font-sans'>
                 <svg
                   aria-hidden='true'
@@ -140,10 +148,15 @@ export default function MapPage() {
                     fill='currentFill'
                   />
                 </svg>
-                <span className='mt-3 text-red-400'>현재위치가져오는중...</span>
+                <span className='mt-3 text-red-400'>
+                  get Current location...
+                </span>
               </div>
             ) : (
-              <GoogleMapComponent size={{ width: "425px", height: "640px" }} />
+              <GoogleMapComponent
+                size={{ width: "425px", height: "640px" }}
+                centerLocation={startLocation.location}
+              />
             )}
           </div>
         </div>

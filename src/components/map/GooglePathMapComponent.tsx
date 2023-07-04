@@ -173,7 +173,7 @@ export function GooglePathMapComponent({
     if (mapRef.current) {
       const bounds = new window.google.maps.LatLngBounds();
       // 확장 인자 설정. 이 값은 변경할 수 있습니다.
-      let extension = 0;
+      let extension = 0.01;
 
       bounds.extend({
         lat: startLocation!.location!.lat - extension,
@@ -186,7 +186,7 @@ export function GooglePathMapComponent({
 
       // 패딩 추가
       const paddingOptions = {
-        top: 0,
+        top: 10,
         bottom: 10,
         left: 10,
         right: 10,
@@ -263,7 +263,7 @@ export function GooglePathMapComponent({
             }}
           />
 
-          {/* <MarkerF
+          <MarkerF
             position={startLocation!.location!}
             onLoad={() => console.log("Marker Loaded")}
             icon={"/freiz_location/from.png"}
@@ -278,7 +278,8 @@ export function GooglePathMapComponent({
           <MarkerF
             position={goalLocation!.location!}
             onLoad={() => console.log("Marker Loaded")}
-          /> */}
+            icon={"/freiz_location/to.png"}
+          />
         </GoogleMap>
       </div>
     </>

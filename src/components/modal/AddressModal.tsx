@@ -26,6 +26,8 @@ export default function AddressModal(props: AddressModalProps) {
     placeId: "",
   });
 
+  useEffect(() => {}, [props.startAccess]);
+
   const getAddresses = async (txt: string) => {
     if (txt.trim() === "") return;
     const res = await axios.get(`/api/google.map/search?word=${txt}`);
@@ -33,6 +35,12 @@ export default function AddressModal(props: AddressModalProps) {
   };
 
   const close = (e: any) => {
+    setAddList([]);
+    setSelectAddress({
+      desc: "",
+      key: -1,
+      placeId: "",
+    });
     props.setShow(false);
   };
   return (

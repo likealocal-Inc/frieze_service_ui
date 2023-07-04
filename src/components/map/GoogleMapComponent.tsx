@@ -89,6 +89,12 @@ export function GoogleMapComponent({
   // 중앙값 변경시
   useEffect(() => {
     if (centerLocation !== undefined) {
+      setCenter(centerLocation);
+      // axios
+      //   .get(
+      //     `/api/google.map/info?lat=${centerLocation.lat}&lng=${centerLocation.lng}`
+      //   )
+      //   .then((d) => console.log(d.data.results[0].formatted_address));
       return;
     } else {
       // 프리트 위치 건
@@ -104,9 +110,9 @@ export function GoogleMapComponent({
           var lng = location.coords.longitude;
           setCenter({ lat, lng });
           setIsCoexCenter(false);
-          axios
-            .get(`/api/google.map/info?lat=${lat}&lng=${lng}`)
-            .then((d) => console.log(d.data.results[0].formatted_address));
+          // axios
+          //   .get(`/api/google.map/info?lat=${lat}&lng=${lng}`)
+          //   .then((d) => console.log(d.data.results[0].formatted_address));
         },
         function (err) {
           console.log(err);
@@ -182,7 +188,7 @@ export function GoogleMapComponent({
   }, []);
 
   if (!isLoaded) {
-    return <p>Loading...</p>;
+    return <p></p>;
   }
   return (
     <>

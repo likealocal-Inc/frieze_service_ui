@@ -10,7 +10,6 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const { startLng, startLat, goalLng, goalLat } = req.query;
-  console.log(startLng, startLat, goalLng, goalLat);
   const url = `https://naveropenapi.apigw.ntruss.com/map-direction-15/v1/driving?start=${startLng},${startLat}&goal=${goalLng},${goalLat}`;
   const response = await fetch(url, {
     headers: {
@@ -20,5 +19,23 @@ export default async function handler(
   });
 
   const data = await response.json();
+
+  const info = data.route.traoptimal[0];
+
+  const summary = info.summary;
+  const distance = summary.distance;
+  const duration = summary.duration;
+  const fuelPrice = summary.fuelPrice;
+  const taxiPrice = summary.taxiFare;
+  const tollFare = summary.tollFare;
+
+  const saveData = {
+    distance: distance,
+    duration: duration,
+    fuelPrice: fuelPrice,
+    taxiPrice: taxiPrice,
+    tollFare: tollFare,
+  };
+  // 서버에 금액정보 저장해야 함
   res.status(200).send(data);
 }

@@ -20,12 +20,15 @@ export default function MapPathPage() {
   const [startLocation, setStartLocation] = useState<AddressInfo>();
   const [goalLocation, setGoalLocation] = useState<AddressInfo>();
 
+  const [priceInfo, setPriceInfo] = useState();
   // 경로 로딩
   const [isLoading, setIsLoading] = useState(false);
 
   const [isOk, setIsOk] = useState(false);
 
   useEffect(() => {
+    getPrice("1234213");
+
     const start = localStorage.getItem("startInfo");
     const goal = localStorage.getItem("goalInfo");
 
@@ -40,6 +43,11 @@ export default function MapPathPage() {
     setStartLocation(startJson);
     setGoalLocation(goalJaon);
   }, []);
+
+  const getPrice = async (key: string) => {
+    const info = await axios.get("/api/path.info");
+    setPriceInfo(info.data);
+  };
 
   return (
     <>
@@ -111,7 +119,7 @@ export default function MapPathPage() {
                     className='text-[#262628] text-left relative  h-[22.4px] flex items-center justify-start'
                     style={{ font: "600 20px 'Pretendard', sans-serif" }}
                   >
-                    USD 45
+                    USD {priceInfo ? priceInfo["lastPrice"] : "...."}
                   </div>
                 </div>
                 <div className='pt-[16px]' />
@@ -177,7 +185,7 @@ export default function MapPathPage() {
                 className='text-[#262628] text-left relative  h-[22.4px] flex items-center justify-start'
                 style={{ font: "600 20px 'Pretendard', sans-serif" }}
               >
-                USD 45
+                USD {priceInfo ? priceInfo["lastPrice"] : "..."}
               </div>
             </div>
             <div className='mt-[32px] ' />

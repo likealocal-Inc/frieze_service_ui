@@ -4,7 +4,8 @@ export const ElseUtils = {
     return regex.test(email);
   },
   isAllUpperCase: (str: string) => {
-    return str === str.toUpperCase();
+    const regex = /^[A-Z\s]+$/;
+    return regex.test(str);
   },
   truncateString: (str: string, num: number) => {
     if (str === undefined || str === null) return;
