@@ -112,24 +112,19 @@ export default function MapPage() {
           <div className='mt-[28px]' />
           {/* 지도 */}
           <div className='ml-[-30px]'>
-            <div
-              className='h-[43px] w-[111px] bg-white rounded-lg absolute top-[285px] left-[20px] z-50'
-              onClick={(e) => {}}
+            <button
+              className='h-[43px] w-[111px] font-sans border-0 text-[14px] font-bold bg-white rounded-lg absolute top-[285px] left-[20px] z-50'
+              onClick={(e) => {
+                setStartLocation({
+                  desc: "Coex",
+                  key: -1,
+                  location: { lat: 37.513364, lng: 127.058262 },
+                  placeId: "",
+                });
+              }}
             >
-              <div
-                className='text-[#000000] text-center relative font-sans text-[16px] top-3'
-                onClick={(e) => {
-                  setStartLocation({
-                    desc: "Coex",
-                    key: -1,
-                    location: { lat: 37.513364, lng: 127.058262 },
-                    placeId: "",
-                  });
-                }}
-              >
-                Frieze Seoul
-              </div>
-            </div>
+              Frieze Seoul
+            </button>
             {startLocation.desc === "Current location" ? (
               <div className='flex flex-col items-center justify-center h-[425px] font-sans'>
                 <svg

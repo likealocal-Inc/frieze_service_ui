@@ -4,7 +4,7 @@ export default function PaymentPage() {
   return (
     <>
       <div className='fixed top-0 left-0 w-full h-full bg-slate-600 Z-50'>
-        <div className='bg-white w-[327px] h-[360px] fixed top-[176px] left-[30px] rounded-[10px]'>
+        <div className='bg-white w-[327px] h-[360px] fixed top-[76px] left-[30px] rounded-[10px]'>
           <div className='ml-[24px] mt-[18px] relative flex items-center justify-start font-sans font-bold text-left text-high-emphasis'>
             주의사항 및 안내사항
           </div>

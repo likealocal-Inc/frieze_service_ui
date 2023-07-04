@@ -50,7 +50,7 @@ export default function AddressModal(props: AddressModalProps) {
           <div className='fixed top-0 left-0 z-50 w-full h-full bg-slate-600 Z-50'>
             <div
               id='addressModal'
-              className='bg-white w-[327px] h-[500px] fixed top-[176px] left-[47px] rounded-[10px]'
+              className='bg-white w-[327px] h-[500px] fixed top-[76px] left-[47px] rounded-[10px]'
             >
               <div className='pl-[20px]'>
                 <div className='pt-[20px]' />
