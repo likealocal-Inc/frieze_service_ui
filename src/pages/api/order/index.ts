@@ -12,10 +12,10 @@ export default async function handler(
     const userId = req.body.userId;
     const startLng = req.body.startLng;
     const startLat = req.body.startLat;
-    const start = req.body.start;
+    // const start = req.body.start;
     const goalLng = req.body.goalLng;
     const goalLat = req.body.goalLat;
-    const goal = req.body.goal;
+    // const goal = req.body.goal;
     const status = req.body.status;
 
     let callResult: any;
@@ -24,10 +24,10 @@ export default async function handler(
         userId,
         startLng,
         startLat,
-        start,
+        // start,
         goalLng,
         goalLat,
-        goal,
+        // goal,
         status,
       });
 

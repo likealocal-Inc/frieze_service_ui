@@ -1,5 +1,4 @@
 import LayoutAuth from "@/components/layouts/LayoutAuth";
-import LayoutWithLogo from "@/components/layouts/LayoutWithLogo";
 import { GoogleMapComponent } from "@/components/map/GoogleMapComponent";
 import AddressModal, { AddressInfo } from "@/components/modal/AddressModal";
 import axios from "axios";

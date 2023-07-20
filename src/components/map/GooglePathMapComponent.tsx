@@ -11,15 +11,8 @@ import {
 import { LatLng } from "use-places-autocomplete";
 import { freizLocations } from "./GoogleMapComponent";
 import { AddressInfo } from "../modal/AddressModal";
-
-// 경로 결과 정보
-export interface PathInfoProp {
-  distance: string;
-  duration: string;
-  fuelPrice: string;
-  taxiPrice: string;
-  tollFare: string;
-}
+import { ElseUtils } from "@/libs/else.utils";
+import { SecurityUtils } from "@/libs/security.utils";
 
 // 경로 타입
 export interface PathLocations {
@@ -32,7 +25,7 @@ export interface GooglePathMapComponentProp {
   lang?: string;
   country?: string;
   pathLocation?: PathLocations;
-  setPathInfo?: Function;
+  setPathInfo: Function;
   zoom?: number;
   size?: { width: string; height: string };
 }
@@ -43,20 +36,12 @@ export interface FreizLocationInfo {
   icon: string;
 }
 
-export interface PathInfo {
-  distance: string;
-  duration: string;
-  fuelPrice: string;
-  taxiPrice: string;
-  tollFare: string;
-}
-
 export function GooglePathMapComponent({
-  setPathInfo = undefined,
+  setPathInfo,
   country = "kr",
   lang = "en",
   zoom = 15,
-  size = { width: "500px", height: "500px" },
+  size = { width: "430px", height: "480px" },
 }: GooglePathMapComponentProp) {
   // 프리트 요청 마커
   const [freizLocation, setFreizLocation] = useState<FreizLocationInfo[]>([]);
@@ -65,7 +50,7 @@ export function GooglePathMapComponent({
   const [isLoading, setIsLoading] = useState(true);
 
   // 경로 데이터
-  const [pathInfoData, setPathInfoData] = useState<PathInfo>();
+  // const [pathInfoData, setPathInfoData] = useState<PathInfo>();
   const [paths, setPaths] = useState<{ lng: any; lat: any }[]>([]);
   // 지도 중심
   const [center, setCenter] = useState<LatLng>();
@@ -100,16 +85,16 @@ export function GooglePathMapComponent({
 
     setCenter({ lat: 37.513364, lng: 127.058262 });
 
-    const start = localStorage.getItem("startInfo");
-    const goal = localStorage.getItem("goalInfo");
+    const start = ElseUtils.getLocalStorage(ElseUtils.localStorageStartInfo);
+    const goal = ElseUtils.getLocalStorage(ElseUtils.localStorageGoalInfo);
 
     if (start === null || goal === null) {
       location.href = "/service/map";
       return;
     }
 
-    const startJson = JSON.parse(start);
-    const goalJaon = JSON.parse(goal);
+    const startJson = JSON.parse(SecurityUtils.decryptText(start));
+    const goalJaon = JSON.parse(SecurityUtils.decryptText(goal));
 
     setStartLocation(startJson);
     setGoalLocation(goalJaon);
@@ -126,7 +111,6 @@ export function GooglePathMapComponent({
           goalJaon!.location!.lat
       )
       .then((res: any) => {
-        console.log(res.data);
         if (res.data.code === 2 || res.data.code === 1) {
           alert(res.data.message);
           location.href = "/service/map";
@@ -139,13 +123,15 @@ export function GooglePathMapComponent({
         const fuelPrice = summary.fuelPrice;
         const taxiPrice = summary.taxiFare;
         const tollFare = summary.tollFare;
+        const lastPrice = Math.ceil((taxiPrice + taxiPrice / 2) / 1270);
 
-        setPathInfoData({
+        setPathInfo({
           distance,
           duration,
           fuelPrice,
           taxiPrice,
           tollFare,
+          lastPrice,
         });
 
         const tempPaths = [];
@@ -208,7 +194,7 @@ export function GooglePathMapComponent({
   return (
     <>
       {isLoading ? (
-        <div className='flex flex-col items-center justify-center h-[425px] font-sans'>
+        <div className='flex flex-col items-center justify-center font-sans h-[480px]'>
           <svg
             aria-hidden='true'
             className='w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600'

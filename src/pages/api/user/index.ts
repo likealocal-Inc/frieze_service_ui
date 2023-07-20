@@ -13,9 +13,6 @@ export default async function handler(
     const email = req.body.email;
     const name = req.body.name;
 
-    console.log(CallInfo.urlBase);
-    console.log(email, name);
-
     const emailEn = await SecurityUtils.encryptText(email);
     const nameEn = await SecurityUtils.encryptText(name);
 

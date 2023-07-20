@@ -1,5 +1,7 @@
 import LayoutAuth from "@/components/layouts/LayoutAuth";
 import "../../../app/globals.css";
+import { ElseUtils } from "@/libs/else.utils";
+import { SecurityUtils } from "@/libs/security.utils";
 
 export default function PaymentPage() {
   return (
@@ -9,7 +11,40 @@ export default function PaymentPage() {
           나이스페이먼츠
           <button
             onClick={(e) => {
-              location.href = "/service/payment/done";
+              const priceInfoStr = ElseUtils.getLocalStorage(
+                ElseUtils.localStoragePrideInfo
+              );
+              const startInfoStr = ElseUtils.getLocalStorage(
+                ElseUtils.localStorageStartInfo
+              );
+              const goalInfoStr = ElseUtils.getLocalStorage(
+                ElseUtils.localStorageGoalInfo
+              );
+
+              // 문제가 있는 경우
+              if (
+                priceInfoStr === undefined ||
+                priceInfoStr === null ||
+                startInfoStr === undefined ||
+                startInfoStr === null ||
+                goalInfoStr === undefined ||
+                goalInfoStr === null
+              ) {
+                location.href = "/service/map";
+                return;
+              }
+              const priceInfo = SecurityUtils.decryptText(
+                JSON.parse(priceInfoStr)
+              );
+              const startInfo = SecurityUtils.decryptText(
+                JSON.parse(startInfoStr)
+              );
+              const goalInfo = SecurityUtils.decryptText(
+                JSON.parse(goalInfoStr)
+              );
+
+              console.log(priceInfo, startInfo, goalInfo);
+              //location.href = "/service/payment/done";
             }}
           >
             완료

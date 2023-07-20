@@ -23,6 +23,10 @@ const LayoutAuth = ({
   const router = useRouter();
   useEffect(() => {
     const _userId = localStorage.getItem(ElseUtils.localStorageUserIdKey)!;
+    if (_userId === null) {
+      location.href = "/service/agreement";
+      return;
+    }
     const userId = SecurityUtils.decryptText(_userId);
     axios.get(`/api/user?id=${userId}`).then((d) => {
       if (d.data.success && d.data.data !== null) {

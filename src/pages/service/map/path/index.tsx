@@ -7,7 +7,17 @@ import { GooglePathMapComponent } from "@/components/map/GooglePathMapComponent"
 import { AddressInfo } from "@/components/modal/AddressModal";
 import { ElseUtils } from "@/libs/else.utils";
 import LayoutAuth from "@/components/layouts/LayoutAuth";
+import { SecurityUtils } from "@/libs/security.utils";
 
+// 경로 결과 정보
+export interface PathInfoProp {
+  distance: number;
+  duration: number;
+  fuelPrice: number;
+  taxiPrice: number;
+  tollFare: number;
+  lastPrice: number;
+}
 export default function MapPathPage() {
   const [showPayModal, setShowPayModal] = useState(false);
 
@@ -17,34 +27,54 @@ export default function MapPathPage() {
   const [startLocation, setStartLocation] = useState<AddressInfo>();
   const [goalLocation, setGoalLocation] = useState<AddressInfo>();
 
-  const [priceInfo, setPriceInfo] = useState();
-  // 경로 로딩
-  const [isLoading, setIsLoading] = useState(false);
+  const [isGetPath, setIsGetPath] = useState(true);
+  const [priceInfo, setPriceInfo] = useState<PathInfoProp>({
+    distance: 0,
+    duration: 0,
+    fuelPrice: 0,
+    taxiPrice: 0,
+    tollFare: 0,
+    lastPrice: 0,
+  });
 
   const [isOk, setIsOk] = useState(false);
 
   useEffect(() => {
-    getPrice("1234213");
+    // getPrice("1234213");
 
-    const start = localStorage.getItem("startInfo");
-    const goal = localStorage.getItem("goalInfo");
+    const start = ElseUtils.getLocalStorage(ElseUtils.localStorageStartInfo);
+    const goal = ElseUtils.getLocalStorage(ElseUtils.localStorageGoalInfo);
 
     if (start === null || goal === null) {
       location.href = "/service/map";
       return;
     }
 
-    const startJson = JSON.parse(start);
-    const goalJaon = JSON.parse(goal);
+    const startJson = JSON.parse(SecurityUtils.decryptText(start));
+    const goalJaon = JSON.parse(SecurityUtils.decryptText(goal));
 
     setStartLocation(startJson);
     setGoalLocation(goalJaon);
   }, []);
 
-  const getPrice = async (key: string) => {
-    const info = await axios.get("/api/path.info");
-    setPriceInfo(info.data);
-  };
+  useEffect(() => {
+    if (priceInfo.taxiPrice === 0) return;
+
+    localStorage.setItem(
+      ElseUtils.localStoragePrideInfo,
+      SecurityUtils.encryptText(JSON.stringify(priceInfo))
+    );
+    setTimeout(() => {
+      setIsGetPath(false);
+    }, 200);
+    // 요금정보 저장
+  }, [priceInfo]);
+
+  // const getPrice = async (key: string) => {
+  //   const info = await axios.get("/api/path.info");
+  //   console.log(info);
+  //   setPriceInfo(info.data);
+  // };
 
   return (
     <>
@@ -58,6 +88,7 @@ export default function MapPathPage() {
             <div className='ml-[-29px]'>
               <GooglePathMapComponent
                 size={{ width: "430px", height: "480px" }}
+                setPathInfo={setPriceInfo}
               />
 
               <div className='bg-white top-[-30px] rounded-[16px_16px_0px_0px] h-[100px] relative w-[430px]'>
@@ -116,7 +147,7 @@ export default function MapPathPage() {
                     className='text-[#262628] text-left relative  h-[22.4px] flex items-center justify-start'
                     style={{ font: "600 20px 'Pretendard', sans-serif" }}
                   >
-                    USD {priceInfo ? priceInfo["lastPrice"] : "...."}
+                    USD {priceInfo ? priceInfo.lastPrice : "...."}
                   </div>
                 </div>
                 <div className='pt-[16px]' />
@@ -157,6 +188,15 @@ export default function MapPathPage() {
           </div>
         </LayoutAuth>
       )}
+
+      {/* 위치정보와 금액 세팅할때까지 화면을 막는다. */}
+      {isGetPath ? (
+        <div className='absolute top-0 left-0 w-[420px] h-[950px] bg-slate-400 bg-opacity-50 flex justify-center items-center'></div>
+      ) : (
+        ""
+      )}
+
+      {/* 기사호출 모달 */}
       <div
         className={
           showPayModal === false
@@ -220,6 +260,7 @@ export default function MapPathPage() {
                   Cancel
                 </button>
                 {isOk ? (
+                  // 결제처리
                   <button
                     className='ml-[6px] w-[174px] h-[56px] bg-[#4187FF] rounded-[10px] shadow-none border-0 ring-1 ring-[#0085FE] text-[16px] text-white'
                     onClick={(e) => {

@@ -1,3 +1,4 @@
+import { ElseUtils } from "@/libs/else.utils";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { LatLng } from "use-places-autocomplete";
@@ -123,18 +124,28 @@ export default function AddressModal(props: AddressModalProps) {
                         });
 
                         setTimeout(() => {
-                          localStorage.setItem(
-                            "startInfo",
+                          ElseUtils.setLocalStorage(
+                            ElseUtils.localStorageStartInfo,
                             JSON.stringify(props.startAccess)
                           );
-
-                          localStorage.setItem(
-                            "goalInfo",
+                          // localStorage.setItem(
+                          //   "startInfo",
+                          //   JSON.stringify(props.startAccess)
+                          // );
+                          ElseUtils.setLocalStorage(
+                            ElseUtils.localStorageGoalInfo,
                             JSON.stringify({
                               ...selectAddress,
                               location: res.data.result.geometry.location,
                             })
                           );
+                          // localStorage.setItem(
+                          //   "goalInfo",
+                          //   JSON.stringify({
+                          //     ...selectAddress,
+                          //     location: res.data.result.geometry.location,
+                          //   })
+                          // );
 
                           // 경로 보여주는 페이지로 이동
                           location.href = `/service/map/path`;
