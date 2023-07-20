@@ -34,7 +34,7 @@ export default async function handler(
       res.status(200).json({ success: true, data: callResult.data.data });
     } catch (err: any) {
       console.log(err);
-      res.status(500).json({ success: false, code: CODES.API_CALL_ERROR });
+      res.status(500).json({ success: false, info: CODES.API_CALL_ERROR });
     }
   }
   if (req.method === "GET") {
@@ -55,7 +55,7 @@ export default async function handler(
       }
       res.status(200).json({ success: true, data: callResult.data.data });
     } catch (err: any) {
-      res.status(500).json({ success: false, code: CODES.API_CALL_ERROR });
+      res.status(500).json({ success: false, info: CODES.API_CALL_ERROR });
     }
   }
   if (req.method === "PATCH") {
@@ -74,7 +74,7 @@ export default async function handler(
 
       res.status(200).json({ success: true, data: callResult.data.data });
     } catch (err: any) {
-      res.status(500).json({ success: false, code: CODES.API_CALL_ERROR });
+      res.status(500).json({ success: false, info: CODES.API_CALL_ERROR });
     }
   }
 }
