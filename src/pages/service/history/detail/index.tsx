@@ -1,4 +1,5 @@
 import "@/app/globals.css";
+import LayoutAuth from "@/components/layouts/LayoutAuth";
 import Image from "next/image";
 export default function HistoryDetailPage() {
   const ShowInfo = ({ head, value }: any) => {
@@ -22,7 +23,7 @@ export default function HistoryDetailPage() {
     );
   };
   return (
-    <>
+    <LayoutAuth menuTitle='History'>
       <div className='w-[390px] h-[844px] ml-[-8px] mt-[-8px]'>
         <div className='w-[390px] h-[95px] bg-white'>
           <div className='pt-[61px]' />
@@ -168,6 +169,6 @@ export default function HistoryDetailPage() {
           </div>
         </div>
       </div>
-    </>
+    </LayoutAuth>
   );
 }

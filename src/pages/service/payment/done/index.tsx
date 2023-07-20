@@ -1,8 +1,9 @@
 import "@/app/globals.css";
+import LayoutAuth from "@/components/layouts/LayoutAuth";
 import Image from "next/image";
 export default function PaymentDonePage() {
   return (
-    <>
+    <LayoutAuth menuTitle=''>
       <div className='bg-[#F5F6FA] w-[390px] h-[844px] ml-[-8px] mt-[-8px]'>
         <div
           className='pt-[40px] pl-[20px]'
@@ -197,6 +198,6 @@ export default function PaymentDonePage() {
           </div>
         </div>
       </div>
-    </>
+    </LayoutAuth>
   );
 }

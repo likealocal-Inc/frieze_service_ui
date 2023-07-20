@@ -1,15 +1,12 @@
-import LayoutWithLogo from "@/components/layouts/LayoutWithLogo";
-import { GoogleMapComponent } from "@/components/map/GoogleMapComponent";
 import InformationModal from "@/components/modal/InformationModal";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import "../../../../css/information/private.infomation.css";
 import axios from "axios";
-import { LatLng } from "use-places-autocomplete";
-import { GoogleMap } from "@react-google-maps/api";
 import { GooglePathMapComponent } from "@/components/map/GooglePathMapComponent";
 import { AddressInfo } from "@/components/modal/AddressModal";
 import { ElseUtils } from "@/libs/else.utils";
+import LayoutAuth from "@/components/layouts/LayoutAuth";
 
 export default function MapPathPage() {
   const [showPayModal, setShowPayModal] = useState(false);
@@ -54,7 +51,7 @@ export default function MapPathPage() {
       {showPayModal === true ? (
         <div className='w-screen h-screen bg-slate-600 ml-[-8px] mt-[-8px]'></div>
       ) : (
-        <LayoutWithLogo menuTitle='경로' isUasgeDetail={true}>
+        <LayoutAuth menuTitle='경로' isUasgeDetail={true}>
           <div className='mt-[20px]' />
 
           <div className=''>
@@ -158,7 +155,7 @@ export default function MapPathPage() {
               </div>
             </div>
           </div>
-        </LayoutWithLogo>
+        </LayoutAuth>
       )}
       <div
         className={

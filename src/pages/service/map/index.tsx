@@ -1,3 +1,4 @@
+import LayoutAuth from "@/components/layouts/LayoutAuth";
 import LayoutWithLogo from "@/components/layouts/LayoutWithLogo";
 import { GoogleMapComponent } from "@/components/map/GoogleMapComponent";
 import AddressModal, { AddressInfo } from "@/components/modal/AddressModal";
@@ -49,7 +50,7 @@ export default function MapPage() {
 
   return (
     <>
-      <LayoutWithLogo menuTitle='지도' isUasgeDetail={true}>
+      <LayoutAuth menuTitle='지도' isUasgeDetail={true}>
         <div className=''>
           <div className='mt-[28px]' />
           <div className='flex justify-start'>
@@ -164,7 +165,7 @@ export default function MapPage() {
           goalAccess={goalLocation}
           isMove={isMove}
         />
-      </LayoutWithLogo>
+      </LayoutAuth>
     </>
   );
 }

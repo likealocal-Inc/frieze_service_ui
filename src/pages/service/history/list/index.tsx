@@ -1,10 +1,11 @@
 import "@/app/globals.css";
 import HistoryListComponent from "@/components/history/HistoryListComponent";
+import LayoutAuth from "@/components/layouts/LayoutAuth";
 import { useState } from "react";
 export default function HistoryListPage() {
   const [selectTapIndex, setSelectTapIndex] = useState(1);
   return (
-    <>
+    <LayoutAuth menuTitle='History'>
       <div className='w-[390px] h-[844px] ml-[-8px] mt-[-8px]'>
         <div className='w-[390px] h-[140px] bg-white'>
           <div className='pt-[61px]' />
@@ -111,6 +112,6 @@ export default function HistoryListPage() {
           </div>
         </div>
       </div>
-    </>
+    </LayoutAuth>
   );
 }

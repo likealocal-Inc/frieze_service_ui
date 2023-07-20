@@ -1,9 +1,10 @@
 import "@/app/globals.css";
+import LayoutAuth from "@/components/layouts/LayoutAuth";
 import Image from "next/image";
 
 export default function PaymentCancelPage() {
   return (
-    <>
+    <LayoutAuth menuTitle=''>
       <div className='fixed top-0 left-0 w-full h-full bg-slate-600 Z-50'>
         <div className='flex justify-center bg-white w-[328px] h-[272px] fixed top-[176px] left-[30px] rounded-[10px]'>
           <div className='flex flex-col items-center w-full h-full'>
@@ -27,6 +28,6 @@ export default function PaymentCancelPage() {
           </div>
         </div>
       </div>
-    </>
+    </LayoutAuth>
   );
 }
