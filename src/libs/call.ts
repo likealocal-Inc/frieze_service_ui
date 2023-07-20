@@ -8,5 +8,5 @@ export type ApiCallResponseData = {
 };
 
 export const CallInfo = {
-  urlBase: "http://localhost:8080/api",
+  urlBase: process.env.APISERVER,
 };
