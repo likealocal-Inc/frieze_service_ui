@@ -14,6 +14,9 @@ export default function AuthEmailPage() {
             alt=''
             width={44}
             height={44}
+            onClick={(e) => {
+              location.href = "/service/agreement";
+            }}
           />
           <div className='mt-[104px]'></div>
           <div className='flex justify-center'>
@@ -61,7 +64,7 @@ export default function AuthEmailPage() {
 
       {showModal ? (
         <div className='absolute top-0 left-0 w-screen h-screen bg-gray-400'>
-          <div className='bg-white rounded-2xl pt-2 flex flex-col gap-0 items-center justify-start w-[328px] relative overflow-hidden mt-[300px] ml-[30px]'>
+          <div className='bg-white rounded-2xl pt-2 flex flex-col gap-0 items-center justify-start w-[328px] relative overflow-hidden mt-[200px] ml-[15px]'>
             <div className='relative self-stretch overflow-hidden shrink-0 h-14'>
               <div className='absolute rounded-lg right-2 left-2 bottom-1 top-1'></div>
 

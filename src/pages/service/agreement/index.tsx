@@ -2,7 +2,10 @@ import { AgreeComponent } from "@/components/agreement/AgreementUI";
 import InputComponent from "@/components/input/InputComponents";
 import LayoutWithLogo from "@/components/layouts/LayoutWithLogo";
 import InformationModal from "@/components/modal/InformationModal";
+import { CODES } from "@/libs/codes";
 import { ElseUtils } from "@/libs/else.utils";
+import { SecurityUtils } from "@/libs/security.utils";
+import axios from "axios";
 
 import { useEffect, useState } from "react";
 
@@ -130,7 +133,7 @@ export default function AgreementPage() {
   const onSend = () => {
     let isGood = true;
     if (ElseUtils.isAllUpperCase(agreementData.passportName) === false) {
-      setErrName({ isError: true, errorMsg: "대문자로만 입력이 가능합니다" });
+      setErrName({ isError: true, errorMsg: "Capital letters only" });
       isGood = false;
     } else {
       setErrName({ isError: false, errorMsg: "" });
@@ -138,7 +141,7 @@ export default function AgreementPage() {
 
     const emailCheck = ElseUtils.isValidEmail(agreementData.email);
     if (emailCheck === false) {
-      setErrEmail({ isError: true, errorMsg: "이메일이 올바르지 않습니다." });
+      setErrEmail({ isError: true, errorMsg: "Insert email address" });
       isGood = false;
     } else {
       setErrEmail({ isError: false, errorMsg: "" });
@@ -147,7 +150,44 @@ export default function AgreementPage() {
     if (isGood === false) return;
 
     localStorage.setItem("agreementData", JSON.stringify(agreementData));
-    location.href = "/service/map";
+    console.log(agreementData);
+
+    axios
+      .post("/api/user", {
+        email: agreementData.email,
+        name: agreementData.passportName,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        // 이미 존재하는 이메일 -> 인증 여부에 때라서 처리함
+        if (err.response.data.info.code === CODES.ALREADY_EXIST_EMAIL.code) {
+          axios.get(`/api/user?email=${err.response.data.data}`).then((d) => {
+            const user = d.data.data;
+
+            // 인증이 안된 상태면 인증페이지로 이동
+            if (user.isAuth === false) {
+              axios
+                .post("/api/auth.email", {
+                  elrigjd: SecurityUtils.encryptText(user.id),
+                  qodkfj: SecurityUtils.encryptText(user.email),
+                })
+                .then((d) => {
+                  location.href = "/service/emailAuth";
+                });
+            } else {
+              localStorage.setItem(
+                ElseUtils.localStorageUserIdKey,
+                SecurityUtils.encryptText(user.id)
+              );
+              location.href = "/service/map";
+            }
+          });
+        }
+      });
+
+    // location.href = "/service/map";
   };
   return (
     <>

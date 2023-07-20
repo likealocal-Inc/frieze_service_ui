@@ -2,7 +2,7 @@ import { CodeType } from "./codes";
 
 export type ApiCallResponseData = {
   success: boolean;
-  code?: CodeType;
+  info?: CodeType;
   message?: string;
   data?: any;
 };

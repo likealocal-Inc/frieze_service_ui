@@ -21,7 +21,7 @@ export default function InputComponent({
           className={
             isError
               ? // ? // ? `w-[350px] shadow-none outline-none ring-1 ring-red-500 placeholder-[#bbbbbb] pl-[12px] text-slate-800 text-[16px] bg-[#f5f6fa] rounded-[10px] relative border-0 h-[56px] `
-                `w-[350px] border-red-500 placeholder-[#bbbbbb] pl-[12px] text-slate-800 text-[16px] bg-[#f5f6fa] rounded-[10px] relative  h-[56px] focus:border-1 focus:border-slate-600 focus:outline-none `
+                `w-[350px] border-red-500 placeholder-[#bbbbbb] pl-[12px] text-slate-800 text-[16px] bg-[#f5f6fa] rounded-[10px] relative h-[56px] focus:border-1 focus:border-red-600 focus:outline-none outline-red-500`
               : `w-[350px] placeholder-[#bbbbbb] pl-[12px] text-[#262628] text-[16px] border-0 bg-[#f5f6fa] rounded-[10px] relative h-[56px] focus:shadow-none focus:outline-none focus:ring-2 focus:ring-[#BBBBBB] `
           }
           placeholder={placeholder}

@@ -12,7 +12,6 @@ export default async function handler(
   if (req.method === "POST") {
     const email = req.body.email;
     const name = req.body.name;
-    const authUrl = req.body.authUrl;
 
     const emailEn = await SecurityUtils.encryptText(email);
     const nameEn = await SecurityUtils.encryptText(name);
@@ -27,31 +26,39 @@ export default async function handler(
         }
       );
       if (checkEmailRes.data.data === false) {
+        const url = process.env.SERVERIPPORT;
         callResult = await axios.post(`${CallInfo.urlBase}/c.user`, {
           email: emailEn,
           name: nameEn,
-          authUrl: authUrl,
+          authUrl: `${url}/user/auth`,
         });
+        res.status(200).json({ success: true, data: callResult.data.data });
       } else {
         res.status(500).json({
           success: false,
-          code: CODES.ALREADY_EXIST_EMAIL,
+          info: CODES.ALREADY_EXIST_EMAIL,
           data: email,
         });
       }
-      res.status(200).json({ success: true, data: callResult.data.data });
     } catch (err: any) {
-      res.status(500).json({ success: false, code: CODES.API_CALL_ERROR });
+      res.status(500).json({ success: false, info: CODES.API_CALL_ERROR });
     }
   }
   if (req.method === "GET") {
     const id: string = req.query.id as string;
+    const email: string = req.query.email as string;
     let callResult: any;
     try {
-      callResult = await axios.get(`${CallInfo.urlBase}/c.user/${id}`);
+      if (id !== null && id !== undefined) {
+        callResult = await axios.get(`${CallInfo.urlBase}/c.user/${id}`);
+      } else if (email !== null && email !== undefined) {
+        callResult = await axios.get(
+          `${CallInfo.urlBase}/c.user/email/${email}`
+        );
+      }
       res.status(200).json({ success: true, data: callResult.data.data });
     } catch (err: any) {
-      res.status(500).json({ success: false, code: CODES.API_CALL_ERROR });
+      res.status(500).json({ success: false, info: CODES.API_CALL_ERROR });
     }
   }
   if (req.method === "PATCH") {
@@ -64,7 +71,7 @@ export default async function handler(
       });
       res.status(200).json({ success: true, data: callResult.data.data });
     } catch (err: any) {
-      res.status(500).json({ success: false, code: CODES.API_CALL_ERROR });
+      res.status(500).json({ success: false, info: CODES.API_CALL_ERROR });
     }
   }
 }
