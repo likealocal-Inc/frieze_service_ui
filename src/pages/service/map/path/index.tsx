@@ -60,10 +60,11 @@ export default function MapPathPage() {
   useEffect(() => {
     if (priceInfo.taxiPrice === 0) return;
 
-    localStorage.setItem(
+    ElseUtils.setLocalStorage(
       ElseUtils.localStoragePrideInfo,
-      SecurityUtils.encryptText(JSON.stringify(priceInfo))
+      JSON.stringify(priceInfo)
     );
+
     setTimeout(() => {
       setIsGetPath(false);
     }, 200);

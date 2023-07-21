@@ -115,7 +115,6 @@ export function GoogleMapComponent({
           //   .then((d) => console.log(d.data.results[0].formatted_address));
         },
         function (err) {
-          console.log(err);
           setCenter({ lat: 37.513364, lng: 127.058262 });
           setIsCoexCenter(true);
           alert("위치 정보를 가져오는데 실패했습니다. 오류: " + err);

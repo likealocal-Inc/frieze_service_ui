@@ -67,7 +67,6 @@ export const MapUtils = {
       `/api/naver.path?startLng=${startLng}&startLat=${startLat}&goalLng=${goalLng}&goalLat=${goalLat}`
     );
 
-    console.log(res.data);
     const data = res.data.route.traoptimal[0];
     const summary = data.summary;
     const result: PathInfo = {

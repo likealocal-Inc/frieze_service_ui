@@ -116,35 +116,47 @@ export function GooglePathMapComponent({
           location.href = "/service/map";
           return;
         }
-        const data = res.data.route.traoptimal[0];
-        const summary = data.summary;
-        const distance = summary.distance;
-        const duration = summary.duration;
-        const fuelPrice = summary.fuelPrice;
-        const taxiPrice = summary.taxiFare;
-        const tollFare = summary.tollFare;
-        const lastPrice = Math.ceil((taxiPrice + taxiPrice / 2) / 1270);
 
-        setPathInfo({
-          distance,
-          duration,
-          fuelPrice,
-          taxiPrice,
-          tollFare,
-          lastPrice,
-        });
+        axios
+          .post("/api/info")
+          .then((d) => {
+            const data = res.data.route.traoptimal[0];
+            const summary = data.summary;
+            const distance = summary.distance;
+            const duration = summary.duration;
+            const fuelPrice = summary.fuelPrice;
+            const taxiPrice = summary.taxiFare;
+            const tollFare = summary.tollFare;
+            const lastPrice = Math.ceil(
+              (taxiPrice + taxiPrice / 2) / d.data.data.exchangeRate
+            );
 
-        const tempPaths = [];
-        for (let index = 0; index < data.path.length; index++) {
-          const el = data.path[index];
-          tempPaths.push({ lat: el[1], lng: el[0] });
-        }
-        // setCenter(undefined); // 중심 마크 초기화
-        setPaths(tempPaths);
+            setPathInfo({
+              distance,
+              duration,
+              fuelPrice,
+              taxiPrice,
+              tollFare,
+              lastPrice,
+            });
 
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 300);
+            const tempPaths = [];
+            for (let index = 0; index < data.path.length; index++) {
+              const el = data.path[index];
+              tempPaths.push({ lat: el[1], lng: el[0] });
+            }
+            setPaths(tempPaths);
+
+            setTimeout(() => {
+              setIsLoading(false);
+            }, 300);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        location.reload();
       });
   }, []);
 

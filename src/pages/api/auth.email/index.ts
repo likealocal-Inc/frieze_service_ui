@@ -13,9 +13,6 @@ export default async function handler(
     const id = req.body.elrigjd;
     const email = req.body.qodkfj;
 
-    console.log(id, email);
-    console.log(SecurityUtils.decryptText(email));
-    console.log(SecurityUtils.decryptText(id));
     let callResult: any;
     try {
       // 이메일 존재여부 확인
@@ -27,7 +24,6 @@ export default async function handler(
           authUrl: `${url}/user/auth`,
         })
         .then((d) => {
-          console.log(d);
           res.status(200).send({ success: true });
         });
     } catch (err: any) {

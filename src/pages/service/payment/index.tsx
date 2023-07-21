@@ -2,6 +2,7 @@ import LayoutAuth from "@/components/layouts/LayoutAuth";
 import "../../../app/globals.css";
 import { ElseUtils } from "@/libs/else.utils";
 import { SecurityUtils } from "@/libs/security.utils";
+import axios from "axios";
 
 export default function PaymentPage() {
   return (
@@ -21,6 +22,10 @@ export default function PaymentPage() {
                 ElseUtils.localStorageGoalInfo
               );
 
+              const userStr = ElseUtils.getLocalStorage(
+                ElseUtils.localStorageUserIdKey
+              );
+
               // 문제가 있는 경우
               if (
                 priceInfoStr === undefined ||
@@ -28,23 +33,27 @@ export default function PaymentPage() {
                 startInfoStr === undefined ||
                 startInfoStr === null ||
                 goalInfoStr === undefined ||
-                goalInfoStr === null
+                goalInfoStr === null ||
+                userStr === undefined ||
+                userStr === null
               ) {
                 location.href = "/service/map";
                 return;
               }
-              const priceInfo = SecurityUtils.decryptText(
-                JSON.parse(priceInfoStr)
-              );
-              const startInfo = SecurityUtils.decryptText(
-                JSON.parse(startInfoStr)
-              );
-              const goalInfo = SecurityUtils.decryptText(
-                JSON.parse(goalInfoStr)
-              );
 
-              console.log(priceInfo, startInfo, goalInfo);
-              //location.href = "/service/payment/done";
+              axios
+                .post("/api/order", {
+                  t1: userStr,
+                  t2: startInfoStr,
+                  t3: goalInfoStr,
+                  t4: priceInfoStr,
+                })
+                .then((d) => {
+                  location.href = "/service/payment/done";
+                })
+                .catch((e) => {
+                  location.href = "/service/payment/cancel";
+                });
             }}
           >
             완료

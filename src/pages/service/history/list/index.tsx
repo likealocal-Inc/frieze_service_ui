@@ -1,9 +1,15 @@
 import "@/app/globals.css";
 import HistoryListComponent from "@/components/history/HistoryListComponent";
 import LayoutAuth from "@/components/layouts/LayoutAuth";
-import { useState } from "react";
+import { ElseUtils } from "@/libs/else.utils";
+import { SecurityUtils } from "@/libs/security.utils";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useLoadScript } from "@react-google-maps/api";
+import { OrderModel } from "@/models/order";
 export default function HistoryListPage() {
   const [selectTapIndex, setSelectTapIndex] = useState(1);
+
   return (
     <LayoutAuth menuTitle='History'>
       <div className='w-[390px] h-[844px] ml-[-8px] mt-[-8px]'>
@@ -14,6 +20,7 @@ export default function HistoryListPage() {
               History
             </div>
           </div>
+          {/* 종료 */}
           <div className='flex justify-end mr-[20px] mt-[-25px]'>
             <div
               className='relative w-8 h-8'
@@ -63,7 +70,7 @@ export default function HistoryListPage() {
                 className={
                   selectTapIndex === 1
                     ? `bg-[#0085FE] h-[3px] w-[100px]`
-                    : `bg-white h-[3px] w-[100px]`
+                    : `bg-white h-[0px] w-[0px]`
                 }
               ></div>
             </div>
@@ -81,7 +88,7 @@ export default function HistoryListPage() {
                 className={
                   selectTapIndex === 2
                     ? `bg-[#0085FE] h-[3px] w-[100px]`
-                    : `bg-white h-[3px] w-[100px]`
+                    : `bg-white h-[0px] w-[0px]`
                 }
               ></div>
             </div>
@@ -99,7 +106,7 @@ export default function HistoryListPage() {
                 className={
                   selectTapIndex === 3
                     ? `bg-[#0085FE] h-[3px] w-[100px]`
-                    : `bg-white h-[3px] w-[100px]`
+                    : `bg-white h-[0px] w-[0px]`
                 }
               ></div>
             </div>
@@ -108,7 +115,7 @@ export default function HistoryListPage() {
         <div className='w-[390px] h-[704px] bg-[#F5F6FA]'>
           <div className='pt-[35px]' />
           <div className='pl-[20px]'>
-            <HistoryListComponent />
+            <HistoryListComponent selectIndex={selectTapIndex} />
           </div>
         </div>
       </div>

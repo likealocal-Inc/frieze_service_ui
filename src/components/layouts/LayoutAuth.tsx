@@ -22,7 +22,7 @@ const LayoutAuth = ({
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   useEffect(() => {
-    const _userId = localStorage.getItem(ElseUtils.localStorageUserIdKey)!;
+    const _userId = ElseUtils.getLocalStorage(ElseUtils.localStorageUserIdKey);
     if (_userId === null) {
       location.href = "/service/agreement";
       return;

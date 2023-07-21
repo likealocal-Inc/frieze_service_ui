@@ -34,70 +34,24 @@ export default function AgreementPage() {
   const [errName, setErrName] = useState({ isError: false, errorMsg: "" });
   const [errEmail, setErrEmail] = useState({ isError: false, errorMsg: "" });
 
-  useEffect(() => {
-    // const accordionItems: AccordionItem[] = [
-    //   {
-    //     id: "accordion-flush-heading-1",
-    //     triggerEl: document.querySelector("#accordion-flush-heading-1")!,
-    //     targetEl: document.querySelector("#accordion-flush-body-1")!,
-    //     active: false,
-    //   },
-    //   {
-    //     id: "accordion-flush-heading-2",
-    //     triggerEl: document.querySelector("#accordion-flush-heading-2")!,
-    //     targetEl: document.querySelector("#accordion-flush-body-2")!,
-    //     active: false,
-    //   },
-    //   {
-    //     id: "accordion-flush-heading-3",
-    //     triggerEl: document.querySelector("#accordion-flush-heading-3")!,
-    //     targetEl: document.querySelector("#accordion-flush-body-3")!,
-    //     active: false,
-    //   },
-    //   {
-    //     id: "accordion-flush-heading-4",
-    //     triggerEl: document.querySelector("#accordion-flush-heading-4")!,
-    //     targetEl: document.querySelector("#accordion-flush-body-4")!,
-    //     active: false,
-    //   },
-    // ];
-    // const options = {
-    //   alwaysOpen: false,
-    //   activeClasses: "text-gray-900",
-    //   inactiveClasses: "text-gray-500",
-    //   onOpen: (item: any) => {},
-    //   onClose: (item: any) => {},
-    //   onToggle: (item: any) => {
-    //     console.log(item._items);
-    //     item._items.map((d: any, k: any) => {
-    //       setAgreeComponent([
-    //         ...agreeComponent,
-    //         (agreeComponent[k] = d.active),
-    //       ]);
-    //     });
-    //   },
-    // };
-    // const accordion = new Accordion(accordionItems, options);
-    // accordion.open("accordion-flush-heading-1");
-    // accordion.close("accordion-flush-heading-1");
-    // accordion.close("accordion-flush-heading-2");
-    // accordion.close("accordion-flush-heading-3");
-    // accordion.close("accordion-flush-heading-4");
-    // accordion.toggle("accordion-flush-heading-1");
-    // accordion.open("accordion-flush-heading-2");
-    // accordion.close("accordion-flush-heading-2");
-    // accordion.toggle("accordion-flush-heading-2");
-    // accordion.open("accordion-flush-heading-3");
-    // accordion.close("accordion-flush-heading-3");
-    // accordion.toggle("accordion-flush-heading-3");
-    // accordion.open("accordion-flush-heading-4");
-    // accordion.close("accordion-flush-heading-4");
-    // accordion.toggle("accordion-flush-heading-4");
-  }, []);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     onConfirm();
   }, [agreementData]);
+
+  const upSelectAll = () => {
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    if (checkboxes === undefined) return;
+
+    for (var i = 0; i < checkboxes.length; i++) {
+      (checkboxes[i] as HTMLInputElement).checked = false;
+    }
+    setAgreementData({
+      ...agreementData,
+      agreement: [false, false, false, false],
+    });
+  };
 
   const selectAllCheckboxes = (check: any) => {
     var checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -150,7 +104,6 @@ export default function AgreementPage() {
     if (isGood === false) return;
 
     localStorage.setItem("agreementData", JSON.stringify(agreementData));
-    console.log(agreementData);
 
     axios
       .post("/api/user", {
@@ -158,7 +111,9 @@ export default function AgreementPage() {
         name: agreementData.passportName,
       })
       .then((res) => {
-        console.log(res);
+        upSelectAll();
+        location.href = "/service/emailAuth";
+        return;
       })
       .catch((err) => {
         // 이미 존재하는 이메일 -> 인증 여부에 때라서 처리함
@@ -175,13 +130,15 @@ export default function AgreementPage() {
                 })
                 .then((d) => {
                   location.href = "/service/emailAuth";
+                  return;
                 });
             } else {
-              localStorage.setItem(
+              ElseUtils.setLocalStorage(
                 ElseUtils.localStorageUserIdKey,
-                SecurityUtils.encryptText(user.id)
+                user.id
               );
               location.href = "/service/map";
+              return;
             }
           });
         }

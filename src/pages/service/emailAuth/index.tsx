@@ -8,7 +8,7 @@ export default function AuthEmailPage() {
     <>
       <div className='mx-[20px] mt-[40px]'>
         <div className=''>
-          <Image
+          {/* <Image
             className='w-[44px] h-[44px]'
             src={"/img/home.svg"}
             alt=''
@@ -17,7 +17,7 @@ export default function AuthEmailPage() {
             onClick={(e) => {
               location.href = "/service/agreement";
             }}
-          />
+          /> */}
           <div className='mt-[104px]'></div>
           <div className='flex justify-center'>
             <div

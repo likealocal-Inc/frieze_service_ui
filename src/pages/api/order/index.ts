@@ -3,40 +3,45 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { ApiCallResponseData, CallInfo } from "@/libs/call";
 import { CODES } from "@/libs/codes";
+import { SecurityUtils } from "@/libs/security.utils";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ApiCallResponseData>
 ) {
+  // 주문 저장
   if (req.method === "POST") {
-    const userId = req.body.userId;
-    const startLng = req.body.startLng;
-    const startLat = req.body.startLat;
-    // const start = req.body.start;
-    const goalLng = req.body.goalLng;
-    const goalLat = req.body.goalLat;
-    // const goal = req.body.goal;
-    const status = req.body.status;
+    const userStr = req.body.t1;
+    const startInfoStr = req.body.t2;
+    const goalInfoStr = req.body.t3;
+    const priceInfoStr = req.body.t4;
+
+    const priceInfo = SecurityUtils.decryptText(priceInfoStr);
+    const startInfo = JSON.parse(SecurityUtils.decryptText(startInfoStr));
+    const goalInfo = JSON.parse(SecurityUtils.decryptText(goalInfoStr));
+    const userId = SecurityUtils.decryptText(userStr);
 
     let callResult: any;
     try {
       callResult = await axios.post(`${CallInfo.urlBase}/order`, {
         userId,
-        startLng,
-        startLat,
-        // start,
-        goalLng,
-        goalLat,
-        // goal,
-        status,
+        startLng: "" + startInfo.location.lng,
+        startLat: "" + startInfo.location.lat,
+        startAddress: startInfo.desc,
+        goalLng: "" + goalInfo.location.lng,
+        goalLat: "" + goalInfo.location.lat,
+        goalAddress: goalInfo.desc,
+        status: "PAYMENT",
+        priceInfo: priceInfo,
       });
 
       res.status(200).json({ success: true, data: callResult.data.data });
     } catch (err: any) {
-      console.log(err);
       res.status(500).json({ success: false, info: CODES.API_CALL_ERROR });
     }
   }
+
+  // 주문조회( id: 단건조회, userId: 사용자 주문목록)
   if (req.method === "GET") {
     const id: string = req.query.id as string;
     const userId: string = req.query.userId as string;
@@ -58,6 +63,7 @@ export default async function handler(
       res.status(500).json({ success: false, info: CODES.API_CALL_ERROR });
     }
   }
+  // 업데이트(상태값...)
   if (req.method === "PATCH") {
     const id = req.body.id;
     const totalPrice = req.body.totalPrice;
