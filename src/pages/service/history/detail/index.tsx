@@ -77,7 +77,7 @@ export default function HistoryDetailPage() {
               </div>
               <div className='mt-[12px]' />
               <div className='pl-[20px]'>
-                <div className='bg-[#ffffff] rounded-[10px] border-solid border-[rgba(0,0,0,0.10)] border w-[350px] h-[327px] relative'>
+                <div className='bg-[#ffffff] rounded-[10px] border-solid border-[rgba(0,0,0,0.10)] border w-[350px] h-[300px] relative'>
                   <div className='pt-[17px]' />
                   <div className='flex mx-[12px] justify-between'>
                     <div className=''>
@@ -151,16 +151,19 @@ export default function HistoryDetailPage() {
                   <div className='pt-[15px]' />
                   <div className='mx-[15px] w-[322px] h-[2px] bg-[#E7E7E7]'></div>
                   <div className='pt-[15px]' />
-                  <ShowInfo head={"Approval date/time"} value={"2023.00.00"} />
-                  <div className='mt-[8px]' />
-                  <ShowInfo head={"Approval number"} value={"111111111"} />
-                  <div className='mt-[8px]' />
-                  <ShowInfo head={"Method of Payment"} value={"NICEPAYMENTS"} />
+
+                  <ShowInfo
+                    head={"Order number"}
+                    value={ElseUtils.stringCut(data.id, 8)}
+                  />
                   <div className='mt-[8px]' />
                   <ShowInfo
-                    head={"Type of Payment"}
-                    value={"One-time payment"}
+                    head={"Approval date/time"}
+                    value={data.approvalDate}
                   />
+                  <div className='mt-[8px]' />
+                  <ShowInfo head={"Status"} value={data.status} />
+
                   <div className='mt-[16px]' />
                   <div className='mx-[15px] w-[322px] h-[2px] bg-[#E7E7E7]'></div>
                   <div className='mt-[19px]' />

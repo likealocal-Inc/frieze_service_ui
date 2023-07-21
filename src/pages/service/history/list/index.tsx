@@ -112,7 +112,7 @@ export default function HistoryListPage() {
             </div>
           </div>
         </div>
-        <div className='w-[390px] h-[704px] bg-[#F5F6FA]'>
+        <div className='w-[390px] h-screen bg-[#F5F6FA]'>
           <div className='pt-[35px]' />
           <div className='pl-[20px]'>
             <HistoryListComponent selectIndex={selectTapIndex} />

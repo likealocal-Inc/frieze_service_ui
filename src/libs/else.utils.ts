@@ -35,7 +35,7 @@ export const ElseUtils = {
   getLocalstorageUser: () => {
     const user = ElseUtils.getLocalStorage(ElseUtils.localStorageUserKey);
     if (user) {
-      return SecurityUtils.decryptText(user);
+      return JSON.parse(SecurityUtils.decryptText(user));
     }
     return null;
   },

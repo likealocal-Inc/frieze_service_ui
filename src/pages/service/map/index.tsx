@@ -113,7 +113,7 @@ export default function MapPage() {
           {/* 지도 */}
           <div className='ml-[-30px]'>
             <button
-              className='h-[43px] w-[131px] font-sans border-0 text-[14px] font-bold bg-white rounded-lg absolute top-[285px] left-[20px] z-50'
+              className='h-[43px] w-[131px] font-sans border-0 text-[14px] font-bold bg-white rounded-lg absolute top-[285px] left-[20px] z-20'
               onClick={(e) => {
                 setStartLocation({
                   desc: "Coex",
