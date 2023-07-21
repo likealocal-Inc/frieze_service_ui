@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 import { AgreeComponent } from "@/components/agreement/AgreementUI";
 import InputComponent from "@/components/input/InputComponents";
 import LayoutWithLogo from "@/components/layouts/LayoutWithLogo";
@@ -5,15 +8,13 @@ import InformationModal from "@/components/modal/InformationModal";
 import { CODES } from "@/libs/codes";
 import { ElseUtils } from "@/libs/else.utils";
 import { SecurityUtils } from "@/libs/security.utils";
-import axios from "axios";
-
-import { useEffect, useState } from "react";
 
 export interface AgreementData {
   passportName: string;
   email: string;
   agreement: [boolean, boolean, boolean, boolean];
 }
+
 export default function AgreementPage() {
   const [orderAgreement, setOrderAgreement] = useState(0);
   const [showAgreement, setShowAgreement] = useState(false);
@@ -24,12 +25,6 @@ export default function AgreementPage() {
     email: "",
     agreement: [false, false, false, false],
   });
-  const [agreeComponent, setAgreeComponent] = useState([
-    false,
-    false,
-    false,
-    false,
-  ]);
 
   const [errName, setErrName] = useState({ isError: false, errorMsg: "" });
   const [errEmail, setErrEmail] = useState({ isError: false, errorMsg: "" });
@@ -40,6 +35,10 @@ export default function AgreementPage() {
     onConfirm();
   }, [agreementData]);
 
+  /**
+   * 전체 체크박스 비활성화
+   * @returns
+   */
   const upSelectAll = () => {
     var checkboxes = document.querySelectorAll('input[type="checkbox"]');
     if (checkboxes === undefined) return;
@@ -53,6 +52,11 @@ export default function AgreementPage() {
     });
   };
 
+  /**
+   * 전체선택
+   * @param check
+   * @returns
+   */
   const selectAllCheckboxes = (check: any) => {
     var checkboxes = document.querySelectorAll('input[type="checkbox"]');
     if (checkboxes === undefined) return;
@@ -103,14 +107,16 @@ export default function AgreementPage() {
 
     if (isGood === false) return;
 
-    localStorage.setItem("agreementData", JSON.stringify(agreementData));
+    ElseUtils.setLocalStorage("agreementData", JSON.stringify(agreementData));
 
+    // 사용자 등록
     axios
       .post("/api/user", {
         email: agreementData.email,
         name: agreementData.passportName,
       })
       .then((res) => {
+        // 체크 비활성화
         upSelectAll();
         location.href = "/service/emailAuth";
         return;
@@ -143,8 +149,6 @@ export default function AgreementPage() {
           });
         }
       });
-
-    // location.href = "/service/map";
   };
   return (
     <>

@@ -46,7 +46,7 @@ export default function MapPathPage() {
     const goal = ElseUtils.getLocalStorage(ElseUtils.localStorageGoalInfo);
 
     if (start === null || goal === null) {
-      location.href = "/service/map";
+      ElseUtils.moveMapPage();
       return;
     }
 

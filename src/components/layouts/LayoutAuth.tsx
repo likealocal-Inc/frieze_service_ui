@@ -24,7 +24,7 @@ const LayoutAuth = ({
   useEffect(() => {
     const _userId = ElseUtils.getLocalStorage(ElseUtils.localStorageUserIdKey);
     if (_userId === null) {
-      location.href = "/service/agreement";
+      ElseUtils.moveAgreementPage();
       return;
     }
     const userId = SecurityUtils.decryptText(_userId);
@@ -33,8 +33,10 @@ const LayoutAuth = ({
         const user = d.data.data;
         ElseUtils.setLocalstorageUser(user);
         setLoading(false);
+        return;
       } else {
-        location.href = "/service/agreement";
+        ElseUtils.moveAgreementPage();
+        return;
       }
     });
   }, []);

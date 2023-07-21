@@ -1,9 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../../../app/globals.css";
 import Image from "next/image";
+import { ElseUtils } from "@/libs/else.utils";
 
 export default function AuthEmailPage() {
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState<any>(false);
+
+  const [email, setEmail] = useState();
+  useEffect(() => {
+    const agreement = ElseUtils.getLocalStorage("agreement");
+    if (agreement === null || agreement === undefined) {
+      ElseUtils.moveAgreementPage();
+      return;
+    }
+    setEmail(JSON.parse(agreement).email);
+  }, []);
+
   return (
     <>
       <div className='mx-[20px] mt-[40px]'>
@@ -31,9 +43,7 @@ export default function AuthEmailPage() {
           <div className='flex flex-col text-[17px] font-sans text-[#666] justify-center text-center items-center'>
             <div className='flex text-[#666666]'>
               인증 메일이{" "}
-              <div className='text-[#262628] font-bold mx-[1px]'>
-                kj_kim@likealocal.co.kr
-              </div>
+              <div className='text-[#262628] font-bold mx-[1px]'>{email}</div>
               (으)로
             </div>
             <div className='mt-[5px]'></div>

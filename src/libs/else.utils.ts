@@ -63,4 +63,11 @@ export const ElseUtils = {
     let formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
     return formattedDate;
   },
+
+  moveAgreementPage: () => {
+    location.href = "/service/agreement";
+  },
+  moveMapPage: () => {
+    location.href = "/service/map";
+  },
 };

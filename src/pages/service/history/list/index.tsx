@@ -1,12 +1,7 @@
 import "@/app/globals.css";
 import HistoryListComponent from "@/components/history/HistoryListComponent";
 import LayoutAuth from "@/components/layouts/LayoutAuth";
-import { ElseUtils } from "@/libs/else.utils";
-import { SecurityUtils } from "@/libs/security.utils";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useLoadScript } from "@react-google-maps/api";
-import { OrderModel } from "@/models/order";
+import { useState } from "react";
 export default function HistoryListPage() {
   const [selectTapIndex, setSelectTapIndex] = useState(1);
 

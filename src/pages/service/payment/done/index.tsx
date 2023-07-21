@@ -14,12 +14,12 @@ export default function PaymentDonePage() {
     );
 
     if (orderStr === null || orderStr === undefined) {
-      location.href = "/service/map";
+      ElseUtils.moveMapPage();
       return;
     }
     const userInfo = ElseUtils.getLocalstorageUser();
     if (userInfo == null) {
-      location.href = "/service/map";
+      ElseUtils.moveMapPage();
       return;
     }
     setUser(userInfo);
