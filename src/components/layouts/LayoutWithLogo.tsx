@@ -32,7 +32,7 @@ const LayoutWithLogo = ({
               <div className='w-[375px] pl-[20px] pr-[20px]'>
                 {/* Header */}
                 {isLogo ? (
-                  <div className='pt-[40px] flex items-center h-[46px] justify-between'>
+                  <div className='pt-[44px] flex items-center h-[46px] justify-between'>
                     <div className='flex items-center'>
                       <Image
                         alt=''

@@ -123,34 +123,29 @@ export default function AddressModal(props: AddressModalProps) {
                           location: res.data.result.geometry.location,
                         });
 
-                        setTimeout(() => {
-                          ElseUtils.setLocalStorage(
-                            ElseUtils.localStorageStartInfo,
-                            JSON.stringify(props.startAccess)
-                          );
-                          // localStorage.setItem(
-                          //   "startInfo",
-                          //   JSON.stringify(props.startAccess)
-                          // );
-                          ElseUtils.setLocalStorage(
-                            ElseUtils.localStorageGoalInfo,
-                            JSON.stringify({
-                              ...selectAddress,
-                              location: res.data.result.geometry.location,
-                            })
-                          );
-                          // localStorage.setItem(
-                          //   "goalInfo",
-                          //   JSON.stringify({
-                          //     ...selectAddress,
-                          //     location: res.data.result.geometry.location,
-                          //   })
-                          // );
+                        ElseUtils.movePath(
+                          props.startAccess,
+                          selectAddress,
+                          res.data.result.geometry.location
+                        );
+                        // setTimeout(() => {
+                        //   ElseUtils.setLocalStorage(
+                        //     ElseUtils.localStorageStartInfo,
+                        //     JSON.stringify(props.startAccess)
+                        //   );
 
-                          // 경로 보여주는 페이지로 이동
-                          location.href = `/service/map/path`;
-                          setAddList([]);
-                        }, 100);
+                        //   ElseUtils.setLocalStorage(
+                        //     ElseUtils.localStorageGoalInfo,
+                        //     JSON.stringify({
+                        //       ...selectAddress,
+                        //       location: res.data.result.geometry.location,
+                        //     })
+                        //   );
+
+                        //   // 경로 보여주는 페이지로 이동
+                        //   location.href = `/service/map/path`;
+                        // }, 100);
+                        setAddList([]);
                       } else {
                         const res = await axios.get(
                           `/api/google.map/latlng?place_id=${selectAddress.placeId}`

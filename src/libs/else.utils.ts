@@ -73,4 +73,24 @@ export const ElseUtils = {
   moveMapPage: () => {
     location.href = "/service/map";
   },
+
+  movePath: (startAccess: any, goalAccess: any, goalLocation: any) => {
+    setTimeout(() => {
+      ElseUtils.setLocalStorage(
+        ElseUtils.localStorageStartInfo,
+        JSON.stringify(startAccess)
+      );
+
+      ElseUtils.setLocalStorage(
+        ElseUtils.localStorageGoalInfo,
+        JSON.stringify({
+          ...goalAccess,
+          location: goalLocation,
+        })
+      );
+
+      // 경로 보여주는 페이지로 이동
+      location.href = `/service/map/path`;
+    }, 100);
+  },
 };

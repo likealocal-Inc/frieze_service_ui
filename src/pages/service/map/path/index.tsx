@@ -80,7 +80,7 @@ export default function MapPathPage() {
   return (
     <>
       {showPayModal === true ? (
-        <div className='w-screen h-screen bg-slate-600 ml-[-8px] mt-[-8px]'></div>
+        <div className='w-screen h-screen bg-slate-600'></div>
       ) : (
         <LayoutAuth menuTitle='경로' isUasgeDetail={true}>
           <div className='mt-[20px]' />
@@ -192,7 +192,7 @@ export default function MapPathPage() {
 
       {/* 위치정보와 금액 세팅할때까지 화면을 막는다. */}
       {isGetPath ? (
-        <div className='absolute top-0 left-0 w-[420px] h-[950px] bg-slate-400 bg-opacity-50 flex justify-center items-center'></div>
+        <div className='absolute top-0 left-0 w-[430px] h-[950px] bg-slate-400 bg-opacity-50 flex justify-center items-center'></div>
       ) : (
         ""
       )}

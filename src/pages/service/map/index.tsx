@@ -31,12 +31,26 @@ export default function MapPage() {
           var lat = location.coords.latitude;
           var lng = location.coords.longitude;
 
-          axios.get(`/api/google.map/info?lat=${lat}&lng=${lng}`).then((d) =>
-            setStartLocation({
-              ...startLocation,
-              desc: d.data.results[0].formatted_address,
-              location: { lng, lat },
-            })
+          axios.get(`/api/google.map/info?lat=${lat}&lng=${lng}`).then(
+            (d) => {
+              const temp = d.data.results[0];
+              axios
+                .get(`/api/google.map/latlng?place_id=${temp.place_id}`)
+                .then((d) => {
+                  setStartLocation({
+                    desc: temp.formatted_address,
+                    placeId: temp.place_id,
+                    location: d.data.result.geometry.location,
+                    key: -1,
+                  });
+                });
+            }
+
+            // setStartLocation({
+            //   ...startLocation,
+            //   desc: d.data.results[0].formatted_address,
+            //   location: { lng, lat },
+            // })
           );
         },
         function (err) {
@@ -52,80 +66,8 @@ export default function MapPage() {
     <>
       <LayoutAuth menuTitle='지도' isUasgeDetail={true}>
         <div className=''>
-          <div className='mt-[28px]' />
-          <div className='flex justify-start'>
-            <Image src={"/img/mappath.svg"} alt='' width={12} height={120} />
-            <div className='pl-[10px]'>
-              <div className='flex items-center'>
-                <div className='bg-[#f5f6fa] rounded-[10px] w-[325px] h-14 relative text-[#bbbbbb] font-sans items-center flex pr-[10px] pl-[20px]'>
-                  {ElseUtils.stringCut(startLocation.desc, 30, "...")}
-                </div>
-                <svg
-                  className='relative overflow-visible ml-[-30px]'
-                  style={{ transform: "translate(0px, 0px)" }}
-                  width='24'
-                  height='24'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
-                  onClick={(e) => {
-                    setShowAddressModal(true);
-                  }}
-                >
-                  <path
-                    fillRule='evenodd'
-                    clipRule='evenodd'
-                    d='M8.23431 5.21153C8.54673 4.92949 9.05327 4.92949 9.36569 5.21153L15.7657 10.9893C16.0781 11.2714 16.0781 11.7286 15.7657 12.0107L9.36569 17.7885C9.05327 18.0705 8.54673 18.0705 8.23431 17.7885C7.9219 17.5064 7.9219 17.0491 8.23431 16.7671L14.0686 11.5L8.23431 6.23291C7.9219 5.95087 7.9219 5.49358 8.23431 5.21153Z'
-                    fill='#BBBBBB'
-                  />
-                </svg>
-              </div>
-              <div className='mt-[10px]' />
-              <div className='flex items-center'>
-                <div className='flex items-center text-[#262628] text-[16px] font-sans font-bold pr-[10px] pl-[20px] h-14 bg-[#f5f6fa] rounded-[10px] border-solid border-[#262628] border w-[330px] relative'>
-                  {ElseUtils.stringCut(goalLocation.desc, 30, "...")}
-                </div>
-                <svg
-                  className='relative overflow-visible ml-[-30px]'
-                  style={{ transform: "translate(0px, 0px)" }}
-                  width='24'
-                  height='24'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
-                  onClick={(e) => {
-                    if (startLocation.desc === "Current location") return;
-
-                    setIsMove(true);
-                    setShowAddressModal(true);
-                  }}
-                >
-                  <path
-                    fillRule='evenodd'
-                    clipRule='evenodd'
-                    d='M8.23431 5.21153C8.54673 4.92949 9.05327 4.92949 9.36569 5.21153L15.7657 10.9893C16.0781 11.2714 16.0781 11.7286 15.7657 12.0107L9.36569 17.7885C9.05327 18.0705 8.54673 18.0705 8.23431 17.7885C7.9219 17.5064 7.9219 17.0491 8.23431 16.7671L14.0686 11.5L8.23431 6.23291C7.9219 5.95087 7.9219 5.49358 8.23431 5.21153Z'
-                    fill='#262628'
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-          <div className='mt-[28px]' />
           {/* 지도 */}
-          <div className='ml-[-30px]'>
-            <button
-              className='h-[43px] w-[131px] font-sans border-0 text-[14px] font-bold bg-white rounded-lg absolute top-[285px] left-[20px] z-20'
-              onClick={(e) => {
-                setStartLocation({
-                  desc: "Coex",
-                  key: -1,
-                  location: { lat: 37.513364, lng: 127.058262 },
-                  placeId: "",
-                });
-              }}
-            >
-              <div className='text-black'>Frieze Seoul</div>
-            </button>
+          <div className='ml-[-30px] h-[743px] z-10'>
             {startLocation.desc === "Current location" ? (
               <div className='flex flex-col items-center justify-center h-[425px] font-sans'>
                 <svg
@@ -153,8 +95,120 @@ export default function MapPage() {
                 size={{ width: "425px", height: "640px" }}
                 centerLocation={startLocation.location}
                 setStartLocation={setStartLocation}
+                setGoalLocation={setGoalLocation}
+                startLocation={startLocation}
+                goalLocation={goalLocation}
               />
             )}
+          </div>
+          <div className='flex justify-start ml-[-31px] pt-[20px] pl-[20px] bg-[#ffffff] rounded-3xl w-[418px] h-[254px] relative mt-[-150px]'>
+            <Image src={"/img/mappath.svg"} alt='' width={12} height={120} />
+            <div className='ml-[10px]'>
+              <div
+                className='flex items-center'
+                onClick={(e) => {
+                  setShowAddressModal(true);
+                }}
+              >
+                <div className='bg-[#f5f6fa] rounded-[10px] w-[325px] h-14 relative text-[#bbbbbb] font-sans items-center flex pr-[10px] pl-[20px]'>
+                  {ElseUtils.stringCut(startLocation.desc, 30, "...")}
+                </div>
+                <svg
+                  className='relative overflow-visible ml-[-30px]'
+                  style={{ transform: "translate(0px, 0px)" }}
+                  width='24'
+                  height='24'
+                  viewBox='0 0 24 24'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
+                >
+                  <path
+                    fillRule='evenodd'
+                    clipRule='evenodd'
+                    d='M8.23431 5.21153C8.54673 4.92949 9.05327 4.92949 9.36569 5.21153L15.7657 10.9893C16.0781 11.2714 16.0781 11.7286 15.7657 12.0107L9.36569 17.7885C9.05327 18.0705 8.54673 18.0705 8.23431 17.7885C7.9219 17.5064 7.9219 17.0491 8.23431 16.7671L14.0686 11.5L8.23431 6.23291C7.9219 5.95087 7.9219 5.49358 8.23431 5.21153Z'
+                    fill='#BBBBBB'
+                  />
+                </svg>
+              </div>
+              <div className='mt-[10px]' />
+              <div
+                className='flex items-center'
+                onClick={(e) => {
+                  if (startLocation.desc === "Current location") return;
+                  setIsMove(true);
+                  setShowAddressModal(true);
+                }}
+              >
+                <div className='flex items-center text-[#262628] text-[16px] font-sans font-bold pr-[10px] pl-[20px] h-14 bg-[#f5f6fa] rounded-[10px] border-solid border-[#262628] border w-[330px] relative'>
+                  {ElseUtils.stringCut(goalLocation.desc, 30, "...")}
+                </div>
+                <svg
+                  className='relative overflow-visible ml-[-30px]'
+                  style={{ transform: "translate(0px, 0px)" }}
+                  width='24'
+                  height='24'
+                  viewBox='0 0 24 24'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
+                >
+                  <path
+                    fillRule='evenodd'
+                    clipRule='evenodd'
+                    d='M8.23431 5.21153C8.54673 4.92949 9.05327 4.92949 9.36569 5.21153L15.7657 10.9893C16.0781 11.2714 16.0781 11.7286 15.7657 12.0107L9.36569 17.7885C9.05327 18.0705 8.54673 18.0705 8.23431 17.7885C7.9219 17.5064 7.9219 17.0491 8.23431 16.7671L14.0686 11.5L8.23431 6.23291C7.9219 5.95087 7.9219 5.49358 8.23431 5.21153Z'
+                    fill='#262628'
+                  />
+                </svg>
+              </div>
+            </div>
+
+            <button
+              className='h-[38px] w-[111px] bg-[#f5f6fa] rounded-[20px] font-sans border-0 text-[14px] font-bold  absolute top-[160px] left-[20px] z-50'
+              onClick={(e) => {
+                const lat = 37.513364;
+                const lng = 127.058262;
+                axios
+                  .get(`/api/google.map/info?lat=${lat}&lng=${lng}`)
+                  .then((d) => {
+                    const temp = d.data.results[0];
+                    axios
+                      .get(`/api/google.map/latlng?place_id=${temp.place_id}`)
+                      .then((d) => {
+                        setGoalLocation({
+                          desc: temp.formatted_address,
+                          placeId: temp.place_id,
+                          location: d.data.result.geometry.location,
+                          key: -1,
+                        });
+                        ElseUtils.movePath(
+                          startLocation,
+                          goalLocation,
+                          d.data.result.geometry.location
+                        );
+                      });
+                  });
+              }}
+            >
+              <div
+                className='text-[#000000] text-center relative'
+                style={{ font: "500 14px/22px 'Pretendard', sans-serif" }}
+              >
+                Frieze Seoul
+              </div>
+            </button>
+            {/* 
+            <button
+              className='h-[43px] w-[131px] font-sans border-0 text-[14px] font-bold bg-white rounded-lg absolute top-[150px] left-[20px] z-20'
+              onClick={(e) => {
+                setStartLocation({
+                  desc: "Coex",
+                  key: -1,
+                  location: { lat: 37.513364, lng: 127.058262 },
+                  placeId: "",
+                });
+              }}
+            >
+              <div className='text-black'>Frieze Seoul</div>
+            </button> */}
           </div>
         </div>
         <AddressModal
