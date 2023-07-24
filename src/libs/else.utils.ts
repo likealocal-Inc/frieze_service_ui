@@ -46,8 +46,11 @@ export const ElseUtils = {
     return localStorage.getItem(key);
   },
 
-  stringCut: (str: string, size: number) => {
-    return str.substring(0, size);
+  stringCut: (str: string, size: number, add = "") => {
+    if (str.length < size) {
+      add = "";
+    }
+    return `${str.substring(0, size)}${add}`;
   },
 
   changeDateFromDBIsoDate: (isoDate: string) => {

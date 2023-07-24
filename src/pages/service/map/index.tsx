@@ -1,6 +1,7 @@
 import LayoutAuth from "@/components/layouts/LayoutAuth";
 import { GoogleMapComponent } from "@/components/map/GoogleMapComponent";
 import AddressModal, { AddressInfo } from "@/components/modal/AddressModal";
+import { ElseUtils } from "@/libs/else.utils";
 import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -57,7 +58,7 @@ export default function MapPage() {
             <div className='pl-[10px]'>
               <div className='flex items-center'>
                 <div className='bg-[#f5f6fa] rounded-[10px] w-[325px] h-14 relative text-[#bbbbbb] font-sans items-center flex pr-[10px] pl-[20px]'>
-                  {startLocation.desc}
+                  {ElseUtils.stringCut(startLocation.desc, 30, "...")}
                 </div>
                 <svg
                   className='relative overflow-visible ml-[-30px]'
@@ -82,7 +83,7 @@ export default function MapPage() {
               <div className='mt-[10px]' />
               <div className='flex items-center'>
                 <div className='flex items-center text-[#262628] text-[16px] font-sans font-bold pr-[10px] pl-[20px] h-14 bg-[#f5f6fa] rounded-[10px] border-solid border-[#262628] border w-[330px] relative'>
-                  {goalLocation.desc}
+                  {ElseUtils.stringCut(goalLocation.desc, 30, "...")}
                 </div>
                 <svg
                   className='relative overflow-visible ml-[-30px]'
@@ -151,6 +152,7 @@ export default function MapPage() {
               <GoogleMapComponent
                 size={{ width: "425px", height: "640px" }}
                 centerLocation={startLocation.location}
+                setStartLocation={setStartLocation}
               />
             )}
           </div>

@@ -11,13 +11,10 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const { lat, lng } = req.query;
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyACq7gF8WbQr5oYUIZSNg4AW9hzI0phA6w
-  `;
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyACq7gF8WbQr5oYUIZSNg4AW9hzI0phA6w`;
 
   try {
     const search = await axios.get(url);
     res.status(200).send(search.data);
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
 }

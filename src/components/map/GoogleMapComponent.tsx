@@ -9,6 +9,7 @@ import {
 } from "@react-google-maps/api";
 
 import { LatLng } from "use-places-autocomplete";
+import { AddressInfo } from "../modal/AddressModal";
 
 // 경로 결과 정보
 export interface PathInfoProp {
@@ -28,6 +29,7 @@ export interface PathLocations {
 // 구글맵 컴포넌트
 export interface GoogleMapComponentProp {
   centerLocation?: LatLng;
+  setStartLocation?: Function;
   lang?: string;
   country?: string;
   pathLocation?: PathLocations;
@@ -53,6 +55,7 @@ export function GoogleMapComponent({
   centerLocation,
   pathLocation = undefined,
   setPathInfo = undefined,
+  setStartLocation = undefined,
   country = "kr",
   lang = "en",
   zoom = 15,
@@ -206,9 +209,7 @@ export function GoogleMapComponent({
               position={d.location}
               onLoad={() => console.log("Marker Loaded")}
               icon={`/freiz_location/${d.icon}`}
-              onClick={(e) => {
-                console.log(e);
-              }}
+              onClick={(e) => {}}
             />
           );
         })}
@@ -227,13 +228,26 @@ export function GoogleMapComponent({
           <MarkerF
             position={center}
             icon={"/freiz_location/start.png"}
-            onLoad={() => console.log("Marker Loaded")}
+            onLoad={() => console.log("Start Marker Loaded")}
             draggable
             onDragEnd={(e) => {
               const { latLng } = e;
               const lat = latLng!.lat();
               const lng = latLng!.lng();
-              setCenter({ lat, lng });
+              axios
+                .get(`/api/google.map/info?lat=${lat}&lng=${lng}`)
+                .then((d) => {
+                  const temp = d.data.results[0];
+                  axios
+                    .get(`/api/google.map/latlng?place_id=${temp.place_id}`)
+                    .then((d) => {
+                      setStartLocation!({
+                        desc: temp.formatted_address,
+                        placeId: temp.place_id,
+                        location: d.data.result.geometry.location,
+                      });
+                    });
+                });
             }}
           />
         ) : (
@@ -243,10 +257,11 @@ export function GoogleMapComponent({
           <>
             <MarkerF
               position={pathLocation.start}
-              onLoad={() => console.log("Marker Loaded")}
+              onLoad={() => console.log("From Marker Loaded")}
               icon={"/freiz_location/from.png"}
               draggable
               onDragEnd={(e) => {
+                console.log("From - Drag END");
                 const { latLng } = e;
                 const lat = latLng!.lat();
                 const lng = latLng!.lng();
