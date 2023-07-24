@@ -91,6 +91,6 @@ export const ElseUtils = {
 
       // 경로 보여주는 페이지로 이동
       location.href = `/service/map/path`;
-    }, 100);
+    }, 200);
   },
 };

@@ -236,7 +236,11 @@ export function GoogleMapComponent({
                         });
                         ElseUtils.movePath(
                           startLocation,
-                          goalLocation,
+                          {
+                            desc: temp.formatted_address,
+                            placeId: temp.place_id,
+                            location: d.data.result.geometry.location,
+                          },
                           d.data.result.geometry.location
                         );
                       });

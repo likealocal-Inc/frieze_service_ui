@@ -128,7 +128,8 @@ export function GooglePathMapComponent({
             const taxiPrice = summary.taxiFare;
             const tollFare = summary.tollFare;
             const lastPrice = Math.ceil(
-              (taxiPrice + taxiPrice / 2) / d.data.data.exchangeRate
+              (taxiPrice + tollFare + (taxiPrice + tollFare) / 2) /
+                d.data.data.exchangeRate
             );
 
             setPathInfo({

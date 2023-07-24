@@ -179,9 +179,15 @@ export default function MapPage() {
                           location: d.data.result.geometry.location,
                           key: -1,
                         });
+                        console.log(temp);
                         ElseUtils.movePath(
                           startLocation,
-                          goalLocation,
+                          {
+                            desc: temp.formatted_address,
+                            placeId: temp.place_id,
+                            location: d.data.result.geometry.location,
+                            key: -1,
+                          },
                           d.data.result.geometry.location
                         );
                       });
