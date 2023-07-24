@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "../../../app/globals.css";
 import Image from "next/image";
 import { ElseUtils } from "@/libs/else.utils";
+import { SecurityUtils } from "../../../libs/security.utils";
 
 export default function AuthEmailPage() {
   const [showModal, setShowModal] = useState<any>(false);
@@ -13,7 +14,7 @@ export default function AuthEmailPage() {
       ElseUtils.moveAgreementPage();
       return;
     }
-    setEmail(JSON.parse(agreement).email);
+    setEmail(JSON.parse(SecurityUtils.decryptText(agreement)).email);
   }, []);
 
   return (

@@ -107,8 +107,9 @@ export default function AgreementPage() {
 
     if (isGood === false) return;
 
-    ElseUtils.setLocalStorage("agreementData", JSON.stringify(agreementData));
+    ElseUtils.setLocalStorage("agreement", JSON.stringify(agreementData));
 
+    // return;
     // 사용자 등록
     axios
       .post("/api/user", {
