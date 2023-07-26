@@ -1,24 +1,23 @@
 import { createHash } from "crypto";
-import CryptoJS from "crypto-js";
+const crypto = require("crypto");
 
+const key = "thisislikeallodkf";
 /**
  * 암호화
  */
 export const SecurityUtils = {
-  xorEncryptDecrypt(input: any, key: any) {
-    let output = "";
-    for (let i = 0; i < input.length; i++) {
-      output += String.fromCharCode(input.charCodeAt(i) ^ key);
-    }
-    return output;
-  },
-
   encryptText: (originalText: string) => {
-    return SecurityUtils.xorEncryptDecrypt(originalText, 123);
+    const cipher = crypto.createCipher("aes-256-cbc", key);
+    let encrypted = cipher.update(originalText, "utf8", "hex");
+    encrypted += cipher.final("hex");
+    return encrypted;
   },
 
   decryptText: (encryptedText: string) => {
-    return SecurityUtils.xorEncryptDecrypt(encryptedText, 123);
+    const decipher = crypto.createDecipher("aes-256-cbc", key);
+    let decrypted = decipher.update(encryptedText, "hex", "utf8");
+    decrypted += decipher.final("utf8");
+    return decrypted;
   },
 
   /**

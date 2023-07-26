@@ -41,7 +41,7 @@ export default function AuthEmailPage() {
             </div>
           </div>
           <div className='mt-[40px]'></div>
-          <div className='flex flex-col text-[17px] font-sans text-[#666] justify-center text-center items-center'>
+          <div className='flex flex-col text-[15px] font-sans text-[#666] justify-center text-center items-center'>
             <div className='flex text-[#666666]'>
               인증 메일이{" "}
               <div className='text-[#262628] font-bold mx-[1px]'>{email}</div>

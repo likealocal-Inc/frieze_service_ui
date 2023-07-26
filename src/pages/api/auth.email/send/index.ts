@@ -10,22 +10,17 @@ export default async function handler(
   res: NextApiResponse<ApiCallResponseData>
 ) {
   if (req.method === "POST") {
-    const id = req.body.elrigjd;
-    const email = req.body.qodkfj;
-
+    const userId: any = req.query.jsdkfjekm;
     try {
-      // 이메일 존재여부 확인
       const url = process.env.SERVERIPPORT;
+      const authUrl = SecurityUtils.encryptText(`${url}/user/auth`);
       axios
-        .post(`${CallInfo.urlBase}/email/authEmail`, {
-          email: SecurityUtils.decryptText(email),
-          userId: SecurityUtils.decryptText(id),
-          authUrl: `${url}/user/auth`,
+        .patch(`${CallInfo.urlBase}/c.user/send.auth.email`, {
+          skdidd: userId,
+          kfkkdm: authUrl,
         })
-        .then((d) => {
-          res.status(200).send({ success: true });
-        });
-    } catch (err: any) {
+        .then((d) => res.status(200).send({ success: true }));
+    } catch (error) {
       res.status(500).json({ success: false, info: CODES.API_CALL_ERROR });
     }
   }

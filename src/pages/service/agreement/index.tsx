@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+import { Accordion } from "flowbite";
+import type {
+  AccordionOptions,
+  AccordionItem,
+  AccordionInterface,
+} from "flowbite";
+
 import { AgreeComponent } from "@/components/agreement/AgreementUI";
 import InputComponent from "@/components/input/InputComponents";
 import LayoutWithLogo from "@/components/layouts/LayoutWithLogo";
@@ -29,7 +36,42 @@ export default function AgreementPage() {
   const [errName, setErrName] = useState({ isError: false, errorMsg: "" });
   const [errEmail, setErrEmail] = useState({ isError: false, errorMsg: "" });
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const accordionItems: AccordionItem[] = [
+      {
+        id: "accordion-collapse-heading-1",
+        triggerEl: document.querySelector("#accordion-collapse-heading-1")!,
+        targetEl: document.querySelector("#accordion-collapse-body-1")!,
+        active: true,
+      },
+    ];
+
+    const options: AccordionOptions = {
+      alwaysOpen: true,
+      activeClasses: "text-[#262628] text-[24px]",
+      inactiveClasses: "text-[#262628] text-[24px]",
+      onOpen: (item) => {
+        console.log("accordion item has been shown");
+        console.log(item);
+      },
+      onClose: (item) => {
+        console.log("accordion item has been hidden");
+        console.log(item);
+      },
+      onToggle: (item) => {
+        console.log("accordion item has been toggled");
+        console.log(item);
+      },
+    };
+
+    const accordion: AccordionInterface = new Accordion(
+      accordionItems,
+      options
+    );
+
+    // open accordion item based on id
+    accordion.open("accordion-collapse-heading-1");
+  }, []);
 
   useEffect(() => {
     onConfirm();
@@ -148,6 +190,13 @@ export default function AgreementPage() {
               return;
             }
           });
+        } else if (err.response.data.info.code === CODES.NO_AUTH.code) {
+          const data = SecurityUtils.encryptText(err.response.data.data);
+          axios.post(`/api/auth.email/send?jsdkfjekm=${data}`).then((d) => {
+            upSelectAll();
+            location.href = "/service/emailAuth";
+            return;
+          });
         }
       });
   };
@@ -249,72 +298,85 @@ export default function AgreementPage() {
                 }}
               /> */}
           </div>
-          <div className={`mt-[40px]`} />
+          <div className={`mt-[56px]`} />
+
           {/* 동의 */}
-          <div className=''>
+          <div className='rounded-sm ring-1 ring-gray-200 p-[16px] mr-[10px]'>
             {/* 전체동의 */}
-            <div className='flex items-center'>
-              <input
-                id='cb_all'
-                type='checkbox'
-                value=''
-                className='bg-[#ffffff] rounded border-solid border-gray-3 border w-5 h-5'
-                onClick={(e) => selectAllCheckboxes(e)}
-              />
-              <div className={`ml-[8px]`} />
-              <label
-                htmlFor='cb_all'
-                className='text-[#262628] text-right relative flex items-center justify-end'
-                style={{ font: "500 14px/22px 'Pretendard', sans-serif" }}
-              >
-                Agree to all terms and conditions
-              </label>
-              <div
+            <div id='accordion-collapse' data-accordion='collapse'>
+              <div id='accordion-collapse-heading-1'>
+                <div
+                  className='flex items-center justify-between w-full font-medium text-left bg-white'
+                  data-accordion-target='#accordion-collapse-body-1'
+                  aria-expanded='true'
+                  aria-controls='accordion-collapse-body-1'
+                >
+                  <div className='flex items-center'>
+                    <input
+                      id='cb_all'
+                      type='checkbox'
+                      value=''
+                      className='bg-[#ffffff] rounded border-solid border-gray-3 border w-5 h-5'
+                      onClick={(e) => selectAllCheckboxes(e)}
+                    />
+                    <div className={`ml-[8px]`} />
+                    <label
+                      htmlFor='cb_all'
+                      className='text-[#262628] text-right relative flex items-center justify-end'
+                      style={{
+                        font: "500 16px/22px 'Pretendard', sans-serif",
+                      }}
+                    >
+                      Agree to all terms and conditions
+                    </label>
+
+                    {/* <div
                 className='ml-[4px] text-[#0085fe] text-left relative flex items-center justify-start'
                 style={{ font: "500 14px/22px 'Pretendard', sans-serif" }}
               >
                 Required
+              </div> */}
+                  </div>
+                  <div className='pr-[5px]'>
+                    <svg
+                      data-accordion-icon
+                      className='w-4 h-4 rotate-180 shrink-0'
+                      aria-hidden='true'
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 10 6'
+                    >
+                      <path
+                        stroke='currentColor'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth='2'
+                        d='M9 5 5 1 1 5'
+                      />
+                    </svg>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className={`mt-[16px]`} />
-            <div
-              className='border-solid border-[#E7E7E7] w-[350px] h-0 relative'
-              style={{
-                borderWidth: "1px 0 0 0",
-                transformOrigin: "0 0",
-                transform: "rotate(0deg) scale(1, 1)",
-              }}
-            />
-            <div className={`mt-[16px]`} />
-            {/* 첫번째 동의 */}
-            <AgreeComponent
-              title='Agree to the privacy policy'
-              onClick={(e: any) => {
-                const d = e.target as HTMLInputElement;
-                setAgreementData({
-                  ...agreementData,
-                  agreement: [
-                    d.checked,
-                    agreementData.agreement[1],
-                    agreementData.agreement[2],
-                    agreementData.agreement[3],
-                  ],
-                });
-              }}
-              onShowAgreement={() => {
-                setOrderAgreement(1);
-                setShowAgreement(true);
-              }}
-            />
-            {/* <div className='w-[350px]'>
-              <div className='flex flex-row justify-start'>
-                <div className=''>
-                  <input
-                    id='cb_1'
-                    type='checkbox'
-                    value=''
-                    className='bg-[#ffffff] rounded border-solid border-gray-3 border w-5 h-5'
-                    onClick={(e) => {
+              <div
+                id='accordion-collapse-body-1'
+                className='hidden'
+                aria-labelledby='accordion-collapse-heading-1'
+              >
+                <div className='border border-b-0 border-gray-200'>
+                  <div className={`mt-[16px]`} />
+                  <div
+                    className='border-solid border-[#E7E7E7] w-[367px] relative ml-[-17px]'
+                    style={{
+                      borderWidth: "1px 0 0 0",
+                      transformOrigin: "0 0",
+                      transform: "rotate(0deg) scale(1, 1)",
+                    }}
+                  />
+                  <div className={`mt-[16px]`} />
+                  {/* 첫번째 동의 */}
+                  <AgreeComponent
+                    title='Agree to the Terms of Use'
+                    onClick={(e: any) => {
                       const d = e.target as HTMLInputElement;
                       setAgreementData({
                         ...agreementData,
@@ -326,161 +388,89 @@ export default function AgreementPage() {
                         ],
                       });
                     }}
+                    onShowAgreement={() => {
+                      setOrderAgreement(1);
+                      setShowAgreement(true);
+                    }}
+                  />
+                  <div className={`mt-[15px]`} />
+                  {/* 두번째 동의 */}
+                  <AgreeComponent
+                    title='Agree to the Privacy Policy'
+                    onClick={(e: any) => {
+                      const d = e.target as HTMLInputElement;
+                      setAgreementData({
+                        ...agreementData,
+                        agreement: [
+                          agreementData.agreement[0],
+                          d.checked,
+                          agreementData.agreement[2],
+                          agreementData.agreement[3],
+                        ],
+                      });
+                    }}
+                    onShowAgreement={() => {
+                      setOrderAgreement(2);
+                      setShowAgreement(true);
+                    }}
+                  />
+                  <div className={`mt-[15px]`} />
+                  {/* 세번째 동의 */}
+                  <AgreeComponent
+                    title='Agree to the Collection of Cookies'
+                    onClick={(e: any) => {
+                      const d = e.target as HTMLInputElement;
+                      setAgreementData({
+                        ...agreementData,
+                        agreement: [
+                          agreementData.agreement[0],
+                          agreementData.agreement[1],
+                          d.checked,
+                          agreementData.agreement[3],
+                        ],
+                      });
+                    }}
+                    onShowAgreement={() => {
+                      setOrderAgreement(3);
+                      setShowAgreement(true);
+                    }}
+                  />
+                  <div className={`mt-[15px]`} />
+                  {/* 네번쩨 동의 */}
+                  <AgreeComponent
+                    title='Agree to the use of Location-based services'
+                    onClick={(e: any) => {
+                      const d = e.target as HTMLInputElement;
+                      setAgreementData({
+                        ...agreementData,
+                        agreement: [
+                          agreementData.agreement[0],
+                          agreementData.agreement[1],
+                          agreementData.agreement[2],
+                          d.checked,
+                        ],
+                      });
+                    }}
+                    onShowAgreement={() => {
+                      setOrderAgreement(4);
+                      setShowAgreement(true);
+                    }}
                   />
                 </div>
-                <div className={`ml-[8px]`} />
-                <div
-                  id='accordion-flush1'
-                  data-accordion='collapse'
-                  data-active-classes='bg-white'
-                  data-inactive-classes='bg-white'
-                >
-                  <div id='accordion-flush-heading-1'>
-                    <div className='flex flex-row justify-between w-[310px]'>
-                      <div className='flex'>
-                        <div
-                          data-accordion-target='#accordion-flush-body-1'
-                          aria-expanded='true'
-                          aria-controls='accordion-flush-body-1'
-                        >
-                          <div
-                            className='text-[#262628] text-right relative flex items-center justify-end bg-white'
-                            style={{
-                              font: "500 14px/22px 'Pretendard', sans-serif",
-                            }}
-                          >
-                            [Required] Agree to Terms of Use
-                          </div>
-                        </div>
-                      </div>
-                      <div className='flex'>
-                        <svg
-                          data-accordion-icon
-                          className={
-                            agreeComponent[0]
-                              ? `w-6 h-6 shrink-0 text-[#BBBBBB] rotate-180`
-                              : `w-6 h-6 shrink-0 text-[#BBBBBB]`
-                          }
-                          fill='currentColor'
-                          viewBox='0 0 20 20'
-                          xmlns='http://www.w3.org/2000/svg'
-                        >
-                          <path
-                            fillRule='evenodd'
-                            d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z'
-                            clipRule='evenodd'
-                          ></path>
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    id='accordion-flush-body-1'
-                    className='hidden'
-                    aria-labelledby='accordion-flush-heading-1'
-                  >
-                    <div className='py-5 border-b border-gray-200'>
-                      약관내용
-                    </div>
-                  </div>
-                </div>
               </div>
-              <div className='flex flex-row justify-start'>
-                <input
-                  id='default-checkbox'
-                  type='checkbox'
-                  value=''
-                  className='bg-[#ffffff] rounded border-solid border-gray-3 border w-5 h-5'
-                  onClick={(e) => {
-                    const d = e.target as HTMLInputElement;
-                    setAgreementData({
-                      ...agreementData,
-                      agreement: [
-                        d.checked,
-                        agreementData.agreement[1],
-                        agreementData.agreement[2],
-                        agreementData.agreement[3],
-                      ],
-                    });
-                  }}
-                />
-                <div
-                  className='ml-[8px] text-[#262628] text-right relative flex items-center justify-end'
-                  style={{
-                    font: "500 14px/22px 'Pretendard', sans-serif",
-                    textDecoration: "underline",
-                  }}
-                >
-                  Agree to the privacy policy
-                </div>
-              </div>
-            </div> */}
-            <div className={`mt-[15px]`} />
-            {/* 두번째 동의 */}
-            <AgreeComponent
-              title='Agree to the privacy policy'
-              onClick={(e: any) => {
-                const d = e.target as HTMLInputElement;
-                setAgreementData({
-                  ...agreementData,
-                  agreement: [
-                    agreementData.agreement[0],
-                    d.checked,
-                    agreementData.agreement[2],
-                    agreementData.agreement[3],
-                  ],
-                });
-              }}
-              onShowAgreement={() => {
-                setOrderAgreement(2);
-                setShowAgreement(true);
-              }}
-            />
-
-            <div className={`mt-[15px]`} />
-            {/* 세번째 동의 */}
-            <AgreeComponent
-              title='I agree to the collection of cookies'
-              onClick={(e: any) => {
-                const d = e.target as HTMLInputElement;
-                setAgreementData({
-                  ...agreementData,
-                  agreement: [
-                    agreementData.agreement[0],
-                    agreementData.agreement[1],
-                    d.checked,
-                    agreementData.agreement[3],
-                  ],
-                });
-              }}
-              onShowAgreement={() => {
-                setOrderAgreement(3);
-                setShowAgreement(true);
-              }}
-            />
-            <div className={`mt-[15px]`} />
-            {/* 네번쩨 동의 */}
-            <AgreeComponent
-              title='I agree to the use of location-based services'
-              onClick={(e: any) => {
-                const d = e.target as HTMLInputElement;
-                setAgreementData({
-                  ...agreementData,
-                  agreement: [
-                    agreementData.agreement[0],
-                    agreementData.agreement[1],
-                    agreementData.agreement[2],
-                    d.checked,
-                  ],
-                });
-              }}
-              onShowAgreement={() => {
-                setOrderAgreement(4);
-                setShowAgreement(true);
-              }}
-            />
+            </div>
           </div>
-          <div className={`mt-[40px]`} />
+          <div className={`mt-[20px]`} />
+          <div
+            className='text-[#4c4c4c] text-left relative w-[350px]'
+            style={{ font: "400 11px/140% 'Pretendard', sans-serif" }}
+          >
+            You have the right to refuse consent for the collection/use of
+            personal information and the provision of personal information to
+            third parties. However, please note that refusing consent may result
+            in limitations on vehicle usage.
+          </div>
+          <div className={`mt-[22px]`} />
           {/* 확인버튼 */}
           <div className=''>
             {ok ? (
@@ -489,13 +479,13 @@ export default function AgreementPage() {
                 className={`w-[350px] h-[56px] border-0 text-white rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 bg-[#0085fe]`}
                 onClick={onSend}
               >
-                Confirm
+                Verify to use the taxi service
               </button>
             ) : (
               <button
                 className={`w-[350px] h-[56px] border-0 text-white bg-[#BBBBBB] focus:ring-0  font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2`}
               >
-                Confirm
+                Verify to use the taxi service
               </button>
             )}
           </div>

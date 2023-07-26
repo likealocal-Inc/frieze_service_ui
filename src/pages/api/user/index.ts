@@ -13,8 +13,8 @@ export default async function handler(
     const email = req.body.email;
     const name = req.body.name;
 
-    const emailEn = await SecurityUtils.encryptText(email);
-    const nameEn = await SecurityUtils.encryptText(name);
+    const emailEn = SecurityUtils.encryptText(email);
+    const nameEn = SecurityUtils.encryptText(name);
 
     let callResult: any;
     try {
@@ -25,7 +25,10 @@ export default async function handler(
           email: emailEn,
         }
       );
-      if (checkEmailRes.data.data === false) {
+      if (
+        checkEmailRes.data.data === null ||
+        checkEmailRes.data.data === undefined
+      ) {
         const url = process.env.SERVERIPPORT;
         callResult = await axios.post(`${CallInfo.urlBase}/c.user`, {
           email: emailEn,
@@ -34,11 +37,19 @@ export default async function handler(
         });
         res.status(200).json({ success: true, data: callResult.data.data });
       } else {
-        res.status(500).json({
-          success: false,
-          info: CODES.ALREADY_EXIST_EMAIL,
-          data: email,
-        });
+        if (checkEmailRes.data.data.isAuth === true) {
+          res.status(500).json({
+            success: false,
+            info: CODES.ALREADY_EXIST_EMAIL,
+            data: email,
+          });
+        } else {
+          res.status(500).json({
+            success: false,
+            info: CODES.NO_AUTH,
+            data: checkEmailRes.data.data.id,
+          });
+        }
       }
     } catch (err: any) {
       res.status(500).json({ success: false, info: CODES.API_CALL_ERROR });

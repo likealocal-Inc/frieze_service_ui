@@ -18,9 +18,9 @@ export const AgreeComponent = ({
           onClick={(e) => onClick(e)}
         />
         <div
-          className='ml-[8px] text-[#262628] text-right relative flex items-center justify-end'
+          className='relative flex items-center justify-end text-right text-gray-6 ml-[5px]'
           style={{
-            font: "500 14px/22px 'Pretendard', sans-serif",
+            font: "400 15px/22px 'Pretendard', sans-serif",
             textDecoration: "underline",
           }}
           onClick={(e) => onShowAgreement()}
