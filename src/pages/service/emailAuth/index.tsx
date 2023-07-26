@@ -1,13 +1,27 @@
 import { useEffect, useState } from "react";
 import "../../../app/globals.css";
-import Image from "next/image";
 import { ElseUtils } from "@/libs/else.utils";
 import { SecurityUtils } from "../../../libs/security.utils";
+import axios from "axios";
 
 export default function AuthEmailPage() {
   const [showModal, setShowModal] = useState<any>(false);
 
   const [email, setEmail] = useState();
+
+  const sendAuthEmail = () => {
+    const info = ElseUtils.getLocalStorage("agreement")!;
+    if (info === null || info === undefined) {
+      ElseUtils.moveAgreementPage();
+      return;
+    }
+    const infoData = JSON.parse(SecurityUtils.decryptText(info));
+    const data = SecurityUtils.encryptText(infoData.email);
+    axios.post(`/api/auth.email/send?jsdkfjekm=${data}`).then((d) => {
+      setShowModal(true);
+      return;
+    });
+  };
   useEffect(() => {
     const agreement = ElseUtils.getLocalStorage("agreement");
     if (agreement === null || agreement === undefined) {
@@ -62,7 +76,7 @@ export default function AuthEmailPage() {
               스팸편지함 확인 또는{" "}
               <button
                 onClick={(e) => {
-                  setShowModal(true);
+                  sendAuthEmail();
                 }}
                 className='font-sans bg-white border-none text-[#0085FE] font-medium'
               >
@@ -74,8 +88,8 @@ export default function AuthEmailPage() {
       </div>
 
       {showModal ? (
-        <div className='absolute top-0 left-0 w-screen h-screen bg-gray-400'>
-          <div className='bg-white rounded-2xl pt-2 flex flex-col gap-0 items-center justify-start w-[328px] relative overflow-hidden mt-[200px] ml-[15px]'>
+        <div className='fixed inset-0 flex items-center justify-center bg-slate-600 Z-50 mt-[-340px]'>
+          <div className='flex items-center justify-center bg-white rounded-2xl pt-2 flex-col gap-0 w-[328px] relative overflow-hidden mt-[200px] ml-[15px]'>
             <div className='relative self-stretch overflow-hidden shrink-0 h-14'>
               <div className='absolute rounded-lg right-2 left-2 bottom-1 top-1'></div>
 

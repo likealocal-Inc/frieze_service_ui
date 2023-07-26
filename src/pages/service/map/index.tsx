@@ -179,7 +179,6 @@ export default function MapPage() {
                           location: d.data.result.geometry.location,
                           key: -1,
                         });
-                        console.log(temp);
                         ElseUtils.movePath(
                           startLocation,
                           {

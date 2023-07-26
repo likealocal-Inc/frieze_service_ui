@@ -47,7 +47,7 @@ export default async function handler(
           res.status(500).json({
             success: false,
             info: CODES.NO_AUTH,
-            data: checkEmailRes.data.data.id,
+            data: checkEmailRes.data.data.email,
           });
         }
       }

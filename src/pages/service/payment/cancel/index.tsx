@@ -5,8 +5,8 @@ import Image from "next/image";
 export default function PaymentCancelPage() {
   return (
     <LayoutAuth menuTitle=''>
-      <div className='fixed top-0 left-0 w-full h-full bg-slate-600 Z-50'>
-        <div className='flex justify-center bg-white w-[328px] h-[272px] fixed top-[176px] left-[30px] rounded-[10px]'>
+      <div className='fixed inset-0 flex items-center justify-center bg-slate-600 Z-50'>
+        <div className='flex items-center justify-center bg-white w-[328px] h-[272px] fixed top-[176px] left-[30px] rounded-[10px]'>
           <div className='flex flex-col items-center w-full h-full'>
             <div className='mt-[24px]' />
             <Image src={"/img/icon-erro.svg"} width={60} height={60} alt='' />

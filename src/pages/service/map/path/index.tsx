@@ -53,7 +53,6 @@ export default function MapPathPage() {
     const startJson = JSON.parse(SecurityUtils.decryptText(start));
     const goalJaon = JSON.parse(SecurityUtils.decryptText(goal));
 
-    console.log(goalJaon);
     setStartLocation(startJson);
     setGoalLocation(goalJaon);
   }, []);
