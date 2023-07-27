@@ -267,7 +267,7 @@ export default function MapPathPage() {
                   </li>
                   <li>
                     After payment, taxi information will be delivered through
-                    the 'Customer Support Office' chat window.
+                    the &apos;Customer Support Office&apos; chat window.
                     <span className='text-[13px] font-bold leading-snug text-opacity-50 text-zinc-900'>
                       Please check the comments
                     </span>
