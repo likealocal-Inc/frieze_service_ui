@@ -6,15 +6,16 @@ export default function HistoryListPage() {
   const [selectTapIndex, setSelectTapIndex] = useState(1);
 
   return (
-    <LayoutAuth menuTitle='History'>
-      <div className='w-[390px] h-[844px] ml-[-8px] mt-[-8px]'>
+    <LayoutAuth menuTitle='History' isLogo={false}>
+      <div className='w-screen h-[844px] ml-[-20px]  mt-[-8px]'>
         <div className='w-[390px] h-[140px] bg-white'>
           <div className='pt-[61px]' />
           <div className='flex justify-center'>
-            <div className='text-[#000000] text-center relative flex items-end justify-center font-sans text-[17px]'>
-              History
+            <div className='text-[#000000] text-center font-bold relative flex items-end justify-center font-sans text-[17px]'>
+              My Page
             </div>
           </div>
+
           {/* 종료 */}
           <div className='flex justify-end mr-[20px] mt-[-25px]'>
             <div
@@ -50,10 +51,15 @@ export default function HistoryListPage() {
             </div>
           </div>
           <div className='mt-[25px]' />
-          <div className='flex justify-around'>
-            <div className='flex flex-col items-center justify-center w-full '>
+          <div className='absolute top-0 mt-[161.5px] left-[8px] bg-[#DADADA] h-[0.5px] w-screen'></div>
+          <div className='flex justify-around bg-[#f5f6fa]'>
+            <div className='flex flex-col items-center justify-center w-full pt-[20px]'>
               <button
-                className='bg-white border-0 outline-none'
+                className={
+                  selectTapIndex === 1
+                    ? `text-[#0085fe] border-0 outline-none bg-[#f5f6fa]`
+                    : `text-[#bbbbbb] border-0 outline-none bg-[#f5f6fa]`
+                }
                 onClick={(e) => {
                   setSelectTapIndex(1);
                 }}
@@ -64,43 +70,73 @@ export default function HistoryListPage() {
               <div
                 className={
                   selectTapIndex === 1
-                    ? `bg-[#0085FE] h-[3px] w-[100px]`
+                    ? `bg-[#0085FE] h-[3px] w-[50px] z-50`
                     : `bg-white h-[0px] w-[0px]`
                 }
               ></div>
             </div>
-            <div className='flex flex-col items-center justify-center w-full'>
+            <div className='flex flex-col items-center justify-center w-full pt-[20px]'>
               <button
-                className='bg-white border-0 outline-none'
+                className={
+                  selectTapIndex === 2
+                    ? `text-[#0085fe] border-0 outline-none bg-[#f5f6fa]`
+                    : `text-[#bbbbbb] border-0 outline-none bg-[#f5f6fa]`
+                }
                 onClick={(e) => {
                   setSelectTapIndex(2);
                 }}
               >
-                Complete
+                Pay Complete
               </button>
               <div className='mt-[10px]' />
               <div
                 className={
                   selectTapIndex === 2
-                    ? `bg-[#0085FE] h-[3px] w-[100px]`
+                    ? `bg-[#0085FE] h-[3px] w-[100px] z-50`
                     : `bg-white h-[0px] w-[0px]`
                 }
               ></div>
             </div>
-            <div className='flex flex-col items-center justify-center w-full'>
+            <div className='flex flex-col items-center justify-center w-full pt-[20px]'>
               <button
-                className='bg-white border-0 outline-none'
+                className={
+                  selectTapIndex === 3
+                    ? `text-[#0085fe] border-0 outline-none bg-[#f5f6fa]`
+                    : `text-[#bbbbbb] border-0 outline-none bg-[#f5f6fa]`
+                }
                 onClick={(e) => {
                   setSelectTapIndex(3);
                 }}
               >
-                Cancel
+                Use Complete
               </button>
               <div className='mt-[10px]' />
               <div
                 className={
                   selectTapIndex === 3
-                    ? `bg-[#0085FE] h-[3px] w-[100px]`
+                    ? `bg-[#0085FE] h-[3px] w-[100px] z-50`
+                    : `bg-white h-[0px] w-[0px]`
+                }
+              ></div>
+            </div>
+            <div className='flex flex-col items-center justify-center w-full pt-[20px]'>
+              <button
+                className={
+                  selectTapIndex === 4
+                    ? `text-[#0085fe] border-0 outline-none bg-[#f5f6fa]`
+                    : `text-[#bbbbbb] border-0 outline-none bg-[#f5f6fa]`
+                }
+                onClick={(e) => {
+                  setSelectTapIndex(4);
+                }}
+              >
+                Use Cancel
+              </button>
+              <div className='mt-[10px]' />
+              <div
+                className={
+                  selectTapIndex === 4
+                    ? `bg-[#0085FE] h-[3px] w-[100px] z-50`
                     : `bg-white h-[0px] w-[0px]`
                 }
               ></div>

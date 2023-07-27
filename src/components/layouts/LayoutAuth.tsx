@@ -13,11 +13,13 @@ interface AdminProps {
   children?: any;
   menuTitle: string;
   isUasgeDetail?: boolean;
+  isLogo?: boolean;
 }
 const LayoutAuth = ({
   menuTitle,
   children,
   isUasgeDetail = false,
+  isLogo = true,
 }: AdminProps) => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -46,7 +48,11 @@ const LayoutAuth = ({
       {loading ? (
         ""
       ) : (
-        <LayoutWithLogo menuTitle={menuTitle} isUasgeDetail={isUasgeDetail}>
+        <LayoutWithLogo
+          menuTitle={menuTitle}
+          isUasgeDetail={isUasgeDetail}
+          isLogo={isLogo}
+        >
           {children}
         </LayoutWithLogo>
       )}

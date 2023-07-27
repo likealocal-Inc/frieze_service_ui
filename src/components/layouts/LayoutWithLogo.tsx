@@ -29,7 +29,7 @@ const LayoutWithLogo = ({
             ""
           ) : (
             <>
-              <div className='w-[375px] pl-[20px] pr-[20px]'>
+              <div className='w-[375px]'>
                 {/* Header */}
                 {isLogo ? (
                   <div className='pt-[44px] flex items-center h-[46px] justify-between'>
@@ -72,7 +72,7 @@ const LayoutWithLogo = ({
                               location.href = "/service/history/list";
                             }}
                           >
-                            History
+                            My Page
                           </div>
                         </div>
                       </div>
