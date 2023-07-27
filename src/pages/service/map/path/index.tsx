@@ -92,6 +92,15 @@ export default function MapPathPage() {
       ) : (
         <LayoutAuth menuTitle='경로' isUasgeDetail={true}>
           <div className='mt-[10px]' />
+          <div
+            className='absolute top-[80px] z-50'
+            onClick={(e) => {
+              ElseUtils.moveMapPage();
+            }}
+          >
+            <Image alt='' src={"/icon/back.svg"} width={44} height={44} />
+          </div>
+
           <div className='w-[390px]'>
             <div className='ml-[-5px] h-[300px] z-10'>
               <GooglePathMapComponent

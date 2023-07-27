@@ -48,11 +48,11 @@ export interface FreizLocationInfo {
   icon: string;
 }
 export const freizLocations: FreizLocationInfo[] = [
-  {
-    name: "coex",
-    location: { lat: 37.513364, lng: 127.058262 },
-    icon: "freiz_white.png",
-  },
+  // {
+  //   name: "coex",
+  //   location: { lat: 37.513364, lng: 127.058262 },
+  //   icon: "freiz_white.png",
+  // },
 ];
 
 export function GoogleMapComponent({
