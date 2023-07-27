@@ -24,15 +24,15 @@ const LayoutWithLogo = ({
         <title>{menuTitle}</title>
       </Head>
       <>
-        <div className=''>
+        <div className='w-[390px]'>
           {loading ? (
             ""
           ) : (
             <>
-              <div className='w-[375px]'>
+              <div className=''>
                 {/* Header */}
                 {isLogo ? (
-                  <div className='pt-[44px] flex items-center h-[46px] justify-between'>
+                  <div className='pt-[10px] flex items-center h-[46px] justify-between'>
                     <div className='flex items-center'>
                       <Image
                         alt=''
@@ -61,7 +61,7 @@ const LayoutWithLogo = ({
                     {isUasgeDetail ? (
                       <div className=''>
                         <div
-                          className='bg-[#0085fe] rounded-[10px] pt-2 pr-5 pb-2 pl-5 flex flex-row gap-2.5 items-start justify-start relative overflow-hidden'
+                          className='bg-[#0085fe] rounded-[10px] pt-2 pr-5 pb-2 pl-5 mr-3 flex flex-row gap-2.5 items-start justify-start relative overflow-hidden'
                           style={{
                             boxShadow: "0px 2px 8px 0px rgba(0, 0, 0, 0.16)",
                           }}

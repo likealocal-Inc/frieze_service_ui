@@ -16,3 +16,9 @@ export const CODES = {
     msg: "API 호출 오류",
   },
 };
+
+declare global {
+  interface CSSStyleDeclaration {
+    zoom: any;
+  }
+}

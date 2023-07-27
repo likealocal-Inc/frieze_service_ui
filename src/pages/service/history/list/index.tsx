@@ -7,17 +7,17 @@ export default function HistoryListPage() {
 
   return (
     <LayoutAuth menuTitle='History' isLogo={false}>
-      <div className='w-screen h-[844px] ml-[-20px]  mt-[-8px]'>
-        <div className='w-[390px] h-[140px] bg-white'>
+      <div className='ml-[-5px] mt-[-8px]'>
+        <div className='h-[140px] bg-white'>
           <div className='pt-[61px]' />
-          <div className='flex justify-center'>
+          <div className='flex justify-center w-screen'>
             <div className='text-[#000000] text-center font-bold relative flex items-end justify-center font-sans text-[17px]'>
               My Page
             </div>
           </div>
 
           {/* 종료 */}
-          <div className='flex justify-end mr-[20px] mt-[-25px]'>
+          <div className='flex justify-end mr-[10px] mt-[-25px]'>
             <div
               className='relative w-8 h-8'
               onClick={(e) => {
@@ -51,8 +51,8 @@ export default function HistoryListPage() {
             </div>
           </div>
           <div className='mt-[25px]' />
-          <div className='absolute top-0 mt-[161.5px] left-[8px] bg-[#DADADA] h-[0.5px] w-screen'></div>
-          <div className='flex justify-around bg-[#f5f6fa]'>
+          <div className='absolute top-0 mt-[169.5px] left-[8px] bg-[#DADADA] h-[0.5px] w-[390px]'></div>
+          <div className='flex justify-around bg-[#f5f6fa] w-[390px]'>
             <div className='flex flex-col items-center justify-center w-full pt-[20px]'>
               <button
                 className={
@@ -71,7 +71,7 @@ export default function HistoryListPage() {
                 className={
                   selectTapIndex === 1
                     ? `bg-[#0085FE] h-[3px] w-[50px] z-50`
-                    : `bg-white h-[0px] w-[0px]`
+                    : `bg-white h-[0px] w-[50px]`
                 }
               ></div>
             </div>
@@ -143,9 +143,9 @@ export default function HistoryListPage() {
             </div>
           </div>
         </div>
-        <div className='w-[390px] h-screen bg-[#F5F6FA]'>
+        <div className='h-full bg-[#F5F6FA] w-[390px]'>
           <div className='pt-[35px]' />
-          <div className='pl-[20px]'>
+          <div className='px-[0px]'>
             <HistoryListComponent selectIndex={selectTapIndex} />
           </div>
         </div>

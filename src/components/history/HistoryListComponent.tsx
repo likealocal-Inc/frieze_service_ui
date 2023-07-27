@@ -42,7 +42,7 @@ export default function HistoryListComponent({
                 </div>
                 <div className='mt-[12px]' />
                 <div className=''>
-                  <div className='ml-[25px] bg-[#ffffff] rounded-[10px] border-solid border-[rgba(0,0,0,0.10)] border w-[324px] h-[178px] relative'>
+                  <div className='ml-[25px] bg-[#ffffff] rounded-[10px] border-solid border-[rgba(0,0,0,0.10)] border w-[350px] h-[178px] relative'>
                     <div className='mt-[17px]' />
                     <div className='flex mx-[12px] justify-between'>
                       <div className=''>

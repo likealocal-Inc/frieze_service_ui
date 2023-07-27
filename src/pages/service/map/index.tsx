@@ -20,6 +20,10 @@ export default function MapPage() {
     key: -1,
     placeId: "",
   });
+  useEffect(() => {
+    console.log("resr");
+    (document.body.style as any).zoom = "100%";
+  });
 
   useEffect(() => {}, [startLocation]);
 
@@ -65,9 +69,10 @@ export default function MapPage() {
   return (
     <>
       <LayoutAuth menuTitle='지도' isUasgeDetail={true}>
-        <div className=''>
+        <div className='mt-[10px]'></div>
+        <div className='w-[390px]'>
           {/* 지도 */}
-          <div className='ml-[-30px] h-[543px] z-10'>
+          <div className='ml-[-5px] h-[543px] z-10'>
             {startLocation.desc === "Current location" ? (
               <div className='flex flex-col items-center justify-center h-[425px] font-sans'>
                 <svg
@@ -92,7 +97,7 @@ export default function MapPage() {
               </div>
             ) : (
               <GoogleMapComponent
-                size={{ width: "425px", height: "640px" }}
+                size={{ width: "390px", height: "640px" }}
                 centerLocation={startLocation.location}
                 setStartLocation={setStartLocation}
                 setGoalLocation={setGoalLocation}
@@ -101,9 +106,9 @@ export default function MapPage() {
               />
             )}
           </div>
-          <div className='flex justify-start ml-[-31px] pt-[20px] pl-[20px] pr-[31px] bg-[#ffffff] rounded-3xl h-[254px] w-full relative mt-[-150px]'>
+          <div className='flex justify-start ml-[-7px] pt-[20px] pl-[20px] pr-[31px] bg-[#ffffff] rounded-3xl h-[254px] w-[342px] relative mt-[-150px]'>
             <Image src={"/img/mappath.svg"} alt='' width={12} height={120} />
-            <div className='ml-[10px]'>
+            <div className='ml-[10px] w-[310px]'>
               <div
                 className='flex items-center'
                 onClick={(e) => {

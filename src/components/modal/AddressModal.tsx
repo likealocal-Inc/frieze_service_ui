@@ -67,7 +67,7 @@ export default function AddressModal(props: AddressModalProps) {
                 </div>
                 <div className='pt-[16px]' />
                 <input
-                  className='w-[272px] pl-[12px] text-[#262628] text-[16px] border-0 bg-[#f5f6fa] rounded-[10px] relative h-[56px] focus:shadow-none focus:outline-none focus:ring-2 focus:ring-[#BBBBBB]'
+                  className='text-base w-[272px] pl-[12px] text-[#262628] text-[16px] border-0 bg-[#f5f6fa] rounded-[10px] relative h-[56px] focus:shadow-none focus:outline-none focus:ring-2 focus:ring-[#BBBBBB]'
                   onChange={(e) => getAddresses(e.target.value)}
                 />
                 <div className='h-[263px] font-sans pr-[20px]'>

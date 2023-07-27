@@ -27,7 +27,7 @@ export default function HistoryDetailPage() {
   const ShowInfo = ({ head, value, textColor = null }: any) => {
     return (
       <>
-        <div className='flex justify-between mx-[16px]'>
+        <div className='flex justify-between mx-[20px]'>
           <div
             className='text-[#bbbbbb] text-left relative'
             style={{ font: "400 14px/160% 'Pretendard', sans-serif" }}
@@ -52,7 +52,7 @@ export default function HistoryDetailPage() {
     <>
       {data ? (
         <LayoutAuth menuTitle='History' isLogo={false}>
-          <div className='w-screen h-[844px] '>
+          <div className='w-screen h-[844px]'>
             <div className='w-screen h-[95px] bg-white'>
               <div className='pt-[61px]' />
               <div className='flex justify-center font-sans font-bold'>
@@ -80,7 +80,7 @@ export default function HistoryDetailPage() {
                 </svg>
               </div>
             </div>
-            <div className='w-screen h-[704px] bg-[#F5F6FA] pr-[15px]'>
+            <div className='w-full h-[704px] bg-[#F5F6FA] pr-[15px]'>
               <div className='pt-[20px]' />
               <div className=''>
                 <div className='flex justify-between'>
@@ -104,8 +104,8 @@ export default function HistoryDetailPage() {
                 </div>
               </div>
               <div className='mt-[12px]' />
-              <div className='mx-[10px] w-[350px]'>
-                <div className='bg-[#ffffff] rounded-[10px] border-solid border-[rgba(0,0,0,0.10)] border w-[350px] h-[362px] relative'>
+              <div className='ml-[10px]'>
+                <div className='bg-[#ffffff] rounded-[10px] border-solid border-[rgba(0,0,0,0.10)] border h-[362px] relative'>
                   <div className='mt-[24px]' />
                   <div className='flex justify-center'>
                     <Image
@@ -156,7 +156,7 @@ export default function HistoryDetailPage() {
                           </div>
                           <div className='ml-[8px]' />
                           <div className='text-[#262628] font-sans text-[12px] text-left relative flex items-center justify-start'>
-                            {ElseUtils.stringCut(data.startAddress, 34)}...
+                            {ElseUtils.stringCut(data.startAddress, 35)}...
                           </div>
                         </div>
                         <div className='mt-[6px]' />
@@ -178,7 +178,7 @@ export default function HistoryDetailPage() {
                     </div>
                   </div>
                   <div className='pt-[15px]' />
-                  <div className='mx-[15px] w-[322px] h-[2px] bg-[#E7E7E7]'></div>
+                  <div className='mx-[15px]  h-[2px] bg-[#E7E7E7]'></div>
                   <div className='pt-[15px]' />
                   <ShowInfo
                     head={"Approval date/time"}
@@ -197,7 +197,7 @@ export default function HistoryDetailPage() {
                   />
 
                   <div className='mt-[16px]' />
-                  <div className='mx-[15px] w-[322px] h-[2px] bg-[#E7E7E7]'></div>
+                  <div className='mx-[15px]  h-[2px] bg-[#E7E7E7]'></div>
                   <div className='mt-[19px]' />
                   <div className='flex justify-between mx-[16px]'>
                     <div

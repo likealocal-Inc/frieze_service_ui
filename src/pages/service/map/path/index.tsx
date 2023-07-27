@@ -91,16 +91,15 @@ export default function MapPathPage() {
         <div className='w-screen h-screen ml-[-8px] mt-[-8px] bg-slate-600'></div>
       ) : (
         <LayoutAuth menuTitle='경로' isUasgeDetail={true}>
-          <div className='mt-[20px]' />
-
-          <div className=''>
-            <div className='ml-[-29px]'>
+          <div className='mt-[10px]' />
+          <div className='w-[390px]'>
+            <div className='ml-[-5px] h-[300px] z-10'>
               <GooglePathMapComponent
-                size={{ width: "430px", height: "300px" }}
+                size={{ width: "390px", height: "280px" }}
                 setPathInfo={setPriceInfo}
               />
 
-              <div className='bg-white top-[-30px] rounded-[16px_16px_0px_0px] h-[100px] relative w-[430px]'>
+              <div className='bg-white top-[-30px] rounded-[16px_16px_0px_0px] h-[100px] relative w-[390px]'>
                 <div className='pt-[20px]' />
                 <div className='flex'>
                   <div className=''>
@@ -143,7 +142,7 @@ export default function MapPathPage() {
                   </div>
                 </div>
               </div>
-              <div className='bg-[#E7E7E7] h-[255px] w-[430px]'>
+              <div className='bg-[#E7E7E7] h-[255px] w-[390px]'>
                 <div className='pt-[16px]' />
                 <div className='bg-[#ffffff] rounded-[10px] h-[56px] mx-[20px] px-[20px] flex items-center justify-between'>
                   <div
