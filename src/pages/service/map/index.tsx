@@ -67,7 +67,7 @@ export default function MapPage() {
       <LayoutAuth menuTitle='지도' isUasgeDetail={true}>
         <div className=''>
           {/* 지도 */}
-          <div className='ml-[-30px] h-[743px] z-10'>
+          <div className='ml-[-30px] h-[543px] z-10'>
             {startLocation.desc === "Current location" ? (
               <div className='flex flex-col items-center justify-center h-[425px] font-sans'>
                 <svg
@@ -101,7 +101,7 @@ export default function MapPage() {
               />
             )}
           </div>
-          <div className='flex justify-start ml-[-31px] pt-[20px] pl-[20px] bg-[#ffffff] rounded-3xl w-[418px] h-[254px] relative mt-[-150px]'>
+          <div className='flex justify-start ml-[-31px] pt-[20px] pl-[20px] pr-[31px] bg-[#ffffff] rounded-3xl h-[254px] w-full relative mt-[-150px]'>
             <Image src={"/img/mappath.svg"} alt='' width={12} height={120} />
             <div className='ml-[10px]'>
               <div

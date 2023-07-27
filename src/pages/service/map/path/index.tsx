@@ -39,6 +39,7 @@ export default function MapPathPage() {
 
   const [isOk, setIsOk] = useState(false);
 
+  const [user, setUser] = useState<any>();
   useEffect(() => {
     // getPrice("1234213");
 
@@ -55,6 +56,13 @@ export default function MapPathPage() {
 
     setStartLocation(startJson);
     setGoalLocation(goalJaon);
+
+    const userInfo = ElseUtils.getLocalstorageUser();
+    if (userInfo == null) {
+      ElseUtils.moveMapPage();
+      return;
+    }
+    setUser(userInfo);
   }, []);
 
   useEffect(() => {
@@ -80,7 +88,7 @@ export default function MapPathPage() {
   return (
     <>
       {showPayModal === true ? (
-        <div className='w-screen h-screen bg-slate-600'></div>
+        <div className='w-screen h-screen ml-[-8px] mt-[-8px] bg-slate-600'></div>
       ) : (
         <LayoutAuth menuTitle='경로' isUasgeDetail={true}>
           <div className='mt-[20px]' />
@@ -88,7 +96,7 @@ export default function MapPathPage() {
           <div className=''>
             <div className='ml-[-29px]'>
               <GooglePathMapComponent
-                size={{ width: "430px", height: "480px" }}
+                size={{ width: "430px", height: "300px" }}
                 setPathInfo={setPriceInfo}
               />
 
@@ -205,28 +213,69 @@ export default function MapPathPage() {
             : `fixed inset-x-0 bottom-0 flex items-end justify-center transform transition-all translate-y-0`
         }
       >
-        <div className='bg-white w-[390px] rounded-t-lg h-[326px] '>
+        <div className='bg-white w-full rounded-t-xl h-[620px]'>
           <div className='flex flex-col'>
-            <div className='mt-[32px] ' />
-            <div className='mx-[120px] font-sans font-bold text-[18px]'>
-              기사님을 호출합니다
+            <div className='mt-[30px] ' />
+            <div className='flex justify-center'>
+              <div className='font-sans font-bold text-[18px]'>
+                Call the Taxi
+              </div>
             </div>
             <div className='mt-[20px]' />
-            <div className='bg-[#f5f6fa] rounded-[10px] w-[330px] px-[12px] h-14 relative mx-[20px] flex flex-row justify-between items-center'>
-              <div
-                className='text-[#262628] text-left relative  h-[18.67px] flex items-center justify-start'
-                style={{ font: "600 17px 'Pretendard', sans-serif" }}
-              >
+            <div className='bg-[#f5f6fa] rounded-[10px] px-[12px] h-14 relative mx-[20px] flex flex-row justify-between items-center'>
+              <div className='text-[#262628] text-left relative  h-[18.67px] flex items-center justify-start text-[15px] font-sans'>
                 Total Price
               </div>
-              <div
-                className='text-[#262628] text-left relative  h-[22.4px] flex items-center justify-start'
-                style={{ font: "600 20px 'Pretendard', sans-serif" }}
-              >
+              <div className='text-[#262628] text-[17px] font-sans font-bold text-left relative  h-[22.4px] flex items-center justify-start'>
                 USD {priceInfo ? priceInfo["lastPrice"] : "..."}
               </div>
             </div>
-            <div className='mt-[32px] ' />
+            <div className='mt-[20px] ' />
+            <div className='flex flex-col'>
+              <div className='text-[#000000] text-left relative mx-[20px] text-[17px] font-sans font-bold'>
+                Email
+              </div>
+              <div className='mt-[12px] ' />
+              <div className='mx-[20px] '>
+                <div className='bg-[#f5f6fa] px-[12px] rounded-[10px] h-14 flex justify-start items-center font-sans'>
+                  {user ? user.email : "loading.."}
+                </div>
+              </div>
+              <div className='mt-[20px]' />
+              <div
+                className='text-[#000000] text-left relative mx-[20px] '
+                style={{ font: "700 17px/140% 'Pretendard', sans-serif" }}
+              >
+                Precautions
+              </div>
+              <div className='mr-[12px] text-[13px] font-normal leading-snug text-opacity-50 text-zinc-900'>
+                <ol type='1'>
+                  <li>
+                    Click the{" "}
+                    <span className='text-[13px] font-bold leading-snug text-opacity-50 text-zinc-900'>
+                      Request
+                    </span>{" "}
+                    button to go to the payment page.
+                  </li>
+                  <li>
+                    After the payment is completed, it takes about 7 minutes for
+                    the dispatch to be confirmed.
+                  </li>
+                  <li>
+                    Once the dispatch is confirmed, cancellation is not
+                    possible.
+                  </li>
+                  <li>
+                    After payment, taxi information will be delivered through
+                    the 'Customer Support Office' chat window.
+                    <span className='text-[13px] font-bold leading-snug text-opacity-50 text-zinc-900'>
+                      Please check the comments
+                    </span>
+                  </li>
+                </ol>
+              </div>
+            </div>
+            <div className='mt-[20px]' />
             <div className='flex flex-col pl-[20px]'>
               <div className='flex flex-row justify-start'>
                 <input
@@ -238,9 +287,8 @@ export default function MapPathPage() {
                   }}
                 />
                 <div
-                  className='text-[#262628] text-right relative flex items-center justify-end'
+                  className='text-[#262628] pl-1 text-right relative flex items-center justify-end text-[14px] font-sans'
                   style={{
-                    font: "500 14px/22px 'Pretendard', sans-serif",
                     textDecoration: "underline",
                   }}
                   onClick={(e) => {
@@ -248,12 +296,12 @@ export default function MapPathPage() {
                     setShowAgreement(true);
                   }}
                 >
-                  (Required) Instructions and guidelines
+                  I checked both the email and the precautions.
                 </div>
               </div>
 
               <div className='mt-[33px]' />
-              <div className='bottom-0 flex '>
+              <div className='flex px-[12px]'>
                 <button
                   className='bg-white text-[#0085FE] w-[168px] h-[56px] rounded-[10px] shadow-none border-0 ring-1 ring-[#0085FE] text-[16px]'
                   onClick={(e) => setShowPayModal(false)}
@@ -265,9 +313,17 @@ export default function MapPathPage() {
                   <button
                     className='ml-[6px] w-[174px] h-[56px] bg-[#4187FF] rounded-[10px] shadow-none border-0 ring-1 ring-[#0085FE] text-[16px] text-white'
                     onClick={(e) => {
-                      location.href = "/service/map/path/information";
+                      // location.href = "/service/map/path/information";
                       const cb = document.getElementById("cg_instructions");
                       (cb as HTMLInputElement).checked = false;
+
+                      // 사용자 이메일을 넣고 결제 페이지에서 사용자 이메일을 한번더 확인()
+                      ElseUtils.setLocalStorage(
+                        "zzppoo",
+                        SecurityUtils.encryptText(user.email)
+                      );
+                      // 결제 페이지로 이동
+                      location.href = "/service/payment";
                     }}
                   >
                     Request
