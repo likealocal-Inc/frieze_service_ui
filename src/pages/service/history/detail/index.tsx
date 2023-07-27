@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 export default function HistoryDetailPage() {
   const [data, setdata] = useState<OrderModel>();
+  const [user, setUser] = useState<any>();
   useEffect(() => {
     const data = ElseUtils.getLocalStorage(ElseUtils.localStorageOrderDetail);
     if (data === null || data === undefined) {
@@ -15,8 +16,15 @@ export default function HistoryDetailPage() {
     }
     const dataJson = JSON.parse(SecurityUtils.decryptText(data!));
     setdata(dataJson);
+
+    const userInfo = ElseUtils.getLocalstorageUser();
+    if (userInfo == null) {
+      ElseUtils.moveMapPage();
+      return;
+    }
+    setUser(userInfo);
   }, []);
-  const ShowInfo = ({ head, value }: any) => {
+  const ShowInfo = ({ head, value, textColor = null }: any) => {
     return (
       <>
         <div className='flex justify-between mx-[16px]'>
@@ -27,7 +35,11 @@ export default function HistoryDetailPage() {
             {head}
           </div>
           <div
-            className='text-[#262628] text-right relative'
+            className={
+              textColor
+                ? `text-[#${textColor}] text-right relative`
+                : "text-[#262628] text-right relative"
+            }
             style={{ font: "500 14px/160% 'Pretendard', sans-serif" }}
           >
             {value}
@@ -39,15 +51,15 @@ export default function HistoryDetailPage() {
   return (
     <>
       {data ? (
-        <LayoutAuth menuTitle='History'>
-          <div className='w-[390px] h-[844px] ml-[-8px] mt-[-8px]'>
-            <div className='w-[390px] h-[95px] bg-white'>
+        <LayoutAuth menuTitle='History' isLogo={false}>
+          <div className='w-screen h-[844px] '>
+            <div className='w-screen h-[95px] bg-white'>
               <div className='pt-[61px]' />
               <div className='flex justify-center font-sans font-bold'>
                 Detail
               </div>
               <div
-                className='mt-[-15px]'
+                className='mt-[-15px] ml-[-10px]'
                 onClick={(e) => {
                   history.back();
                 }}
@@ -68,82 +80,99 @@ export default function HistoryDetailPage() {
                 </svg>
               </div>
             </div>
-            <div className='w-[390px] h-[704px] bg-[#F5F6FA] '>
+            <div className='w-screen h-[704px] bg-[#F5F6FA] pr-[15px]'>
               <div className='pt-[20px]' />
-              <div className='pl-[20px]'>
-                <div className='text-[#262628] relative font-sans text-[14px]'>
-                  {ElseUtils.changeDateFromDBIsoDate(data?.created.toString())}
+              <div className=''>
+                <div className='flex justify-between'>
+                  <div className='px-[20px]'>
+                    <div className='bg-[#e0e0e0] rounded pt-1 pr-3 pb-1 pl-3 flex flex-row gap-2 items-center justify-center h-6 relative'>
+                      <div
+                        className='text-[#000000] text-center relative flex items-center justify-center'
+                        style={{
+                          font: "500 12px/16px 'Noto Sans KR', sans-serif",
+                        }}
+                      >
+                        {data.status}
+                      </div>
+                    </div>
+                  </div>
+                  <div className='flex items-center'>
+                    <div className='text-[#000000] text-left relative flex items-center justify-start font-sans text-[12px] font-bold mr-[5px]'>
+                      주문번호 {ElseUtils.stringCut(data.id, 13)}
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className='mt-[12px]' />
-              <div className='pl-[20px]'>
-                <div className='bg-[#ffffff] rounded-[10px] border-solid border-[rgba(0,0,0,0.10)] border w-[350px] h-[300px] relative'>
-                  <div className='pt-[17px]' />
-                  <div className='flex mx-[12px] justify-between'>
-                    <div className=''>
-                      <div className='bg-[#f5f6fa] rounded-[100px] pt-px pr-2 pb-px pl-2 flex flex-row gap-2.5 items-start justify-start relative overflow-hidden'>
-                        <div className='text-[#262628] text-center relative font-sans text-[12px] '>
-                          {data.status}
-                        </div>
-                      </div>
-                    </div>
-                    <div className='flex items-center'>
-                      <div className='text-[#0085fe] text-left relative flex items-center justify-start font-sans text-[13px]'>
-                        Order number {ElseUtils.stringCut(data.id, 8)}
-                      </div>
-                    </div>
+              <div className='mx-[10px] w-[350px]'>
+                <div className='bg-[#ffffff] rounded-[10px] border-solid border-[rgba(0,0,0,0.10)] border w-[350px] h-[362px] relative'>
+                  <div className='mt-[24px]' />
+                  <div className='flex justify-center'>
+                    <Image
+                      className='w-[155px] h-[62px]'
+                      src={"/img/car.png"}
+                      width={155}
+                      height={62}
+                      alt=''
+                    />
                   </div>
-                  <div className='mt-[13px]' />
-                  <div className='mx-[15px] w-[322px] h-[2px] bg-[#E7E7E7]'></div>
+                  <div className='mt-[26px]' />
                   <div className='flex flex-col'>
-                    <div className='flex mt-[20px] ml-[18px]'>
-                      <Image
-                        src={"/img/car.png"}
-                        width={80}
-                        height={32}
-                        alt=''
-                      />
-                      <div className='flex flex-col items-center '>
-                        <div className='w-2.5 h-2.5 static'>
-                          <div className='bg-[#ffffff] rounded-[50%] border-solid border-[#c4c4c4] border-[0.5px] w-2.5 h-2.5'></div>
+                    <div className='flex ml-[24px] items-center'>
+                      <div className='flex flex-col items-center mr-[13px]'>
+                        <div className='mt-[-5px]'>
+                          <svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            width='5'
+                            height='5'
+                            viewBox='0 0 5 5'
+                            fill='none'
+                          >
+                            <circle cx='2.5' cy='2.5' r='2.5' fill='#0085FE' />
+                          </svg>
                         </div>
-                        <div className='w-1.5 h-1.5 static mt-[-7px] ml-[1px]'>
-                          <div className='bg-[#4187ff] rounded-[50%] w-1.5 h-1.5 left-32 top-[324px]'></div>
+                        <div className='w-[1px] bg-[#0085FE] h-[30px] mt-[-4px] mb-[-15px]'></div>
+                        <div className=''>
+                          <svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            width='5'
+                            height='5'
+                            viewBox='0 0 5 5'
+                            fill='none'
+                          >
+                            <circle cx='2.5' cy='2.5' r='2.5' fill='#0085FE' />
+                          </svg>
                         </div>
-
-                        <div
-                          className='border-dashed border-[#c4c4c4] w-4 h-0 relative ml-[17px]'
-                          style={{
-                            borderWidth: "1px 0 0 0",
-                            transformOrigin: "0 0",
-                            transform: "rotate(90deg) scale(1, 1)",
-                          }}
-                        />
-                        <svg
-                          className='relative overflow-visible mt-[10px]'
-                          style={{}}
-                          width='10'
-                          height='12'
-                          viewBox='0 0 9 12'
-                          fill='none'
-                          xmlns='http://www.w3.org/2000/svg'
-                        >
-                          <path
-                            d='M9 3.98902C9 3.46518 8.88361 2.94646 8.65746 2.46249C8.43131 1.97852 8.09984 1.53877 7.68198 1.16836C7.26412 0.797942 6.76804 0.504113 6.22208 0.303646C5.67611 0.103179 5.09095 0 4.5 0C3.90905 0 3.32389 0.103179 2.77792 0.303646C2.23196 0.504113 1.73588 0.797942 1.31802 1.16836C0.900156 1.53877 0.568688 1.97852 0.342542 2.46249C0.116396 2.94646 -8.80582e-09 3.46518 0 3.98902C0 4.77942 0.263572 5.51454 0.710357 6.13455H0.705214C2.22236 8.24018 4.5 11.3972 4.5 11.3972L8.29479 6.13455H8.29029C8.75341 5.49423 8.99971 4.74964 9 3.98902ZM4.5 5.6986C3.98851 5.6986 3.49797 5.51849 3.13629 5.19788C2.77462 4.87727 2.57143 4.44243 2.57143 3.98902C2.57143 3.53561 2.77462 3.10077 3.13629 2.78017C3.49797 2.45956 3.98851 2.27944 4.5 2.27944C5.01149 2.27944 5.50203 2.45956 5.86371 2.78017C6.22538 3.10077 6.42857 3.53561 6.42857 3.98902C6.42857 4.44243 6.22538 4.87727 5.86371 5.19788C5.50203 5.51849 5.01149 5.6986 4.5 5.6986Z'
-                            fill='#F36340'
-                          />
-                        </svg>
                       </div>
                       <div className='flex flex-col'>
-                        <div className='text-[#262628] font-sans text-[12px] text-left relative flex items-center justify-start'>
-                          {ElseUtils.stringCut(data.startAddress, 26)}...
+                        <div className='flex '>
+                          <div
+                            className='text-[#a3a3a3] text-left relative flex items-center justify-start'
+                            style={{
+                              font: "400 14px/22px 'Noto Sans KR', sans-serif",
+                            }}
+                          >
+                            출발 :
+                          </div>
+                          <div className='ml-[8px]' />
+                          <div className='text-[#262628] font-sans text-[12px] text-left relative flex items-center justify-start'>
+                            {ElseUtils.stringCut(data.startAddress, 34)}...
+                          </div>
                         </div>
                         <div className='mt-[6px]' />
-                        <div
-                          className='text-[#262628] text-left relative flex items-center justify-start'
-                          style={{ font: "500 13px 'Pretendard', sans-serif" }}
-                        >
-                          {ElseUtils.stringCut(data.goalAddress, 26)}...
+                        <div className='flex'>
+                          <div
+                            className='text-[#a3a3a3] text-left relative flex items-center justify-start'
+                            style={{
+                              font: "400 14px/22px 'Noto Sans KR', sans-serif",
+                            }}
+                          >
+                            도착 :
+                          </div>
+                          <div className='ml-[8px]' />
+                          <div className='text-[#262628] font-sans text-[13px] text-left relative flex items-center justify-start'>
+                            {ElseUtils.stringCut(data.goalAddress, 34)}...
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -151,18 +180,21 @@ export default function HistoryDetailPage() {
                   <div className='pt-[15px]' />
                   <div className='mx-[15px] w-[322px] h-[2px] bg-[#E7E7E7]'></div>
                   <div className='pt-[15px]' />
-
-                  <ShowInfo
-                    head={"Order number"}
-                    value={ElseUtils.stringCut(data.id, 8)}
-                  />
-                  <div className='mt-[8px]' />
                   <ShowInfo
                     head={"Approval date/time"}
                     value={data.approvalDate}
                   />
                   <div className='mt-[8px]' />
-                  <ShowInfo head={"Status"} value={data.status} />
+                  <ShowInfo
+                    head={"Email"}
+                    value={user ? user.email : "loading"}
+                  />
+                  <div className='mt-[8px]' />
+                  <ShowInfo
+                    head={"Status"}
+                    value={data.status}
+                    textColor={"0085fe"}
+                  />
 
                   <div className='mt-[16px]' />
                   <div className='mx-[15px] w-[322px] h-[2px] bg-[#E7E7E7]'></div>
@@ -176,7 +208,7 @@ export default function HistoryDetailPage() {
                     </div>
 
                     <div
-                      className='text-[#262628] text-right relative'
+                      className='text-[#262628] text-right relative font-bold'
                       style={{ font: "500 17px/160% 'Pretendard', sans-serif" }}
                     >
                       USD {JSON.parse(data.priceInfo).lastPrice}
