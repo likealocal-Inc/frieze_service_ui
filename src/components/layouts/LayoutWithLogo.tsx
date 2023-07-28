@@ -1,8 +1,9 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 import "../../app/globals.css";
+import ChannelService from "@/libs/channel.utils";
 
 interface AdminProps {
   children?: any;
@@ -17,6 +18,14 @@ const LayoutWithLogo = ({
   isLogo = true,
 }: AdminProps) => {
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const obj = new ChannelService();
+    obj.loadScript();
+    obj.boot({
+      pluginKey: "c805d8bd-88f4-4853-8f1c-b585caec51cb", // fill your plugin key
+    });
+  }, []);
 
   return (
     <>
