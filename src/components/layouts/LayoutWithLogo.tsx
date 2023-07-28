@@ -23,7 +23,7 @@ const LayoutWithLogo = ({
     const obj = new ChannelService();
     obj.loadScript();
     obj.boot({
-      pluginKey: "c805d8bd-88f4-4853-8f1c-b585caec51cb", // fill your plugin key
+      pluginKey: "1c92aeb0-97cd-4046-bbb2-1b3beb594511", // fill your plugin key
     });
   }, []);
 
