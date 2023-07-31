@@ -5,9 +5,22 @@ import { useEffect, useState } from "react";
 import { OrderModel } from "../../../../models/order";
 import { ElseUtils } from "@/libs/else.utils";
 import { SecurityUtils } from "@/libs/security.utils";
+import ChannelService from "@/libs/channel.utils";
+
 export default function PaymentDonePage() {
   const [orderModel, setOrderModel] = useState<OrderModel>();
   const [user, setUser] = useState<any>();
+
+  const [channel, setChannel] = useState<any>(undefined);
+  useEffect(() => {
+    const obj = new ChannelService();
+    obj.loadScript();
+    obj.boot({
+      pluginKey: "1c92aeb0-97cd-4046-bbb2-1b3beb594511", // fill your plugin key
+    });
+    setChannel(obj);
+  }, []);
+
   useEffect(() => {
     const orderStr = ElseUtils.getLocalStorage(
       ElseUtils.localStorageOrderDetail
@@ -198,7 +211,12 @@ export default function PaymentDonePage() {
               </div>
               <div className='mt-[131px]' />
 
-              <button className='bg-[#0085fe] rounded-[10px] pt-3 pr-10 pb-3 pl-10 flex flex-row gap-16 items-center justify-center w-[350px] h-14 relative border-0'>
+              <button
+                className='bg-[#0085fe] rounded-[10px] pt-3 pr-10 pb-3 pl-10 flex flex-row gap-16 items-center justify-center w-[350px] h-14 relative border-0'
+                onClick={(e) => {
+                  channel.showMessenger();
+                }}
+              >
                 <div
                   className='text-[#ffffff] text-center relative'
                   style={{ font: "500 16px 'Pretendard', sans-serif" }}

@@ -21,7 +21,6 @@ export default function MapPage() {
     placeId: "",
   });
   useEffect(() => {
-    console.log("resr");
     (document.body.style as any).zoom = "100%";
   });
 
