@@ -66,7 +66,7 @@ export function GoogleMapComponent({
   country = "kr",
   lang = "en",
   zoom = 15,
-  size = { width: "500px", height: "500px" },
+  size = undefined,
 }: GoogleMapComponentProp) {
   // 프리트 요청 마커
   const [freizLocation, setFreizLocation] = useState<FreizLocationInfo[]>([]);

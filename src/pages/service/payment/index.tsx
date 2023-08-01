@@ -33,7 +33,7 @@ export default function PaymentPage() {
   }, []);
 
   return (
-    <LayoutAuth menuTitle=''>
+    <LayoutAuth menuTitle='' isMargin={false} isUasgeDetail={false}>
       {ok ? (
         <div className='fixed inset-0 flex items-center justify-center bg-slate-600 Z-50'>
           <div className='flex items-center justify-center bg-white w-[327px] h-[492px] rounded-[10px]'>

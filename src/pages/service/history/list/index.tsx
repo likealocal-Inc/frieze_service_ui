@@ -6,9 +6,9 @@ export default function HistoryListPage() {
   const [selectTapIndex, setSelectTapIndex] = useState(1);
 
   return (
-    <LayoutAuth menuTitle='History' isLogo={false}>
-      <div className='ml-[-5px] mt-[-8px]'>
-        <div className='h-[140px] bg-white'>
+    <LayoutAuth menuTitle='History' isLogo={false} isMargin={false}>
+      <div className=''>
+        <div className='h-[113px] bg-white'>
           <div className='pt-[61px]' />
           <div className='flex justify-center w-screen'>
             <div className='text-[#000000] text-center font-bold relative flex items-end justify-center font-sans text-[17px]'>
@@ -17,7 +17,7 @@ export default function HistoryListPage() {
           </div>
 
           {/* 종료 */}
-          <div className='flex justify-end mr-[10px] mt-[-25px]'>
+          <div className='flex justify-end mr-[20px] mt-[-25px]'>
             <div
               className='relative w-8 h-8'
               onClick={(e) => {
@@ -50,9 +50,12 @@ export default function HistoryListPage() {
               </svg>
             </div>
           </div>
-          <div className='mt-[25px]' />
-          <div className='absolute top-0 mt-[169.5px] left-[8px] bg-[#DADADA] h-[0.5px] w-[390px]'></div>
-          <div className='flex justify-around bg-[#f5f6fa] w-[390px]'>
+
+          {/* 탭 */}
+          <div className='pt-[25px]' />
+          {/* 라인 */}
+
+          <div className='flex bg-[#f5f6fa] h-[53px]'>
             <div className='flex flex-col items-center justify-center w-full pt-[20px]'>
               <button
                 className={
@@ -86,7 +89,7 @@ export default function HistoryListPage() {
                   setSelectTapIndex(2);
                 }}
               >
-                Pay Complete
+                결제완료
               </button>
               <div className='mt-[10px]' />
               <div
@@ -108,7 +111,7 @@ export default function HistoryListPage() {
                   setSelectTapIndex(3);
                 }}
               >
-                Use Complete
+                이용완료
               </button>
               <div className='mt-[10px]' />
               <div
@@ -130,7 +133,7 @@ export default function HistoryListPage() {
                   setSelectTapIndex(4);
                 }}
               >
-                Use Cancel
+                이용취소
               </button>
               <div className='mt-[10px]' />
               <div
@@ -143,9 +146,12 @@ export default function HistoryListPage() {
             </div>
           </div>
         </div>
-        <div className='h-full bg-[#F5F6FA] w-[390px]'>
-          <div className='pt-[35px]' />
-          <div className='px-[0px]'>
+
+        <div className='pt-[50px]' />
+        <div className='bg-[#DADADA] h-[0.5px] w-full'></div>
+        <div className='h-full bg-[#F5F6FA]'>
+          <div className='pt-[10px]' />
+          <div className='px-[20px]'>
             <HistoryListComponent selectIndex={selectTapIndex} />
           </div>
         </div>

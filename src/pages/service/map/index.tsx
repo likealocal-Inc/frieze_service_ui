@@ -10,6 +10,8 @@ export default function MapPage() {
   const [showAddressModal, setShowAddressModal] = useState(false);
   const [isMove, setIsMove] = useState(false);
 
+  const [widthSize, setWidthSize] = useState(0);
+
   const [startLocation, setStartLocation] = useState<AddressInfo>({
     desc: "Current location",
     key: -1,
@@ -20,11 +22,14 @@ export default function MapPage() {
     key: -1,
     placeId: "",
   });
+
   useEffect(() => {
     (document.body.style as any).zoom = "100%";
   });
 
-  useEffect(() => {}, [startLocation]);
+  useEffect(() => {
+    setWidthSize(window.innerWidth);
+  }, []);
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -67,11 +72,11 @@ export default function MapPage() {
 
   return (
     <>
-      <LayoutAuth menuTitle='지도' isUasgeDetail={true}>
+      <LayoutAuth menuTitle='지도' isUasgeDetail={true} isMargin={false}>
         <div className='mt-[10px]'></div>
-        <div className='w-[390px]'>
+        <div className=''>
           {/* 지도 */}
-          <div className='ml-[-5px] h-[543px] z-10'>
+          <div className='h-[543px] z-10'>
             {startLocation.desc === "Current location" ? (
               <div className='flex flex-col items-center justify-center h-[425px] font-sans'>
                 <svg
@@ -96,7 +101,7 @@ export default function MapPage() {
               </div>
             ) : (
               <GoogleMapComponent
-                size={{ width: "390px", height: "640px" }}
+                size={{ width: `${widthSize}px`, height: "360px" }}
                 centerLocation={startLocation.location}
                 setStartLocation={setStartLocation}
                 setGoalLocation={setGoalLocation}
@@ -105,16 +110,19 @@ export default function MapPage() {
               />
             )}
           </div>
-          <div className='flex justify-start ml-[-7px] pt-[20px] pl-[20px] pr-[31px] bg-[#ffffff] rounded-3xl h-[254px] w-[342px] relative mt-[-150px]'>
+          <div className='flex justify-start pt-[20px] px-[20px] bg-[#ffffff] rounded-3xl h-[254px] relative mt-[-200px]'>
             <Image src={"/img/mappath.svg"} alt='' width={12} height={120} />
-            <div className='ml-[10px] w-[310px]'>
+            <div className='ml-[10px]'></div>
+            <div className='w-screen'>
               <div
-                className='flex items-center'
+                className='flex items-center w-full'
                 onClick={(e) => {
                   setShowAddressModal(true);
                 }}
               >
-                <div className='bg-[#f5f6fa] rounded-[10px] w-[325px] h-14 relative text-[#bbbbbb] font-sans items-center flex pr-[10px] pl-[20px]'>
+                <div
+                  className={`bg-[#f5f6fa] w-full rounded-[10px] h-14 text-[#bbbbbb] font-sans items-center flex pr-[10px] pl-[20px]`}
+                >
                   {ElseUtils.stringCut(startLocation.desc, 30, "...")}
                 </div>
                 <svg
@@ -143,7 +151,7 @@ export default function MapPage() {
                   setShowAddressModal(true);
                 }}
               >
-                <div className='flex items-center text-[#262628] text-[16px] font-sans font-bold pr-[10px] pl-[20px] h-14 bg-[#f5f6fa] rounded-[10px] border-solid border-[#262628] border w-[330px] relative'>
+                <div className='flex w-full items-center text-[#262628] text-[16px] font-sans font-bold pr-[10px] pl-[20px] h-14 bg-[#f5f6fa] rounded-[10px] border-solid border-[#262628] border relative'>
                   {ElseUtils.stringCut(goalLocation.desc, 30, "...")}
                 </div>
                 <svg

@@ -12,7 +12,12 @@ export default function PaymentDonePage() {
   const [user, setUser] = useState<any>();
 
   const [channel, setChannel] = useState<any>(undefined);
+
+  const [widthSize, setWidthSize] = useState(0);
+
   useEffect(() => {
+    setWidthSize(window.innerWidth);
+
     const obj = new ChannelService();
     obj.loadScript();
 
@@ -44,10 +49,12 @@ export default function PaymentDonePage() {
   return (
     <>
       {orderModel ? (
-        <LayoutAuth menuTitle=''>
-          <div className='bg-[#F5F6FA] w-[390px] h-[844px] ml-[-8px] mt-[-8px]'>
+        <LayoutAuth menuTitle='' isLogo={false} isMargin={false}>
+          <div
+            className={`bg-[#F5F6FA] w-[${widthSize}px] h-screen px-[20px] pb-[130px]`}
+          >
             <div
-              className='pt-[40px] pl-[20px]'
+              className='pt-[40px]'
               onClick={(e) => (location.href = "/service/map")}
             >
               <Image src={"/img/home_icon.svg"} width={44} height={44} alt='' />
@@ -63,22 +70,22 @@ export default function PaymentDonePage() {
               <div className='mt-[12px]' />
               <div
                 className='relative text-center'
-                style={{ font: "700 19px/150% 'Pretendard', sans-serif" }}
+                style={{ font: "700 18px/140% 'Pretendard', sans-serif" }}
               >
                 <span>
-                  <span className='payment-has-been-successfully-completed-the-estimated-waiting-time-until-dispatch-is-7-minutes-span'>
+                  <span className=''>
                     Payment has been successfully
                     <br />
                     completed. The estimated waiting time
                     <br />
                   </span>
-                  <span className='text-[#0085FE] payment-has-been-successfully-completed-the-estimated-waiting-time-until-dispatch-is-7-minutes-span2'>
+                  <span className='text-[#0085FE]'>
                     until dispatch is 7 minutes
                   </span>
                 </span>
               </div>
               <div className='mt-[24px]' />
-              <div className='bg-[#ffffff] rounded-[10px] border-solid border-[rgba(0,0,0,0.10)] border w-[350px] h-[297px] relative'>
+              <div className='w-full bg-[#ffffff] rounded-[10px] border-solid border-[rgba(0,0,0,0.10)] border h-[297px] '>
                 <div className='flex mt-[32px] ml-[18px]'>
                   <Image src={"/img/car.png"} width={80} height={32} alt='' />
                   <div className='flex flex-col items-center justify-center'>
@@ -210,10 +217,20 @@ export default function PaymentDonePage() {
                   </div>
                 </div>
               </div>
-              <div className='mt-[131px]' />
+              <div className='mt-[30px]' />
+              <div className='bg-black h-[63px] rounded-xl w-full flex flex-col items-center text-white font-sans text-[13px] justify-center'>
+                <div className='flex'>
+                  <div className=''>Further</div>
+                  <div className='ml-[2px] font-bold text-[#0085FE]'>
+                    dispatch information
+                  </div>
+                </div>
+                <div className='mt-[3px]' />
+                will be provided through the chat room!
+              </div>
 
               <button
-                className='bg-[#0085fe] rounded-[10px] pt-3 pr-10 pb-3 pl-10 flex flex-row gap-16 items-center justify-center w-[350px] h-14 relative border-0'
+                className='bg-[#0085fe] w-full rounded-[10px] pt-3 pr-10 pb-3 pl-10 flex flex-row gap-16 items-center justify-center w-[350px] h-14 relative border-0'
                 onClick={(e) => {
                   channel.showMessenger();
                 }}
@@ -225,31 +242,6 @@ export default function PaymentDonePage() {
                   Dispatch information
                 </div>
               </button>
-
-              <div className='mt-[-100px] z-50'>
-                <div className='w-[350px]'>
-                  <div className='union-wrapper'>
-                    <Image
-                      alt=''
-                      src={"/img/talk_icon.svg"}
-                      width={350}
-                      height={63}
-                    />
-                  </div>
-                </div>
-                <div className='flex flex-col text-white mt-[-60px] items-center font-sans text-[13px]'>
-                  <div className='flex '>
-                    <div className=''>Further</div>
-                    <div className='ml-[2px] font-bold text-[#0085FE]'>
-                      dispatch information
-                    </div>
-                  </div>
-                  <div className='mt-[3px]' />
-                  <div className=''>
-                    will be provided through the chat room!
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </LayoutAuth>

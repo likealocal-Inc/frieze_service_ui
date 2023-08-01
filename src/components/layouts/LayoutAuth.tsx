@@ -14,15 +14,23 @@ interface AdminProps {
   menuTitle: string;
   isUasgeDetail?: boolean;
   isLogo?: boolean;
+  isMargin?: boolean;
 }
 const LayoutAuth = ({
   menuTitle,
   children,
   isUasgeDetail = false,
   isLogo = true,
+  isMargin = true,
 }: AdminProps) => {
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
+
+  const [isLogoCheck, setIsLogoCheck] = useState(false);
+
+  useEffect(() => {
+    setIsLogoCheck(isLogo);
+  }, [isLogo]);
+
   useEffect(() => {
     const _userId = ElseUtils.getLocalStorage(ElseUtils.localStorageUserIdKey);
     if (_userId === null) {
@@ -51,7 +59,8 @@ const LayoutAuth = ({
         <LayoutWithLogo
           menuTitle={menuTitle}
           isUasgeDetail={isUasgeDetail}
-          isLogo={isLogo}
+          isLogo={isLogoCheck}
+          isMargin={isMargin}
         >
           {children}
         </LayoutWithLogo>

@@ -448,14 +448,14 @@ export default function AgreementPage() {
             {ok ? (
               <button
                 type='submit'
-                className={`w-[350px] h-[56px] border-0 text-white rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 bg-[#0085fe]`}
+                className={`w-full h-[56px] border-0 text-white rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 bg-[#0085fe]`}
                 onClick={onSend}
               >
                 Verify to use the taxi service
               </button>
             ) : (
               <button
-                className={`w-[350px] h-[56px] border-0 text-white bg-[#BBBBBB] focus:ring-0  font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2`}
+                className={`w-full h-[56px] border-0 text-white bg-[#BBBBBB] focus:ring-0  font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2`}
               >
                 Verify to use the taxi service
               </button>
