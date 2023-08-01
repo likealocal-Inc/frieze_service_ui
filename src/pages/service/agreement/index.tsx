@@ -36,18 +36,19 @@ export default function AgreementPage() {
   const [errName, setErrName] = useState({ isError: false, errorMsg: "" });
   const [errEmail, setErrEmail] = useState({ isError: false, errorMsg: "" });
 
+  const [accordion, setAccordion] = useState<AccordionInterface>();
   useEffect(() => {
     const accordionItems: AccordionItem[] = [
       {
         id: "accordion-collapse-heading-1",
         triggerEl: document.querySelector("#accordion-collapse-heading-1")!,
         targetEl: document.querySelector("#accordion-collapse-body-1")!,
-        active: true,
+        active: false,
       },
     ];
 
     const options: AccordionOptions = {
-      alwaysOpen: true,
+      alwaysOpen: false,
       activeClasses: "text-[#262628] text-[24px]",
       inactiveClasses: "text-[#262628] text-[24px]",
       onOpen: (item) => {
@@ -64,13 +65,12 @@ export default function AgreementPage() {
       },
     };
 
-    const accordion: AccordionInterface = new Accordion(
+    const _accordion: AccordionInterface = new Accordion(
       accordionItems,
       options
     );
-
-    // open accordion item based on id
-    accordion.open("accordion-collapse-heading-1");
+    setAccordion(_accordion);
+    _accordion!.close("accordion-collapse-heading-1");
   }, []);
 
   useEffect(() => {
@@ -92,6 +92,9 @@ export default function AgreementPage() {
       ...agreementData,
       agreement: [false, false, false, false],
     });
+
+    console.log("SDFSDF");
+    accordion!.toggle("accordion-example-heading-1");
   };
 
   /**
@@ -213,7 +216,7 @@ export default function AgreementPage() {
               For Frieze Members
             </div>
             <div className={`mt-[32px]`} />
-            <div className='text-[#000000] text-left relative w-[344px] text-[24px] font-sans font-bold'>
+            <div className='text-[#000000] text-left relative text-[24px] font-sans font-bold'>
               Verification and Agreement <br />
               to the terms and conditions need to use the service
             </div>
@@ -225,83 +228,59 @@ export default function AgreementPage() {
               This process is required only once.
             </div>
           </div>
+          <div className={`mt-[56px]`} />
           {/* 입력창 */}
           <div className=''>
-            <div className={`mt-[40px]`} />
             <div
-              className='text-[#c4c4c4] text-left relative flex items-center justify-start text-lg'
+              className='text-[#c4c4c4] text-left text-lg'
               style={{ font: "500 12px/17px 'Pretendard', sans-serif" }}
             >
-              Please enter your ID Or real name on your passport
+              Enter your real name on your passport
             </div>
             <div className={`mt-[5px]`} />
-            <InputComponent
-              isError={errName.isError}
-              errorMsg={errName.errorMsg}
-              value={agreementData.passportName}
-              required={true}
-              placeholder='Capital letters only'
-              onChange={(e: any) => {
-                setAgreementData({
-                  ...agreementData,
-                  passportName: e.target.value,
-                });
-                onConfirm();
-              }}
-            />
-            {/* <input
-              className='w-[336px] placeholder-[#bbbbbb] pl-[12px] text-slate-800 text-[16px] bg-[#f5f6fa] rounded-[10px] relative border-0 h-[56px]'
-              placeholder='Required'
-              value={agreementData.passportName}
-              onChange={(e) => {
-                setAgreementData({
-                  ...agreementData,
-                  passportName: e.target.value,
-                });
-                onConfirm();
-              }}
-              required
-            /> */}
-            <div className={`mt-[16px]`} />
-            <div
-              className='text-[#c4c4c4] text-left relative flex items-center justify-start'
-              style={{ font: "500 12px/17px 'Pretendard', sans-serif" }}
-            >
-              Please enter your Email
-            </div>
-            <div className={`mt-[5px]`} />
-            <InputComponent
-              isError={errEmail.isError}
-              errorMsg={errEmail.errorMsg}
-              value={agreementData.email}
-              required={true}
-              placeholder='Insert email address'
-              onChange={(e: any) => {
-                setAgreementData({
-                  ...agreementData,
-                  email: e.target.value,
-                });
-                onConfirm();
-              }}
-            />
-            {/* <input
-                required
-                className='w-[336px] placeholder-[#bbbbbb] pl-[12px] text-slate-800 text-[16px] bg-[#f5f6fa] rounded-[10px] relative border-0 h-[56px]'
-                placeholder='Required'
+            <div className='pr-[20px]'>
+              <InputComponent
+                isError={errName.isError}
+                errorMsg={errName.errorMsg}
+                value={agreementData.passportName}
+                required={true}
+                placeholder='Capital letters only'
+                onChange={(e: any) => {
+                  setAgreementData({
+                    ...agreementData,
+                    passportName: e.target.value,
+                  });
+                  onConfirm();
+                }}
+              />
+              <div className={`mt-[16px]`} />
+              <div
+                className='text-[#c4c4c4] text-left relative flex items-center justify-start'
+                style={{ font: "500 12px/17px 'Pretendard', sans-serif" }}
+              >
+                Enter your Email
+              </div>
+              <div className={`mt-[5px]`} />
+              <InputComponent
+                isError={errEmail.isError}
+                errorMsg={errEmail.errorMsg}
                 value={agreementData.email}
-                onChange={(e) => {
+                required={true}
+                placeholder='Insert email address'
+                onChange={(e: any) => {
                   setAgreementData({
                     ...agreementData,
                     email: e.target.value,
                   });
                   onConfirm();
                 }}
-              /> */}
+              />
+            </div>
           </div>
           <div className={`mt-[56px]`} />
 
           {/* 동의 */}
-          <div className='rounded-sm ring-1 ring-gray-200 p-[16px] mr-[10px]'>
+          <div className='rounded-sm ring-1 ring-gray-200 p-[16px]'>
             {/* 전체동의 */}
             <div id='accordion-collapse' data-accordion='collapse'>
               <div id='accordion-collapse-heading-1'>
@@ -311,7 +290,7 @@ export default function AgreementPage() {
                   aria-expanded='true'
                   aria-controls='accordion-collapse-body-1'
                 >
-                  <div className='flex items-center'>
+                  <div className='flex items-center justify-around'>
                     <input
                       id='cb_all'
                       type='checkbox'
@@ -322,20 +301,13 @@ export default function AgreementPage() {
                     <div className={`ml-[8px]`} />
                     <label
                       htmlFor='cb_all'
-                      className='text-[#262628] text-right relative flex items-center justify-end'
+                      className='text-[#262628] flex justify-start items-start'
                       style={{
                         font: "500 16px/22px 'Pretendard', sans-serif",
                       }}
                     >
                       Agree to all terms and conditions
                     </label>
-
-                    {/* <div
-                className='ml-[4px] text-[#0085fe] text-left relative flex items-center justify-start'
-                style={{ font: "500 14px/22px 'Pretendard', sans-serif" }}
-              >
-                Required
-              </div> */}
                   </div>
                   <div className='pr-[5px]'>
                     <svg
@@ -365,7 +337,7 @@ export default function AgreementPage() {
                 <div className='border border-b-0 border-gray-200'>
                   <div className={`mt-[16px]`} />
                   <div
-                    className='border-solid border-[#E7E7E7] w-[367px] relative ml-[-17px]'
+                    className='border-solid border-[#E7E7E7]'
                     style={{
                       borderWidth: "1px 0 0 0",
                       transformOrigin: "0 0",

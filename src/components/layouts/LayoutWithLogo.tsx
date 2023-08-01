@@ -10,12 +10,14 @@ interface AdminProps {
   menuTitle: string;
   isUasgeDetail?: boolean;
   isLogo?: boolean;
+  isMargin?: boolean;
 }
 const LayoutWithLogo = ({
   menuTitle,
   children,
   isUasgeDetail = false,
   isLogo = true,
+  isMargin = true,
 }: AdminProps) => {
   const [loading, setLoading] = useState(false);
 
@@ -33,7 +35,7 @@ const LayoutWithLogo = ({
         <title>{menuTitle}</title>
       </Head>
       <>
-        <div className='w-[390px]'>
+        <div className={isMargin ? "pl-[20px] pr-[20px] w-full" : ""}>
           {loading ? (
             ""
           ) : (

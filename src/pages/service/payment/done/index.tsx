@@ -15,6 +15,7 @@ export default function PaymentDonePage() {
   useEffect(() => {
     const obj = new ChannelService();
     obj.loadScript();
+
     obj.boot({
       pluginKey: "1c92aeb0-97cd-4046-bbb2-1b3beb594511", // fill your plugin key
     });
