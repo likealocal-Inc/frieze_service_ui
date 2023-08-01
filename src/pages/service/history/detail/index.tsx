@@ -51,8 +51,8 @@ export default function HistoryDetailPage() {
   return (
     <>
       {data ? (
-        <LayoutAuth menuTitle='History' isLogo={false}>
-          <div className='w-screen h-[844px]'>
+        <LayoutAuth menuTitle='History' isLogo={false} isMargin={false}>
+          <div className='w-screen h-screen'>
             <div className='w-screen h-[95px] bg-white'>
               <div className='pt-[61px]' />
               <div className='flex justify-center font-sans font-bold'>
@@ -80,11 +80,11 @@ export default function HistoryDetailPage() {
                 </svg>
               </div>
             </div>
-            <div className='w-full h-[704px] bg-[#F5F6FA] pr-[15px]'>
+            <div className='px-[20px] w-full h-screen bg-[#F5F6FA]'>
               <div className='pt-[20px]' />
               <div className=''>
                 <div className='flex justify-between'>
-                  <div className='px-[20px]'>
+                  <div className=''>
                     <div className='bg-[#e0e0e0] rounded pt-1 pr-3 pb-1 pl-3 flex flex-row gap-2 items-center justify-center h-6 relative'>
                       <div
                         className='text-[#000000] text-center relative flex items-center justify-center'
@@ -104,7 +104,7 @@ export default function HistoryDetailPage() {
                 </div>
               </div>
               <div className='mt-[12px]' />
-              <div className='ml-[10px]'>
+              <div className=''>
                 <div className='bg-[#ffffff] rounded-[10px] border-solid border-[rgba(0,0,0,0.10)] border h-[362px] relative'>
                   <div className='mt-[24px]' />
                   <div className='flex justify-center'>
@@ -223,7 +223,12 @@ export default function HistoryDetailPage() {
               <div className='mt-[5px]' />
               <div className='flex justify-center font-sans text-[14px]'>
                 <div className=''>please contact</div>
-                <div className='font-bold ml-[4px]'>
+                <div
+                  className='font-bold ml-[4px]'
+                  style={{
+                    textDecoration: "underline",
+                  }}
+                >
                   the customer support office
                 </div>
                 <div className='ml-[4px]'>directly</div>
