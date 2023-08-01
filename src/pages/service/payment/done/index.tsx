@@ -59,7 +59,6 @@ export default function PaymentDonePage() {
             >
               <Image src={"/img/home_icon.svg"} width={44} height={44} alt='' />
             </div>
-            <div className='mt-[20px]'></div>
             <div className='flex flex-col items-center justify-center'>
               <Image
                 src={"/img/check_icon.svg"}
@@ -217,7 +216,7 @@ export default function PaymentDonePage() {
                   </div>
                 </div>
               </div>
-              <div className='mt-[30px]' />
+              <div className='mt-[40px]' />
               <div className='bg-black h-[63px] rounded-xl w-full flex flex-col items-center text-white font-sans text-[13px] justify-center'>
                 <div className='flex'>
                   <div className=''>Further</div>
@@ -230,7 +229,7 @@ export default function PaymentDonePage() {
               </div>
 
               <button
-                className='bg-[#0085fe] w-full rounded-[10px] pt-3 pr-10 pb-3 pl-10 flex flex-row gap-16 items-center justify-center w-[350px] h-14 relative border-0'
+                className='bg-[#0085fe] rounded-[10px] pt-3 pr-10 pb-3 pl-10 flex flex-row gap-16 items-center justify-center w-[350px] h-14 relative border-0'
                 onClick={(e) => {
                   channel.showMessenger();
                 }}
