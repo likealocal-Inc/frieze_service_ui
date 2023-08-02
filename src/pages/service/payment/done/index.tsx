@@ -23,6 +23,8 @@ export default function PaymentDonePage() {
 
     obj.boot({
       pluginKey: "1c92aeb0-97cd-4046-bbb2-1b3beb594511", // fill your plugin key
+      customLauncherSelector: ".custom-button-1",
+      hideChannelButtonOnBoot: true,
     });
     setChannel(obj);
   }, []);
@@ -235,7 +237,7 @@ export default function PaymentDonePage() {
                 }}
               >
                 <div
-                  className='text-[#ffffff] text-center relative'
+                  className='text-[#ffffff] text-center relative custom-button-1'
                   style={{ font: "500 16px 'Pretendard', sans-serif" }}
                 >
                   Dispatch information
