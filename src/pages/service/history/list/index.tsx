@@ -9,7 +9,7 @@ export default function HistoryListPage() {
     <LayoutAuth menuTitle='History' isLogo={false} isMargin={false}>
       <div className=''>
         <div className='h-[113px] bg-white'>
-          <div className='pt-[61px]' />
+          <div className='pt-[44px]' />
           <div className='flex justify-center w-screen'>
             <div className='text-[#000000] text-center font-bold relative flex items-end justify-center font-sans text-[17px]'>
               My Page
@@ -147,7 +147,7 @@ export default function HistoryListPage() {
           </div>
         </div>
 
-        <div className='pt-[50px]' />
+        <div className='pt-[33px]' />
         <div className='bg-[#DADADA] h-[0.5px] w-full'></div>
         <div className='h-full bg-[#F5F6FA]'>
           <div className='pt-[10px]' />

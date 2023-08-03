@@ -7,6 +7,7 @@ import { AddressInfo } from "@/components/modal/AddressModal";
 import { ElseUtils } from "@/libs/else.utils";
 import LayoutAuth from "@/components/layouts/LayoutAuth";
 import { SecurityUtils } from "@/libs/security.utils";
+import { useRouter } from "next/router";
 
 // 경로 결과 정보
 export interface PathInfoProp {
@@ -18,6 +19,7 @@ export interface PathInfoProp {
   lastPrice: number;
 }
 export default function MapPathPage() {
+  const router = useRouter();
   const [showPayModal, setShowPayModal] = useState(false);
 
   const [showAgreement, setShowAgreement] = useState(false);
@@ -41,9 +43,14 @@ export default function MapPathPage() {
   const [isOk, setIsOk] = useState(false);
 
   const [user, setUser] = useState<any>();
+
+  useEffect(() => {
+    (document.body.style as any).zoom = "100%";
+  });
+
   useEffect(() => {
     // 현재 디바이스의 가로 길이를 가져옴
-    setWidthSize(window.innerWidth);
+    setWidthSize(390);
 
     const start = ElseUtils.getLocalStorage(ElseUtils.localStorageStartInfo);
     const goal = ElseUtils.getLocalStorage(ElseUtils.localStorageGoalInfo);
@@ -65,6 +72,10 @@ export default function MapPathPage() {
       return;
     }
     setUser(userInfo);
+
+    if (router.query.from === "cancel") {
+      setShowPayModal(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -95,7 +106,7 @@ export default function MapPathPage() {
         <LayoutAuth menuTitle='경로' isUasgeDetail={true} isMargin={false}>
           <div className='mt-[10px]' />
           <div
-            className='absolute top-[80px] z-50'
+            className='absolute top-[75px] z-50 left-[14px]'
             onClick={(e) => {
               ElseUtils.moveMapPage();
             }}
@@ -104,7 +115,7 @@ export default function MapPathPage() {
           </div>
 
           <div className=''>
-            <div className={`w-[${widthSize}px]`}>
+            <div className=''>
               <GooglePathMapComponent
                 size={{ width: `${widthSize}px`, height: "280px" }}
                 setPathInfo={setPriceInfo}
@@ -212,7 +223,9 @@ export default function MapPathPage() {
 
       {/* 위치정보와 금액 세팅할때까지 화면을 막는다. */}
       {isGetPath ? (
-        <div className='absolute top-0 left-0 w-[430px] h-[950px] bg-slate-400 bg-opacity-50 flex justify-center items-center'></div>
+        <div
+          className={`absolute top-0 left-0 w-[${widthSize}px] h-[950px] bg-slate-400 bg-opacity-50 flex justify-center items-center`}
+        ></div>
       ) : (
         ""
       )}
@@ -225,9 +238,7 @@ export default function MapPathPage() {
             : `fixed inset-x-0 bottom-0 flex items-end justify-center transform transition-all translate-y-0`
         }
       >
-        <div
-          className={`bg-white w-full rounded-t-xl h-[620px] w-[${widthSize}px]`}
-        >
+        <div className={`bg-white rounded-t-xl h-[620px] w-[${widthSize}px]`}>
           <div className='flex flex-col px-[20px]'>
             <div className='mt-[30px] ' />
             <div className='flex justify-center'>
@@ -262,7 +273,7 @@ export default function MapPathPage() {
               >
                 Precautions
               </div>
-              <div className=' text-[13px] font-normal leading-snug text-opacity-50 text-zinc-900 ml-[-23px]'>
+              <div className=' text-[13px] font-sans font-normal leading-snug text-opacity-50 text-zinc-900 ml-[-23px]'>
                 <ol type='1'>
                   <li>
                     Click the{" "}

@@ -36,6 +36,8 @@ const LayoutWithLogo = ({
     obj.loadScript();
     obj.boot({
       pluginKey: "1c92aeb0-97cd-4046-bbb2-1b3beb594511", // fill your plugin key
+      customLauncherSelector: ".custom-button-1",
+      hideChannelButtonOnBoot: true,
     });
   }, []);
 

@@ -52,10 +52,10 @@ export default function HistoryDetailPage() {
     <>
       {data ? (
         <LayoutAuth menuTitle='History' isLogo={false} isMargin={false}>
-          <div className='w-screen h-screen'>
-            <div className='w-screen h-[95px] bg-white'>
-              <div className='pt-[61px]' />
-              <div className='flex justify-center font-sans font-bold'>
+          <div className='w-full h-screen'>
+            <div className='w-full h-[95px] bg-white'>
+              <div className='pt-[44px]' />
+              <div className='flex justify-center font-sans font-bold text-[17px]'>
                 Detail
               </div>
               <div
@@ -80,7 +80,7 @@ export default function HistoryDetailPage() {
                 </svg>
               </div>
             </div>
-            <div className='px-[20px] w-full h-screen bg-[#F5F6FA]'>
+            <div className='px-[20px] h-screen bg-[#F5F6FA]'>
               <div className='pt-[20px]' />
               <div className=''>
                 <div className='flex justify-between'>
@@ -155,8 +155,8 @@ export default function HistoryDetailPage() {
                             출발 :
                           </div>
                           <div className='ml-[8px]' />
-                          <div className='text-[#262628] font-sans text-[12px] text-left relative flex items-center justify-start'>
-                            {ElseUtils.stringCut(data.startAddress, 35)}...
+                          <div className='text-[#262628] font-sans text-[16px] text-left relative flex items-center justify-start'>
+                            {ElseUtils.stringCut(data.startAddress, 25)}...
                           </div>
                         </div>
                         <div className='mt-[6px]' />
@@ -170,8 +170,8 @@ export default function HistoryDetailPage() {
                             도착 :
                           </div>
                           <div className='ml-[8px]' />
-                          <div className='text-[#262628] font-sans text-[13px] text-left relative flex items-center justify-start'>
-                            {ElseUtils.stringCut(data.goalAddress, 34)}...
+                          <div className='text-[#262628] font-sans text-[16px] text-left relative flex items-center justify-start'>
+                            {ElseUtils.stringCut(data.goalAddress, 25)}...
                           </div>
                         </div>
                       </div>
@@ -224,7 +224,7 @@ export default function HistoryDetailPage() {
               <div className='flex justify-center font-sans text-[14px]'>
                 <div className=''>please contact</div>
                 <div
-                  className='font-bold ml-[4px]'
+                  className='font-bold ml-[4px] custom-button-1'
                   style={{
                     textDecoration: "underline",
                   }}

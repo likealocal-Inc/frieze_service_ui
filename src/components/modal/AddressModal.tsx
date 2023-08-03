@@ -68,7 +68,13 @@ export default function AddressModal(props: AddressModalProps) {
                 <div className='pt-[16px]' />
                 <input
                   className='text-base w-[272px] pl-[12px] text-[#262628] text-[16px] border-0 bg-[#f5f6fa] rounded-[10px] relative h-[56px] focus:shadow-none focus:outline-none focus:ring-2 focus:ring-[#BBBBBB]'
-                  onChange={(e) => getAddresses(e.target.value)}
+                  onChange={(e) => {
+                    if (e.target.value === "") {
+                      setAddList([]);
+                      setSelectAddress({ ...selectAddress, key: -1 });
+                    }
+                    getAddresses(e.target.value);
+                  }}
                 />
                 <div className='h-[263px] font-sans pr-[20px]'>
                   {addList.map((d, k) => {
@@ -106,7 +112,7 @@ export default function AddressModal(props: AddressModalProps) {
                 </button>
 
                 {selectAddress.key === -1 ? (
-                  <button className='ml-[6px] w-[153px] h-[56px] bg-[#bbbbbb] rounded-[10px] shadow-none border-0 ring-1 ring-[#0085FE] text-[16px] text-white'>
+                  <button className='ml-[6px] w-[153px] h-[56px] bg-[#bbbbbb] rounded-[10px] shadow-none border-0 ring-1 text-[16px] text-white'>
                     Apply
                   </button>
                 ) : (

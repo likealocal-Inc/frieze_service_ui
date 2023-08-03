@@ -41,7 +41,7 @@ export function GooglePathMapComponent({
   country = "kr",
   lang = "en",
   zoom = 15,
-  size = { width: "430px", height: "480px" },
+  size = undefined,
 }: GooglePathMapComponentProp) {
   // 프리트 요청 마커
   const [freizLocation, setFreizLocation] = useState<FreizLocationInfo[]>([]);

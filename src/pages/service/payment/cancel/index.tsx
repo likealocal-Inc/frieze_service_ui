@@ -20,7 +20,7 @@ export default function PaymentCancelPage() {
             <button
               className='h-[56px] w-[280px] border-0 rounded-lg bg-[#0085FE] text-white text-[14px]'
               onClick={(e) => {
-                location.href = "/service/agreement";
+                location.href = "/service/map/path?from=cancel";
               }}
             >
               확인
