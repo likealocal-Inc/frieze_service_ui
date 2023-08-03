@@ -4,7 +4,6 @@ import { ElseUtils } from "@/libs/else.utils";
 import { SecurityUtils } from "@/libs/security.utils";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import GlobalScript from "@/libs/GlobalScript";
 
 export default function PaymentPage() {
   const [user, setUser] = useState<any>();
@@ -112,7 +111,6 @@ export default function PaymentPage() {
       ) : (
         "비정상적인접근"
       )}
-      <GlobalScript />
     </LayoutAuth>
   );
 }

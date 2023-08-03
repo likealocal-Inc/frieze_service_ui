@@ -266,13 +266,13 @@ export function GooglePathMapComponent({
             position={startLocation!.location!}
             onLoad={() => console.log("Marker Loaded")}
             icon={"/freiz_location/from.png"}
-            draggable
-            onDragEnd={(e) => {
-              const { latLng } = e;
-              const lat = latLng!.lat();
-              const lng = latLng!.lng();
-              setCenter({ lat, lng });
-            }}
+            // draggable
+            // onDragEnd={(e) => {
+            //   const { latLng } = e;
+            //   const lat = latLng!.lat();
+            //   const lng = latLng!.lng();
+            //   setCenter({ lat, lng });
+            // }}
           />
           <MarkerF
             position={goalLocation!.location!}

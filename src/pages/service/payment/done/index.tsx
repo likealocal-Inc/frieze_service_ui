@@ -231,13 +231,13 @@ export default function PaymentDonePage() {
               </div>
 
               <button
-                className='bg-[#0085fe] rounded-[10px] pt-3 pr-10 pb-3 pl-10 flex flex-row gap-16 items-center justify-center w-[350px] h-14 relative border-0'
+                className='bg-[#0085fe] rounded-[10px] pt-3 pr-10 pb-3 pl-10 flex flex-row gap-16 items-center justify-center h-14 relative border-0 w-full custom-button-1'
                 onClick={(e) => {
                   channel.showMessenger();
                 }}
               >
                 <div
-                  className='text-[#ffffff] text-center relative custom-button-1'
+                  className='text-[#ffffff] text-center relative'
                   style={{ font: "500 16px 'Pretendard', sans-serif" }}
                 >
                   Dispatch information

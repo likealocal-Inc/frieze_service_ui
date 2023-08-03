@@ -295,14 +295,14 @@ export function GoogleMapComponent({
               position={pathLocation.start}
               onLoad={() => console.log("Marker Loaded")}
               icon={"/freiz_location/from.png"}
-              draggable
-              onDragEnd={(e) => {
-                console.log("From - Drag END");
-                const { latLng } = e;
-                const lat = latLng!.lat();
-                const lng = latLng!.lng();
-                setCenter({ lat, lng });
-              }}
+              // draggable
+              // onDragEnd={(e) => {
+              //   console.log("From - Drag END");
+              //   const { latLng } = e;
+              //   const lat = latLng!.lat();
+              //   const lng = latLng!.lng();
+              //   setCenter({ lat, lng });
+              // }}
             />
             <MarkerF
               position={pathLocation.goal}
