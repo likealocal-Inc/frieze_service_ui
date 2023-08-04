@@ -1,16 +1,18 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import axios from "axios";
 
 import {
   GoogleMap,
   MarkerF,
   Polyline,
+  useGoogleMap,
   useLoadScript,
 } from "@react-google-maps/api";
 
 import { LatLng } from "use-places-autocomplete";
-import { ElseUtils } from "@/libs/else.utils";
 import { AddressInfo } from "../modal/AddressModal";
+import Image from "next/image";
+import { ElseUtils } from "@/libs/else.utils";
 
 // 경로 결과 정보
 export interface PathInfoProp {
@@ -48,11 +50,11 @@ export interface FreizLocationInfo {
   icon: string;
 }
 export const freizLocations: FreizLocationInfo[] = [
-  // {
-  //   name: "coex",
-  //   location: { lat: 37.513364, lng: 127.058262 },
-  //   icon: "freiz_white.png",
-  // },
+  {
+    name: "coex",
+    location: { lat: 37.513364, lng: 127.058262 },
+    icon: "freiz_white.png",
+  },
 ];
 
 export function GoogleMapComponent({
@@ -71,14 +73,44 @@ export function GoogleMapComponent({
   // 프리트 요청 마커
   const [freizLocation, setFreizLocation] = useState<FreizLocationInfo[]>([]);
 
-  //
+  const [isMoving, setIsMoving] = useState(false);
+
   const [isCoexCenter, setIsCoexCenter] = useState(false);
-  const mapRef = useRef(null);
   const [libraries, setlibraries] = useState<string[]>(["places"]);
   const [paths, setPaths] = useState<{ lng: any; lat: any }[]>([]);
   const [center, setCenter] = useState<LatLng>();
-  const handleMapLoad = (map: any) => {
+
+  const [widthSize, setWidthSize] = useState(0);
+
+  const mapRef = useRef<google.maps.Map>();
+  const onMapLoad = (map: any) => {
     mapRef.current = map;
+  };
+
+  const onMapMove = (isEnd = false) => {
+    if (mapRef.current) {
+      if (isEnd) {
+        let lat = mapRef.current.getCenter()!.lat();
+        let lng = mapRef.current.getCenter()!.lng();
+        axios.get(`/api/google.map/info?lat=${lat}&lng=${lng}`).then((d) => {
+          const temp = d.data.results[0];
+          axios
+            .get(`/api/google.map/latlng?place_id=${temp.place_id}`)
+            .then((d) => {
+              setStartLocation!({
+                desc: temp.formatted_address,
+                placeId: temp.place_id,
+                location: d.data.result.geometry.location,
+              });
+            });
+        });
+        setCenter({ lat, lng });
+      } else {
+        let lat = mapRef.current.getCenter()!.lat();
+        let lng = mapRef.current.getCenter()!.lng();
+        setCenter({ lat, lng });
+      }
+    }
   };
 
   const mapOptions = useMemo<google.maps.MapOptions>(
@@ -196,6 +228,7 @@ export function GoogleMapComponent({
   // 초기
   useEffect(() => {
     setFreizLocation(freizLocations);
+    setWidthSize(window.innerWidth);
   }, []);
 
   if (!isLoaded) {
@@ -204,14 +237,20 @@ export function GoogleMapComponent({
   return (
     <>
       <GoogleMap
-        onLoad={(e: google.maps.Map) => handleMapLoad(e)}
+        // onLoad={(e: google.maps.Map) => handleMapLoad(e)}
+        onLoad={onMapLoad}
         options={mapOptions}
         zoom={zoom}
         center={center}
         mapTypeId={google.maps.MapTypeId.ROADMAP}
         mapContainerStyle={size}
+        onDragStart={() => setIsMoving(true)}
+        onDragEnd={() => {
+          onMapMove(true);
+          setIsMoving(false);
+        }}
       >
-        {freizLocation.map((d, k) => {
+        {/* {freizLocation.map((d, k) => {
           return (
             <MarkerF
               key={k}
@@ -248,44 +287,57 @@ export function GoogleMapComponent({
               }}
             />
           );
-        })}
+        })} */}
 
-        <Polyline
+        {/* <Polyline
           path={paths}
           options={{
             strokeColor: "#FF0000",
             strokeOpacity: 1.0,
             strokeWeight: 2,
           }}
-        />
+        /> */}
 
         {/* 중앙값이 있고 코엑스중앙값이 아닐때만 마커 출력 */}
         {center !== undefined && isCoexCenter === false ? (
-          <MarkerF
-            position={center}
-            icon={"/freiz_location/start.png"}
-            onLoad={() => console.log("Start Marker Loaded")}
-            draggable
-            onDragEnd={(e) => {
-              const { latLng } = e;
-              const lat = latLng!.lat();
-              const lng = latLng!.lng();
-              axios
-                .get(`/api/google.map/info?lat=${lat}&lng=${lng}`)
-                .then((d) => {
-                  const temp = d.data.results[0];
+          <>
+            {isMoving ? (
+              <div className={`z-50 absolute top-[34%] left-[46%]`}>
+                <Image
+                  alt=''
+                  src='/freiz_location/start.png'
+                  width={33}
+                  height={55}
+                />
+              </div>
+            ) : (
+              <MarkerF
+                position={center}
+                icon={"/freiz_location/start.png"}
+                onLoad={() => console.log("Start Marker Loaded")}
+                // draggable
+                onDragEnd={(e) => {
+                  const { latLng } = e;
+                  const lat = latLng!.lat();
+                  const lng = latLng!.lng();
                   axios
-                    .get(`/api/google.map/latlng?place_id=${temp.place_id}`)
+                    .get(`/api/google.map/info?lat=${lat}&lng=${lng}`)
                     .then((d) => {
-                      setStartLocation!({
-                        desc: temp.formatted_address,
-                        placeId: temp.place_id,
-                        location: d.data.result.geometry.location,
-                      });
+                      const temp = d.data.results[0];
+                      axios
+                        .get(`/api/google.map/latlng?place_id=${temp.place_id}`)
+                        .then((d) => {
+                          setStartLocation!({
+                            desc: temp.formatted_address,
+                            placeId: temp.place_id,
+                            location: d.data.result.geometry.location,
+                          });
+                        });
                     });
-                });
-            }}
-          />
+                }}
+              />
+            )}
+          </>
         ) : (
           ""
         )}
@@ -295,14 +347,14 @@ export function GoogleMapComponent({
               position={pathLocation.start}
               onLoad={() => console.log("Marker Loaded")}
               icon={"/freiz_location/from.png"}
-              // draggable
-              // onDragEnd={(e) => {
-              //   console.log("From - Drag END");
-              //   const { latLng } = e;
-              //   const lat = latLng!.lat();
-              //   const lng = latLng!.lng();
-              //   setCenter({ lat, lng });
-              // }}
+              draggable
+              onDragEnd={(e) => {
+                console.log("From - Drag END");
+                const { latLng } = e;
+                const lat = latLng!.lat();
+                const lng = latLng!.lng();
+                setCenter({ lat, lng });
+              }}
             />
             <MarkerF
               position={pathLocation.goal}
