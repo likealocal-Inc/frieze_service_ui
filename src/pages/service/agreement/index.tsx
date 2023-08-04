@@ -93,7 +93,6 @@ export default function AgreementPage() {
       agreement: [false, false, false, false],
     });
 
-    console.log("SDFSDF");
     accordion!.toggle("accordion-example-heading-1");
   };
 
@@ -122,13 +121,27 @@ export default function AgreementPage() {
   };
 
   const onConfirm = () => {
+    var checkboxes = document.getElementById("cb_all");
     if (
       agreementData.passportName === "" ||
       agreementData.email === "" ||
       agreementData.agreement.includes(false)
     ) {
+      if (agreementData.agreement.includes(false)) {
+        if (accordion !== undefined) {
+          accordion.open("accordion-collapse-heading-1");
+        }
+        (checkboxes as HTMLInputElement).checked = false;
+      } else {
+        if (accordion !== undefined) {
+          accordion.close("accordion-collapse-heading-1");
+        }
+        (checkboxes as HTMLInputElement).checked = true;
+      }
+
       setOk(false);
     } else {
+      (checkboxes as HTMLInputElement).checked = true;
       setOk(true);
     }
   };
@@ -283,13 +296,8 @@ export default function AgreementPage() {
           <div className='rounded-sm ring-1 ring-gray-200 p-[16px]'>
             {/* 전체동의 */}
             <div id='accordion-collapse' data-accordion='collapse'>
-              <div id='accordion-collapse-heading-1'>
-                <div
-                  className='flex items-center justify-between w-full font-medium text-left bg-white'
-                  data-accordion-target='#accordion-collapse-body-1'
-                  aria-expanded='true'
-                  aria-controls='accordion-collapse-body-1'
-                >
+              <div>
+                <div className='flex items-center justify-between w-full font-medium text-left bg-white'>
                   <div className='flex items-center justify-around'>
                     <input
                       id='cb_all'
@@ -309,7 +317,13 @@ export default function AgreementPage() {
                       Agree to all terms and conditions
                     </label>
                   </div>
-                  <div className='pr-[5px]'>
+                  <div
+                    id='accordion-collapse-heading-1'
+                    className='pr-[5px] bg-white'
+                    data-accordion-target='#accordion-collapse-body-1'
+                    aria-expanded='true'
+                    aria-controls='accordion-collapse-body-1'
+                  >
                     <svg
                       data-accordion-icon
                       className='w-4 h-4 rotate-180 shrink-0'
