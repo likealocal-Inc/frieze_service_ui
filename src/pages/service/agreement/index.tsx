@@ -51,18 +51,9 @@ export default function AgreementPage() {
       alwaysOpen: false,
       activeClasses: "text-[#262628] text-[24px]",
       inactiveClasses: "text-[#262628] text-[24px]",
-      onOpen: (item) => {
-        console.log("accordion item has been shown");
-        console.log(item);
-      },
-      onClose: (item) => {
-        console.log("accordion item has been hidden");
-        console.log(item);
-      },
-      onToggle: (item) => {
-        console.log("accordion item has been toggled");
-        console.log(item);
-      },
+      onOpen: (item) => {},
+      onClose: (item) => {},
+      onToggle: (item) => {},
     };
 
     const _accordion: AccordionInterface = new Accordion(
