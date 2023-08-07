@@ -25,16 +25,19 @@ export default async function handler(
           email: emailEn,
         }
       );
+
       if (
         checkEmailRes.data.data === null ||
         checkEmailRes.data.data === undefined
       ) {
+        // 사용자가 없을때 =-> 생성해야 함
         const url = process.env.SERVERIPPORT;
         callResult = await axios.post(`${CallInfo.urlBase}/c.user`, {
           email: emailEn,
           name: nameEn,
           authUrl: `${url}/user/auth`,
         });
+
         res.status(200).json({ success: true, data: callResult.data.data });
       } else {
         if (checkEmailRes.data.data.isAuth === true) {
@@ -52,6 +55,7 @@ export default async function handler(
         }
       }
     } catch (err: any) {
+      console.log(err);
       res.status(500).json({ success: false, info: CODES.API_CALL_ERROR });
     }
   }

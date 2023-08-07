@@ -15,6 +15,7 @@ export default function PaymentDonePage() {
 
   const [widthSize, setWidthSize] = useState(0);
 
+  const [showCancelModal, setShowCancelModal] = useState(false);
   useEffect(() => {
     setWidthSize(window.innerWidth);
 
@@ -55,19 +56,41 @@ export default function PaymentDonePage() {
           <div
             className={`bg-[#F5F6FA] w-[${widthSize}px] h-screen px-[20px] pb-[130px]`}
           >
-            <div
-              className='pt-[40px]'
-              onClick={(e) => (location.href = "/service/map")}
-            >
-              <Image src={"/img/home_icon.svg"} width={44} height={44} alt='' />
+            <div className='pt-[40px]' />
+            <div className='flex justify-between'>
+              <div
+                className=''
+                onClick={(e) => (location.href = "/service/map")}
+              >
+                <Image
+                  src={"/img/home_icon.svg"}
+                  width={44}
+                  height={44}
+                  alt=''
+                />
+              </div>
+              <div
+                className='w-[87px] h-[38px] bg-[#e0e0e0] rounded-[40px] justify-center items-center flex flex-row gap-2.5 relative overflow-hidden'
+                onClick={(e) => {
+                  setShowCancelModal(true);
+                }}
+              >
+                <div
+                  className='text-[#000000] text-center relative'
+                  style={{ font: "500 14px/22px 'Pretendard', sans-serif" }}
+                >
+                  호출취소
+                </div>
+              </div>
             </div>
+
             <div className='flex flex-col items-center justify-center'>
-              <Image
+              {/* <Image
                 src={"/img/check_icon.svg"}
                 width={56}
                 height={56}
                 alt=''
-              />
+              /> */}
               <div className='mt-[12px]' />
               <div
                 className='relative text-center'
@@ -219,7 +242,7 @@ export default function PaymentDonePage() {
                 </div>
               </div>
               <div className='mt-[40px]' />
-              <div className='bg-black h-[63px] rounded-xl w-full flex flex-col items-center text-white font-sans text-[13px] justify-center'>
+              {/* <div className='bg-black h-[63px] rounded-xl w-full flex flex-col items-center text-white font-sans text-[13px] justify-center'>
                 <div className='flex'>
                   <div className=''>Further</div>
                   <div className='ml-[2px] font-bold text-[#0085FE]'>
@@ -228,7 +251,7 @@ export default function PaymentDonePage() {
                 </div>
                 <div className='mt-[3px]' />
                 will be provided through the chat room!
-              </div>
+              </div> */}
 
               <button
                 className='bg-[#0085fe] rounded-[10px] pt-3 pr-10 pb-3 pl-10 flex flex-row gap-16 items-center justify-center h-14 relative border-0 w-full custom-button-1'
@@ -249,6 +272,50 @@ export default function PaymentDonePage() {
       ) : (
         ""
       )}
+      <div
+        className={
+          showCancelModal === true
+            ? `absolute top-0 left-0 w-full h-full bg-gray-500 bg-opacity-60 flex justify-center items-center`
+            : `hidden`
+        }
+      >
+        <div className='bg-white rounded-2xl pt-2 flex flex-col gap-0 items-center justify-start w-[328px] h-[146px] relative overflow-hidden'>
+          <div className='relative self-stretch overflow-hidden shrink-0 h-14'>
+            <div className='absolute rounded-lg right-2 left-2 bottom-1 top-1'></div>
+
+            <div
+              className='text-high-emphasis text-center absolute right-6 left-6 top-[calc(50%_-_24px)] flex items-center justify-center'
+              style={{ font: "700 19px/24px 'Pretendard', sans-serif" }}
+            >
+              Are you sure you want to cancel the call?
+            </div>
+          </div>
+          <div className='mt-[20px]'></div>
+
+          <div className='flex'>
+            <div className='w-[135px] h-[45px] border-gray-300 rounded-xl border-solid border-1'>
+              <div
+                className='flex items-center justify-center w-full h-full text-center text-gray-500'
+                style={{ font: "500 14px/24px 'Pretendard', sans-serif" }}
+              >
+                Keep Call
+              </div>
+            </div>
+            <div className='ml-[8px]'></div>
+            <div className='w-[135px] h-[45px] bg-[#0085fe] rounded-xl'>
+              <div
+                className='flex items-center justify-center w-full h-full text-center text-white '
+                style={{ font: "500 14px/24px 'Pretendard', sans-serif" }}
+                onClick={(e) => {
+                  setShowCancelModal(false);
+                }}
+              >
+                Cancel the Call
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

@@ -207,7 +207,9 @@ export function GooglePathMapComponent({
   return (
     <>
       {isLoading ? (
-        <div className='flex flex-col items-center justify-center font-sans h-[480px]'>
+        <div
+          className={`flex flex-col items-center justify-center font-sans h-[280px]`}
+        >
           <svg
             aria-hidden='true'
             className='w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600'

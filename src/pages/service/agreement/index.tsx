@@ -65,7 +65,7 @@ export default function AgreementPage() {
   }, []);
 
   useEffect(() => {
-    onConfirm();
+    onConfirm(false);
   }, [agreementData]);
 
   /**
@@ -84,7 +84,8 @@ export default function AgreementPage() {
       agreement: [false, false, false, false],
     });
 
-    accordion!.toggle("accordion-example-heading-1");
+    if (accordion === undefined) return;
+    // accordion!.toggle("accordion-example-heading-1");
   };
 
   /**
@@ -108,10 +109,10 @@ export default function AgreementPage() {
         check.target.checked,
       ],
     });
-    onConfirm();
+    onConfirm(true);
   };
 
-  const onConfirm = () => {
+  const onConfirm = (isCheckBox: boolean) => {
     var checkboxes = document.getElementById("cb_all");
     if (
       agreementData.passportName === "" ||
@@ -119,12 +120,12 @@ export default function AgreementPage() {
       agreementData.agreement.includes(false)
     ) {
       if (agreementData.agreement.includes(false)) {
-        if (accordion !== undefined) {
+        if (accordion !== undefined && isCheckBox === true) {
           accordion.open("accordion-collapse-heading-1");
         }
         (checkboxes as HTMLInputElement).checked = false;
       } else {
-        if (accordion !== undefined) {
+        if (accordion !== undefined && isCheckBox === true) {
           accordion.close("accordion-collapse-heading-1");
         }
         (checkboxes as HTMLInputElement).checked = true;
@@ -166,12 +167,16 @@ export default function AgreementPage() {
         name: agreementData.passportName,
       })
       .then((res) => {
+        console.log("--------------------------sdfsdf");
+        console.log(res);
         // 체크 비활성화
         upSelectAll();
         location.href = "/service/emailAuth";
         return;
       })
       .catch((err) => {
+        console.log("-----------------------");
+        console.log(err);
         // 이미 존재하는 이메일 -> 인증 여부에 때라서 처리함
         if (err.response.data.info.code === CODES.ALREADY_EXIST_EMAIL.code) {
           axios.get(`/api/user?email=${err.response.data.data}`).then((d) => {
@@ -254,7 +259,7 @@ export default function AgreementPage() {
                     ...agreementData,
                     passportName: e.target.value,
                   });
-                  onConfirm();
+                  onConfirm(false);
                 }}
               />
               <div className={`mt-[16px]`} />
@@ -276,7 +281,7 @@ export default function AgreementPage() {
                     ...agreementData,
                     email: e.target.value,
                   });
-                  onConfirm();
+                  onConfirm(false);
                 }}
               />
             </div>
