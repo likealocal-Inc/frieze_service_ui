@@ -32,7 +32,9 @@ const LayoutAuth = ({
   }, [isLogo]);
 
   useEffect(() => {
-    const _userId = ElseUtils.getLocalStorage(ElseUtils.localStorageUserIdKey);
+    const _userId = ElseUtils.getLocalStorageWithoutDecoding(
+      ElseUtils.localStorageUserIdKey
+    );
     if (_userId === null) {
       ElseUtils.moveAgreementPage();
       return;

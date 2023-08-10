@@ -9,7 +9,9 @@ export default function HistoryDetailPage() {
   const [data, setdata] = useState<OrderModel>();
   const [user, setUser] = useState<any>();
   useEffect(() => {
-    const data = ElseUtils.getLocalStorage(ElseUtils.localStorageOrderDetail);
+    const data = ElseUtils.getLocalStorageWithoutDecoding(
+      ElseUtils.localStorageOrderDetail
+    );
     if (data === null || data === undefined) {
       history.back();
       return;

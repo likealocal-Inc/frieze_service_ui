@@ -10,7 +10,7 @@ export default function AuthEmailPage() {
   const [email, setEmail] = useState();
 
   const sendAuthEmail = () => {
-    const info = ElseUtils.getLocalStorage("agreement")!;
+    const info = ElseUtils.getLocalStorageWithoutDecoding("agreement")!;
     if (info === null || info === undefined) {
       ElseUtils.moveAgreementPage();
       return;
@@ -23,7 +23,7 @@ export default function AuthEmailPage() {
     });
   };
   useEffect(() => {
-    const agreement = ElseUtils.getLocalStorage("agreement");
+    const agreement = ElseUtils.getLocalStorageWithoutDecoding("agreement");
     if (agreement === null || agreement === undefined) {
       ElseUtils.moveAgreementPage();
       return;

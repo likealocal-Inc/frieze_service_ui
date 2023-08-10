@@ -16,7 +16,7 @@ export default function PaymentPage() {
     }
     setUser(userInfo);
 
-    const data = ElseUtils.getLocalStorage("zzppoo");
+    const data = ElseUtils.getLocalStorageWithoutDecoding("zzppoo");
     if (data !== null && data !== undefined) {
       const dataStr = SecurityUtils.decryptText(data);
       if (
@@ -42,17 +42,17 @@ export default function PaymentPage() {
               <button
                 className='w-20 h-20'
                 onClick={(e) => {
-                  const priceInfoStr = ElseUtils.getLocalStorage(
+                  const priceInfoStr = ElseUtils.getLocalStorageWithoutDecoding(
                     ElseUtils.localStoragePrideInfo
                   );
-                  const startInfoStr = ElseUtils.getLocalStorage(
+                  const startInfoStr = ElseUtils.getLocalStorageWithoutDecoding(
                     ElseUtils.localStorageStartInfo
                   );
-                  const goalInfoStr = ElseUtils.getLocalStorage(
+                  const goalInfoStr = ElseUtils.getLocalStorageWithoutDecoding(
                     ElseUtils.localStorageGoalInfo
                   );
 
-                  const userStr = ElseUtils.getLocalStorage(
+                  const userStr = ElseUtils.getLocalStorageWithoutDecoding(
                     ElseUtils.localStorageUserIdKey
                   );
 
@@ -82,7 +82,7 @@ export default function PaymentPage() {
                       if (d.data.success) {
                         // 결제완료 후 정보 저장
                         const data = JSON.stringify(d.data.data);
-                        ElseUtils.setLocalStorage(
+                        ElseUtils.setLocalStoragWithEncoding(
                           ElseUtils.localStorageOrderDetail,
                           data
                         );

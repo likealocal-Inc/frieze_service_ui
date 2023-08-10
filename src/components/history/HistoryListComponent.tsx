@@ -14,7 +14,7 @@ export default function HistoryListComponent({
   const [list, setList] = useState<OrderModel[]>([]);
   useEffect(() => {
     const userId = SecurityUtils.decryptText(
-      ElseUtils.getLocalStorage(ElseUtils.localStorageUserIdKey)!
+      ElseUtils.getLocalStorageWithoutDecoding(ElseUtils.localStorageUserIdKey)!
     );
     axios.get(`/api/order?userId=${userId}`).then((d) => {
       setList(d.data.data);
@@ -48,7 +48,7 @@ export default function HistoryListComponent({
                         <div
                           className='text-[#0085fe] text-left relative flex items-center justify-start font-sans text-[14px]'
                           onClick={(e) => {
-                            ElseUtils.setLocalStorage(
+                            ElseUtils.setLocalStoragWithEncoding(
                               ElseUtils.localStorageOrderDetail,
                               JSON.stringify(d)
                             );

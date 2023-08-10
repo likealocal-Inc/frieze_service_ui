@@ -85,8 +85,12 @@ export function GooglePathMapComponent({
 
     setCenter({ lat: 37.513364, lng: 127.058262 });
 
-    const start = ElseUtils.getLocalStorage(ElseUtils.localStorageStartInfo);
-    const goal = ElseUtils.getLocalStorage(ElseUtils.localStorageGoalInfo);
+    const start = ElseUtils.getLocalStorageWithoutDecoding(
+      ElseUtils.localStorageStartInfo
+    );
+    const goal = ElseUtils.getLocalStorageWithoutDecoding(
+      ElseUtils.localStorageGoalInfo
+    );
 
     if (start === null || goal === null) {
       location.href = "/service/map";
@@ -127,11 +131,17 @@ export function GooglePathMapComponent({
             const fuelPrice = summary.fuelPrice;
             const taxiPrice = summary.taxiFare;
             const tollFare = summary.tollFare;
-            const lastPrice = Math.ceil(
-              (taxiPrice + tollFare + (taxiPrice + tollFare) / 2) /
-                d.data.data.exchangeRate
-            );
-
+            const lastPrice = 1;
+            // const lastPrice = Math.ceil(
+            //   (taxiPrice + tollFare + (taxiPrice + tollFare) / 2) /
+            //     d.data.data.exchangeRate
+            // );
+            // const lastUSPrice =
+            //   Math.ceil(
+            //     (taxiPrice + tollFare + (taxiPrice + tollFare) / 2) /
+            //       d.data.data.exchangeRate
+            //   ) * 100;
+            const lastUSPrice = 100; // 테스트를 위해서 무조건 1달라로 처리
             setPathInfo({
               distance,
               duration,
@@ -139,6 +149,7 @@ export function GooglePathMapComponent({
               taxiPrice,
               tollFare,
               lastPrice,
+              lastUSPrice,
             });
 
             const tempPaths = [];
@@ -241,7 +252,7 @@ export function GooglePathMapComponent({
           mapTypeId={google.maps.MapTypeId.ROADMAP}
           mapContainerStyle={size}
         >
-          {freizLocation.map((d, k) => {
+          {/* {freizLocation.map((d, k) => {
             return (
               <MarkerF
                 key={k}
@@ -253,34 +264,31 @@ export function GooglePathMapComponent({
                 }}
               />
             );
-          })}
-
-          <Polyline
-            path={paths}
-            options={{
-              strokeColor: "#FF0000",
-              strokeOpacity: 1.0,
-              strokeWeight: 2,
-            }}
-          />
+          })} */}
 
           <MarkerF
             position={startLocation!.location!}
             onLoad={() => console.log("Marker Loaded")}
             icon={"/freiz_location/from.png"}
-            // draggable
-            // onDragEnd={(e) => {
-            //   const { latLng } = e;
-            //   const lat = latLng!.lat();
-            //   const lng = latLng!.lng();
-            //   setCenter({ lat, lng });
-            // }}
           />
           <MarkerF
             position={goalLocation!.location!}
             onLoad={() => console.log("Marker Loaded")}
             icon={"/freiz_location/to.png"}
           />
+
+          {paths.length > 0 ? (
+            <Polyline
+              path={paths}
+              options={{
+                strokeColor: "#FF0000",
+                strokeOpacity: 1.0,
+                strokeWeight: 2,
+              }}
+            />
+          ) : (
+            ""
+          )}
         </GoogleMap>
       </div>
     </>

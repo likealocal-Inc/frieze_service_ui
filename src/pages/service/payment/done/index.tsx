@@ -6,19 +6,165 @@ import { OrderModel } from "../../../../models/order";
 import { ElseUtils } from "@/libs/else.utils";
 import { SecurityUtils } from "@/libs/security.utils";
 import ChannelService from "@/libs/channel.utils";
+import { useRouter } from "next/router";
+import axios from "axios";
+import getConfig from "next/config";
 
 export default function PaymentDonePage() {
   const [orderModel, setOrderModel] = useState<OrderModel>();
   const [user, setUser] = useState<any>();
-
   const [channel, setChannel] = useState<any>(undefined);
-
   const [widthSize, setWidthSize] = useState(0);
-
+  const router = useRouter();
   const [showCancelModal, setShowCancelModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  let isCheckCount = 0;
+
+  // 결제 처리 여부
+  const [isPayResult, setIsPayResult] = useState(false);
+  useEffect(() => {
+    if (!router.isReady) return;
+    // 결제 결과 데이터
+    const paymentStr = router.query.qpdkdnfnud;
+
+    console.log("paymentStr", paymentStr);
+    // 비정상적인 접근 -> 맵화면으로 이동
+    if (paymentStr === undefined || paymentStr === null) {
+      alert("비정상적인 접근");
+      // ElseUtils.moveMapPage();
+      return;
+    }
+
+    // 결제결과 데이터를 저장
+    ElseUtils.setLocalStoragWithEncoding(
+      ElseUtils.localStoragePaymentResult,
+      paymentStr as string
+    );
+
+    // 결제 정보 파싱
+    const paymentJson = JSON.parse(
+      SecurityUtils.decryptText(paymentStr as string)
+    );
+
+    // 결제 메타정보 꺼내기
+    const paymentInit = ElseUtils.getLocalStorageWithoutDecoding(
+      ElseUtils.localStoragePaymentMetaInfo
+    );
+
+    console.log("paymentInit", paymentInit);
+
+    if (paymentInit === null) {
+      alert("비정상적인 접근");
+      // ElseUtils.moveMapPage();
+      return;
+    }
+
+    // 한번만 실행하게 처리
+    if (isCheckCount++ === 0) {
+      // 결제 메타정보 JSON데이터
+      const paymentInitJson = JSON.parse(
+        SecurityUtils.decryptText(paymentInit)
+      );
+
+      // 결제 리턴값에 결제메타정보의 DB ID를 추가 -> DB에 업데이트 하기 위함
+      paymentJson.id = paymentInitJson.id;
+
+      // DB에 넣기 위해서 다시 암호화
+      const params = SecurityUtils.encryptText(JSON.stringify(paymentJson));
+
+      // 결제 최종처리
+      saveDBOrderAndPayment(params);
+    }
+  }, [router]);
+
+  const saveDBOrderAndPayment = async (paymentParam: string) => {
+    const priceInfoStr = ElseUtils.getLocalStorageWithoutDecoding(
+      ElseUtils.localStoragePrideInfo
+    );
+    const startInfoStr = ElseUtils.getLocalStorageWithoutDecoding(
+      ElseUtils.localStorageStartInfo
+    );
+    const goalInfoStr = ElseUtils.getLocalStorageWithoutDecoding(
+      ElseUtils.localStorageGoalInfo
+    );
+
+    const userStr = ElseUtils.getLocalStorageWithoutDecoding(
+      ElseUtils.localStorageUserIdKey
+    );
+
+    // 문제가 있는 경우
+    if (
+      priceInfoStr === undefined ||
+      priceInfoStr === null ||
+      startInfoStr === undefined ||
+      startInfoStr === null ||
+      goalInfoStr === undefined ||
+      goalInfoStr === null ||
+      userStr === undefined ||
+      userStr === null
+    ) {
+      location.href = "/service/map";
+      return;
+    }
+
+    // axios
+    // .patch(`${publicRuntimeConfig.APISERVER}/order/payment/payresult`, {
+    //   aeindifo: params,
+    // })
+    // .then((d) => {
+    //   if (d.data.success == true) {
+
+    //     setIsLoading(false);
+    //   } else {
+    //     console.log("결제처리 실패");
+    //   }
+    // })
+    // .catch((e) => {
+    //   alert("결제처리 오류");
+    //   return;
+    // });
+
+    // 주문을 생성하면서 주문 ID와 결제결과 데이터를 주문데이터에 업데이트 처리함
+    axios
+      .post("/api/order", {
+        t1: userStr,
+        t2: startInfoStr,
+        t3: goalInfoStr,
+        t4: priceInfoStr,
+        aeindifo: paymentParam,
+      })
+      .then((d) => {
+        // 결제완료 후 정보 저장
+        const data = JSON.stringify(d.data.data);
+        ElseUtils.setLocalStoragWithEncoding(
+          ElseUtils.localStorageOrderDetail,
+          data
+        );
+
+        console.log(data);
+
+        const order = JSON.parse(data);
+        setOrderModel(order);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 200);
+      })
+      .catch((e) => {
+        console.log(e);
+        alert(e.response.data.data);
+        // TODO: 배포전 아래 주석 풀어야 함
+        // location.href = "/service/payment/cancel";
+      });
+  };
+
+  // 화면, 채널톡 세팅
   useEffect(() => {
     setWidthSize(window.innerWidth);
+    settingChanneltalk();
+  }, []);
 
+  const settingChanneltalk = () => {
     const obj = new ChannelService();
     obj.loadScript();
 
@@ -28,30 +174,20 @@ export default function PaymentDonePage() {
       hideChannelButtonOnBoot: true,
     });
     setChannel(obj);
-  }, []);
+  };
 
   useEffect(() => {
-    const orderStr = ElseUtils.getLocalStorage(
-      ElseUtils.localStorageOrderDetail
-    );
-
-    if (orderStr === null || orderStr === undefined) {
-      ElseUtils.moveMapPage();
-      return;
-    }
     const userInfo = ElseUtils.getLocalstorageUser();
     if (userInfo == null) {
       ElseUtils.moveMapPage();
       return;
     }
     setUser(userInfo);
-    const order = JSON.parse(SecurityUtils.decryptText(orderStr));
-    setOrderModel(order);
   }, []);
 
   return (
     <>
-      {orderModel ? (
+      {orderModel && isLoading === false ? (
         <LayoutAuth menuTitle='' isLogo={false} isMargin={false}>
           <div
             className={`bg-[#F5F6FA] w-[${widthSize}px] h-screen px-[20px] pb-[130px]`}

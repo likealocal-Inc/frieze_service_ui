@@ -1,6 +1,6 @@
 import InformationModal from "@/components/modal/InformationModal";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../../../../css/information/private.infomation.css";
 import { GooglePathMapComponent } from "@/components/map/GooglePathMapComponent";
 import { AddressInfo } from "@/components/modal/AddressModal";
@@ -8,6 +8,13 @@ import { ElseUtils } from "@/libs/else.utils";
 import LayoutAuth from "@/components/layouts/LayoutAuth";
 import { SecurityUtils } from "@/libs/security.utils";
 import { useRouter } from "next/router";
+import { IBookingFormData, PaymentMetaInfo } from "../../payment";
+import { SubmitHandler, useForm } from "react-hook-form";
+import axios from "axios";
+import getConfig from "next/config";
+import NicePaymentForm from "@/components/NicePayment/NicePaymentForm";
+import GlobalScript from "@/libs/GlobalScript";
+const { publicRuntimeConfig } = getConfig();
 
 // 경로 결과 정보
 export interface PathInfoProp {
@@ -17,6 +24,7 @@ export interface PathInfoProp {
   taxiPrice: number;
   tollFare: number;
   lastPrice: number;
+  lastUSPrice: number;
 }
 export default function MapPathPage() {
   const router = useRouter();
@@ -29,6 +37,7 @@ export default function MapPathPage() {
   const [goalLocation, setGoalLocation] = useState<AddressInfo>();
 
   const [widthSize, setWidthSize] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [isGetPath, setIsGetPath] = useState(true);
   const [priceInfo, setPriceInfo] = useState<PathInfoProp>({
@@ -38,11 +47,17 @@ export default function MapPathPage() {
     taxiPrice: 0,
     tollFare: 0,
     lastPrice: 0,
+    lastUSPrice: 0,
   });
 
+  let num = 0;
   const [isOk, setIsOk] = useState(false);
-
   const [user, setUser] = useState<any>();
+
+  const [tempKey, _] = useState(`k-${new Date().getTime()}`);
+
+  // 주문 메타정보 가져 왔는지 여부
+  const [isGetPayMetaInfo, setIsGetPayMetaInfo] = useState(false);
 
   useEffect(() => {
     (document.body.style as any).zoom = "100%";
@@ -50,10 +65,21 @@ export default function MapPathPage() {
 
   useEffect(() => {
     // 현재 디바이스의 가로 길이를 가져옴
-    setWidthSize(390);
+    setWidthSize(window.innerWidth);
 
-    const start = ElseUtils.getLocalStorage(ElseUtils.localStorageStartInfo);
-    const goal = ElseUtils.getLocalStorage(ElseUtils.localStorageGoalInfo);
+    const userInfo = ElseUtils.getLocalstorageUser();
+    if (userInfo == null) {
+      ElseUtils.moveMapPage();
+      return;
+    }
+    setUser(userInfo);
+
+    const start = ElseUtils.getLocalStorageWithoutDecoding(
+      ElseUtils.localStorageStartInfo
+    );
+    const goal = ElseUtils.getLocalStorageWithoutDecoding(
+      ElseUtils.localStorageGoalInfo
+    );
 
     if (start === null || goal === null) {
       ElseUtils.moveMapPage();
@@ -66,13 +92,6 @@ export default function MapPathPage() {
     setStartLocation(startJson);
     setGoalLocation(goalJaon);
 
-    const userInfo = ElseUtils.getLocalstorageUser();
-    if (userInfo == null) {
-      ElseUtils.moveMapPage();
-      return;
-    }
-    setUser(userInfo);
-
     if (router.query.from === "cancel") {
       setShowPayModal(true);
     }
@@ -81,12 +100,56 @@ export default function MapPathPage() {
   useEffect(() => {
     if (priceInfo.taxiPrice === 0) return;
 
-    ElseUtils.setLocalStorage(
+    // 경로 금액 계산 결과 값을 세팅
+    ElseUtils.setLocalStoragWithEncoding(
       ElseUtils.localStoragePrideInfo,
       JSON.stringify(priceInfo)
     );
 
     setTimeout(() => {
+      // 결제때 사용한 이메일 가져옴
+      const priceInfoStr = ElseUtils.getLocalStorageWithoutDecoding(
+        ElseUtils.localStoragePrideInfo
+      );
+      if (priceInfoStr === null || priceInfoStr === undefined) {
+        ElseUtils.moveMapPage();
+        return;
+      }
+      const priceInfo = SecurityUtils.decryptText(priceInfoStr);
+
+      // 결제 정보 가져 왔으면 중단
+      if (isGetPayMetaInfo === true) return;
+
+      // 결제초기세팅
+      const param = {
+        email: user.email,
+        price: JSON.parse(priceInfo).lastUSPrice,
+        tempKey: tempKey,
+      };
+
+      // 결제를 위한 초기 정보를 읽어옴
+      if (++num === 1) {
+        axios
+          .post(`${publicRuntimeConfig.APISERVER}/order/payment/init`, {
+            kdjifnkd44333: SecurityUtils.encryptText(JSON.stringify(param)),
+          })
+          .then((d) => {
+            if (d.data !== false) {
+              // 결제 정보 가져온거 세팅
+              setIsGetPayMetaInfo(true);
+
+              // 데이터 세팅
+              setPaymentMetaInfo(d.data);
+
+              // 스토리지에 데이터 저장 (여기에 메타정보가 들어 있는 모든 값이 포함 - 이후에 ID를 사용해야 함)
+              ElseUtils.setLocalStoragWithEncoding(
+                ElseUtils.localStoragePaymentMetaInfo,
+                JSON.stringify(d.data)
+              );
+            }
+          });
+      }
+
       setIsGetPath(false);
     }, 200);
     // 요금정보 저장
@@ -97,6 +160,42 @@ export default function MapPathPage() {
   //   console.log(info);
   //   setPriceInfo(info.data);
   // };
+
+  const [paymentMetaInfo, setPaymentMetaInfo] = useState<PaymentMetaInfo>({});
+
+  const formRef = useRef<HTMLFormElement>(null);
+  const mobileReturnUrlRef = useRef<HTMLInputElement>(null);
+  const {
+    register,
+    control,
+    handleSubmit,
+    getValues,
+    setValue,
+    reset,
+    trigger,
+    watch,
+    formState: { errors, isValid },
+  } = useForm<IBookingFormData>({ mode: "onChange" });
+
+  useEffect(() => {
+    const userInfo = ElseUtils.getLocalstorageUser();
+    if (userInfo == null) {
+      ElseUtils.moveMapPage();
+      return;
+    }
+    setUser(userInfo);
+
+    return;
+  }, []);
+
+  const onSubmit: SubmitHandler<IBookingFormData> = (data: any) => {
+    if (formRef.current !== null) {
+      formRef.current.action = "https://web.nicepay.co.kr/v3/v3Payment.jsp";
+      formRef.current.acceptCharset = "euc-kr";
+      formRef.current.submit();
+      return;
+    }
+  };
 
   return (
     <>
@@ -147,7 +246,7 @@ export default function MapPathPage() {
                       className='text-[#262628] text-left relative flex items-center justify-start'
                       style={{ font: "500 15px/140% 'Pretendard', sans-serif" }}
                     >
-                      {ElseUtils.truncateString(startLocation?.desc!, 40)}
+                      {ElseUtils.truncateString(startLocation?.desc!, 35)}
                     </div>
                     <div className='mt-[16px]' />
                     <div
@@ -161,7 +260,7 @@ export default function MapPathPage() {
                       className='text-[#262628] text-left relative flex items-center justify-start'
                       style={{ font: "500 15px/140% 'Pretendard', sans-serif" }}
                     >
-                      {ElseUtils.truncateString(goalLocation?.desc!, 40)}
+                      {ElseUtils.truncateString(goalLocation?.desc!, 35)}
                     </div>
                   </div>
                 </div>
@@ -201,19 +300,30 @@ export default function MapPathPage() {
                 </div>
                 <div className='pt-[20px]' />
                 <div className=''>
-                  <div
-                    className='bg-[#0085fe] rounded-[10px] flex flex-row items-center justify-center relative h-[56px]'
-                    onClick={(e) => {
-                      setShowPayModal(true);
-                    }}
-                  >
+                  {isGetPayMetaInfo ? (
                     <div
-                      className='text-[#ffffff] text-center relative'
-                      style={{ font: "500 16px 'Pretendard', sans-serif" }}
+                      className='bg-[#0085fe] rounded-[10px] flex flex-row items-center justify-center relative h-[56px]'
+                      onClick={(e) => {
+                        setShowPayModal(true);
+                      }}
                     >
-                      Call now
+                      <div
+                        className='text-[#ffffff] text-center relative'
+                        style={{ font: "500 16px 'Pretendard', sans-serif" }}
+                      >
+                        Call now
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className='bg-gray-400 rounded-[10px] flex flex-row items-center justify-center relative h-[56px]'>
+                      <div
+                        className='text-[#ffffff] text-center relative'
+                        style={{ font: "500 16px 'Pretendard', sans-serif" }}
+                      >
+                        Loading......
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -234,7 +344,7 @@ export default function MapPathPage() {
       <div
         className={
           showPayModal === false
-            ? `fixed inset-x-0 bottom-0 flex items-end justify-center transform transition-all translate-y-full`
+            ? `fixed inset-x-0 bottom-0 flex items-end justify-center transform transition-all translate-y-full `
             : `fixed inset-x-0 bottom-0 flex items-end justify-center transform transition-all translate-y-0`
         }
       >
@@ -327,9 +437,9 @@ export default function MapPathPage() {
               </div>
 
               <div className='mt-[33px]' />
-              <div className='flex'>
+              <div className='flex justify-between'>
                 <button
-                  className='bg-white text-[#0085FE] w-[168px] h-[56px] rounded-[10px] shadow-none border-0 ring-1 ring-[#0085FE] text-[16px]'
+                  className='bg-white w-full text-[#0085FE] h-[56px] rounded-[10px] shadow-none border-0 ring-1 ring-[#0085FE] text-[16px]'
                   onClick={(e) => setShowPayModal(false)}
                 >
                   Cancel
@@ -337,25 +447,27 @@ export default function MapPathPage() {
                 {isOk ? (
                   // 결제처리
                   <button
-                    className='ml-[8px] w-[174px] h-[56px] bg-[#4187FF] rounded-[10px] shadow-none border-0 ring-1 ring-[#0085FE] text-[16px] text-white'
-                    onClick={(e) => {
-                      // location.href = "/service/map/path/information";
-                      const cb = document.getElementById("cg_instructions");
-                      (cb as HTMLInputElement).checked = false;
+                    className='ml-[8px] w-full h-[56px] bg-[#4187FF] rounded-[10px] shadow-none border-0 ring-1 ring-[#0085FE] text-[16px] text-white'
+                    // onClick={(e) => {
+                    //   // location.href = "/service/map/path/information";
+                    //   const cb = document.getElementById("cg_instructions");
+                    //   (cb as HTMLInputElement).checked = false;
 
-                      // 사용자 이메일을 넣고 결제 페이지에서 사용자 이메일을 한번더 확인()
-                      ElseUtils.setLocalStorage(
-                        "zzppoo",
-                        SecurityUtils.encryptText(user.email)
-                      );
-                      // 결제 페이지로 이동
-                      location.href = "/service/payment";
-                    }}
+                    //   // 사용자 이메일을 넣고 결제 페이지에서 사용자 이메일을 한번더 확인()
+                    //   ElseUtils.setLocalStoragWithEncoding(
+                    //     "zzppoo",
+                    //     SecurityUtils.encryptText(user.email)
+                    //   );
+                    //   // 결제 페이지로 이동
+                    //   // location.href = "/service/payment";
+                    //   handleSubmit(onSubmit(e));
+                    // }}
+                    onClick={handleSubmit(onSubmit)}
                   >
                     Request
                   </button>
                 ) : (
-                  <button className='ml-[6px] w-[174px] h-[56px] bg-[#bbbbbb] rounded-[10px] shadow-none border-0 ring-0 text-[16px] text-white'>
+                  <button className='ml-[6px] w-full h-[56px] bg-[#bbbbbb] rounded-[10px] shadow-none border-0 ring-0 text-[16px] text-white'>
                     Request
                   </button>
                 )}
@@ -364,6 +476,18 @@ export default function MapPathPage() {
           </div>
         </div>
       </div>
+      {isGetPayMetaInfo ? (
+        <>
+          <NicePaymentForm
+            formRef={formRef}
+            paymentViewData={paymentMetaInfo}
+            getValues={getValues}
+          />
+          <GlobalScript />
+        </>
+      ) : (
+        ""
+      )}
 
       {/* 약관읽기 */}
       <InformationModal show={showAgreement} setShow={setShowAgreement}>

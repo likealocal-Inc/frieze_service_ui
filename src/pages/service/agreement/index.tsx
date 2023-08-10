@@ -157,7 +157,10 @@ export default function AgreementPage() {
 
     if (isGood === false) return;
 
-    ElseUtils.setLocalStorage("agreement", JSON.stringify(agreementData));
+    ElseUtils.setLocalStoragWithEncoding(
+      "agreement",
+      JSON.stringify(agreementData)
+    );
 
     // return;
     // 사용자 등록
@@ -194,7 +197,7 @@ export default function AgreementPage() {
                   return;
                 });
             } else {
-              ElseUtils.setLocalStorage(
+              ElseUtils.setLocalStoragWithEncoding(
                 ElseUtils.localStorageUserIdKey,
                 user.id
               );

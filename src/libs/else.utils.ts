@@ -7,6 +7,8 @@ export const ElseUtils = {
   localStorageStartInfo: "skdjfiefstsed9n3",
   localStorageGoalInfo: "zkdukrk3oiodjjjj@",
   localStorageOrderDetail: "dkfdskdue@34Dd!Sd",
+  localStoragePaymentMetaInfo: "kefidjne@#dkghdWED",
+  localStoragePaymentResult: "pwodnc934$dkfm+d",
   isValidEmail: (email: string) => {
     var regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return regex.test(email);
@@ -23,7 +25,7 @@ export const ElseUtils = {
     return str.slice(0, num) + "...";
   },
   setLocalstorageUser: (user: any) => {
-    ElseUtils.setLocalStorage(
+    ElseUtils.setLocalStoragWithEncoding(
       ElseUtils.localStorageUserKey,
       JSON.stringify(user)
     );
@@ -33,16 +35,18 @@ export const ElseUtils = {
     // );
   },
   getLocalstorageUser: () => {
-    const user = ElseUtils.getLocalStorage(ElseUtils.localStorageUserKey);
+    const user = ElseUtils.getLocalStorageWithoutDecoding(
+      ElseUtils.localStorageUserKey
+    );
     if (user) {
       return JSON.parse(SecurityUtils.decryptText(user));
     }
     return null;
   },
-  setLocalStorage: (key: string, val: string) => {
+  setLocalStoragWithEncoding: (key: string, val: string) => {
     localStorage.setItem(key, SecurityUtils.encryptText(val));
   },
-  getLocalStorage: (key: string) => {
+  getLocalStorageWithoutDecoding: (key: string) => {
     return localStorage.getItem(key);
   },
 
@@ -74,14 +78,22 @@ export const ElseUtils = {
     location.href = "/service/map";
   },
 
+  getUserInfoFromLocalstorage: () => {
+    const userInfo = ElseUtils.getLocalstorageUser();
+    if (userInfo == null) {
+      ElseUtils.moveMapPage();
+      return;
+    }
+    return userInfo;
+  },
   movePath: (startAccess: any, goalAccess: any, goalLocation: any) => {
     setTimeout(() => {
-      ElseUtils.setLocalStorage(
+      ElseUtils.setLocalStoragWithEncoding(
         ElseUtils.localStorageStartInfo,
         JSON.stringify(startAccess)
       );
 
-      ElseUtils.setLocalStorage(
+      ElseUtils.setLocalStoragWithEncoding(
         ElseUtils.localStorageGoalInfo,
         JSON.stringify({
           ...goalAccess,

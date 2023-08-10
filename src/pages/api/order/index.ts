@@ -15,6 +15,13 @@ export default async function handler(
     const startInfoStr = req.body.t2;
     const goalInfoStr = req.body.t3;
     const priceInfoStr = req.body.t4;
+    const aeindifo = req.body.aeindifo;
+
+    // 결제 데이터가 없으면 실패처리
+    if (aeindifo === null || aeindifo === undefined) {
+      res.status(500).json({ success: false, info: CODES.API_CALL_ERROR });
+      return;
+    }
 
     const priceInfo = SecurityUtils.decryptText(priceInfoStr);
     const startInfo = JSON.parse(SecurityUtils.decryptText(startInfoStr));
@@ -33,11 +40,16 @@ export default async function handler(
         goalAddress: goalInfo.desc,
         status: "PAYMENT",
         priceInfo: priceInfo,
+        aeindifo: aeindifo,
       });
-
+      console.log(callResult.data);
       res.status(200).json({ success: true, data: callResult.data.data });
     } catch (err: any) {
-      res.status(500).json({ success: false, info: CODES.API_CALL_ERROR });
+      console.log(err);
+      res.status(500).json({
+        success: false,
+        data: err.response.data.data.description.codeMessage,
+      });
     }
   }
 

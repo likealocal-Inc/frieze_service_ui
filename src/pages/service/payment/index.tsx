@@ -1,118 +1,144 @@
-import LayoutAuth from "@/components/layouts/LayoutAuth";
-import "../../../app/globals.css";
-import { ElseUtils } from "@/libs/else.utils";
-import { SecurityUtils } from "@/libs/security.utils";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import GlobalScript from "@/libs/GlobalScript";
+// import LayoutAuth from "@/components/layouts/LayoutAuth";
+// import "../../../app/globals.css";
+// import { ElseUtils } from "@/libs/else.utils";
+// import { SecurityUtils } from "@/libs/security.utils";
+// import { useEffect, useRef, useState } from "react";
+// import GlobalScript from "@/libs/GlobalScript";
+// import NicePaymentForm from "@/components/NicePayment/NicePaymentForm";
+// import { SubmitHandler, useForm } from "react-hook-form";
+// import axios from "axios";
+// import getConfig from "next/config";
+// const { publicRuntimeConfig } = getConfig();
 
-export default function PaymentPage() {
-  const [user, setUser] = useState<any>();
-  const [ok, setOk] = useState(false);
-  useEffect(() => {
-    const userInfo = ElseUtils.getLocalstorageUser();
-    if (userInfo == null) {
-      ElseUtils.moveMapPage();
-      return;
-    }
-    setUser(userInfo);
-
-    const data = ElseUtils.getLocalStorage("zzppoo");
-    if (data !== null && data !== undefined) {
-      const dataStr = SecurityUtils.decryptText(data);
-      if (
-        dataStr !== null &&
-        dataStr !== undefined &&
-        SecurityUtils.decryptText(dataStr) === userInfo.email
-      ) {
-        setOk(true);
-        return;
-      }
-    }
-    alert("비정상적인접근");
-    setOk(false);
-  }, []);
-
-  return (
-    <LayoutAuth menuTitle='' isMargin={false} isUasgeDetail={false}>
-      {ok ? (
-        <div className='fixed inset-0 flex items-center justify-center bg-slate-600 Z-50'>
-          <div className='flex items-center justify-center bg-white w-[327px] h-[492px] rounded-[10px]'>
-            나이스페이먼츠
-            <div className='flex flex-col'>
-              <button
-                className='w-20 h-20'
-                onClick={(e) => {
-                  const priceInfoStr = ElseUtils.getLocalStorage(
-                    ElseUtils.localStoragePrideInfo
-                  );
-                  const startInfoStr = ElseUtils.getLocalStorage(
-                    ElseUtils.localStorageStartInfo
-                  );
-                  const goalInfoStr = ElseUtils.getLocalStorage(
-                    ElseUtils.localStorageGoalInfo
-                  );
-
-                  const userStr = ElseUtils.getLocalStorage(
-                    ElseUtils.localStorageUserIdKey
-                  );
-
-                  // 문제가 있는 경우
-                  if (
-                    priceInfoStr === undefined ||
-                    priceInfoStr === null ||
-                    startInfoStr === undefined ||
-                    startInfoStr === null ||
-                    goalInfoStr === undefined ||
-                    goalInfoStr === null ||
-                    userStr === undefined ||
-                    userStr === null
-                  ) {
-                    location.href = "/service/map";
-                    return;
-                  }
-
-                  axios
-                    .post("/api/order", {
-                      t1: userStr,
-                      t2: startInfoStr,
-                      t3: goalInfoStr,
-                      t4: priceInfoStr,
-                    })
-                    .then((d) => {
-                      if (d.data.success) {
-                        // 결제완료 후 정보 저장
-                        const data = JSON.stringify(d.data.data);
-                        ElseUtils.setLocalStorage(
-                          ElseUtils.localStorageOrderDetail,
-                          data
-                        );
-                      }
-                      location.href = "/service/payment/done";
-                    })
-                    .catch((e) => {
-                      location.href = "/service/payment/cancel";
-                    });
-                }}
-              >
-                완료
-              </button>
-              <div className='mt-[10px]'></div>
-              <button
-                className='w-20 h-20'
-                onClick={(e) => {
-                  location.href = "/service/payment/cancel";
-                }}
-              >
-                실패
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : (
-        "비정상적인접근"
-      )}
-      <GlobalScript />
-    </LayoutAuth>
-  );
+export interface IBookingFormData {
+  country: string;
+  couponCode: string;
+  designation: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  passengerCountry: string;
+  passengerDesignation: string;
+  passengerEmail: string;
+  passengerFirstName: string;
+  passengerLastName: string;
+  passengerMemo: string;
+  passengerPhone: string;
+  passengerPhoneCode: string;
+  passengerSnsId: string;
+  passengerSnsType: string;
+  phone: string;
+  phoneCode: string;
+  snsId: string;
+  snsType: string;
 }
+
+export interface PaymentMetaInfo {
+  id: string;
+  orderId: string;
+  created: Date;
+  updated: Date;
+  email: string;
+  amt: number;
+  merchantID: string;
+  ediDate: string;
+  signData: string;
+  moid: string;
+  paymentToken: string;
+}
+
+// export default function PaymentPage() {
+//   const [user, setUser] = useState<any>();
+//   const [ok, setOk] = useState(false);
+//   const [paymentMetaInfo, setPaymentMetaInfo] = useState<PaymentMetaInfo>();
+
+//   const formRef = useRef<HTMLFormElement>(null);
+//   const mobileReturnUrlRef = useRef<HTMLInputElement>(null);
+//   const {
+//     register,
+//     control,
+//     handleSubmit,
+//     getValues,
+//     setValue,
+//     reset,
+//     trigger,
+//     watch,
+//     formState: { errors, isValid },
+//   } = useForm<IBookingFormData>({ mode: "onChange" });
+
+//   useEffect(() => {
+//     const userInfo = ElseUtils.getLocalstorageUser();
+//     if (userInfo == null) {
+//       ElseUtils.moveMapPage();
+//       return;
+//     }
+//     setUser(userInfo);
+
+//     // 결제때 사용한 이메일 가져옴
+//     const data = ElseUtils.getLocalStorageWithoutDecoding("zzppoo");
+//     if (data !== null && data !== undefined) {
+//       const dataStr = SecurityUtils.decryptText(data);
+//       if (
+//         dataStr !== null &&
+//         dataStr !== undefined &&
+//         SecurityUtils.decryptText(dataStr) === userInfo.email
+//       ) {
+//         const priceInfoStr = ElseUtils.getLocalStorageWithoutDecoding(
+//           ElseUtils.localStoragePrideInfo
+//         );
+//         if (priceInfoStr === null || priceInfoStr === undefined) {
+//           ElseUtils.moveMapPage();
+//           return;
+//         }
+//         const priceInfo = SecurityUtils.decryptText(priceInfoStr);
+
+//         axios
+//           .post(`${publicRuntimeConfig.APISERVER}/order/payment/init`, {
+//             email: userInfo.email,
+//             price: JSON.parse(priceInfo).lastUSPrice,
+//           })
+//           .then((d) => {
+//             if (mobileReturnUrlRef.current) {
+//               mobileReturnUrlRef.current.value = `${window.location.origin}/service/payment/done`;
+//             }
+
+//             setPaymentMetaInfo(d.data);
+//             ElseUtils.setLocalStoragWithEncoding(
+//               ElseUtils.localStoragePaymentMetaInfo,
+//               JSON.stringify(d.data)
+//             );
+
+//             handleSubmit(onSubmit);
+//           });
+
+//         setOk(true);
+//         return;
+//       }
+//     }
+//     alert("비정상적인접근");
+//     setOk(false);
+//   }, []);
+
+//   const onSubmit: SubmitHandler<IBookingFormData> = (data) => {
+//     if (formRef.current !== null) {
+//       formRef.current.action = "https://web.nicepay.co.kr/v3/v3Payment.jsp";
+//       formRef.current.acceptCharset = "euc-kr";
+//       formRef.current.submit();
+//       return;
+//     }
+//   };
+
+//   return (
+//     <>
+//       <NicePaymentForm
+//         formRef={formRef}
+//         mobileReturnUrlRef={mobileReturnUrlRef}
+//         actionURL={""}
+//         paymentViewData={paymentMetaInfo}
+//         getValues={getValues}
+//       />
+//       {/* <button onClick={handleSubmit(onSubmit)}>click</button> */}
+//       <GlobalScript />
+//     </>
+//   );
+// }
