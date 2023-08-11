@@ -14,7 +14,10 @@ import axios from "axios";
 import getConfig from "next/config";
 import NicePaymentForm from "@/components/NicePayment/NicePaymentForm";
 import GlobalScript from "@/libs/GlobalScript";
+import { SpinnerComponent } from "@/components/spinner";
 const { publicRuntimeConfig } = getConfig();
+
+let num = 0;
 
 // 경로 결과 정보
 export interface PathInfoProp {
@@ -50,7 +53,6 @@ export default function MapPathPage() {
     lastUSPrice: 0,
   });
 
-  let num = 0;
   const [isOk, setIsOk] = useState(false);
   const [user, setUser] = useState<any>();
 
@@ -97,6 +99,10 @@ export default function MapPathPage() {
     }
   }, []);
 
+  // useEffect(() => {
+  //   if (!router.isReady) return;
+  // }, [router]);
+
   useEffect(() => {
     if (priceInfo.taxiPrice === 0) return;
 
@@ -127,8 +133,10 @@ export default function MapPathPage() {
         tempKey: tempKey,
       };
 
+      if (!router.isReady) return;
       // 결제를 위한 초기 정보를 읽어옴
-      if (++num === 1) {
+      if (num++ === 0) {
+        console.log("서버에 결제 초기 데이터 조회");
         axios
           .post(`${publicRuntimeConfig.APISERVER}/order/payment/init`, {
             kdjifnkd44333: SecurityUtils.encryptText(JSON.stringify(param)),
@@ -200,7 +208,7 @@ export default function MapPathPage() {
   return (
     <>
       {showPayModal === true ? (
-        <div className='w-screen h-screen bg-slate-600'></div>
+        <SpinnerComponent />
       ) : (
         <LayoutAuth menuTitle='경로' isUasgeDetail={true} isMargin={false}>
           <div className='mt-[10px]' />

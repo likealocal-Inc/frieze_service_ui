@@ -29,9 +29,10 @@ export default function MapPage() {
 
   useEffect(() => {
     setWidthSize(window.innerWidth);
-  }, []);
 
-  useEffect(() => {
+    // 결제관련 데이터를 스토리지에서 지우기
+    ElseUtils.removeLocalStorageForStart();
+
     if ("geolocation" in navigator) {
       // 현재 위치를 가져옴
       navigator.geolocation.getCurrentPosition(

@@ -9,7 +9,8 @@ import ChannelService from "@/libs/channel.utils";
 import { useRouter } from "next/router";
 import axios from "axios";
 import getConfig from "next/config";
-
+import { SpinnerComponent } from "@/components/spinner";
+const { publicRuntimeConfig } = getConfig();
 export default function PaymentDonePage() {
   const [orderModel, setOrderModel] = useState<OrderModel>();
   const [user, setUser] = useState<any>();
@@ -28,11 +29,10 @@ export default function PaymentDonePage() {
     // 결제 결과 데이터
     const paymentStr = router.query.qpdkdnfnud;
 
-    console.log("paymentStr", paymentStr);
     // 비정상적인 접근 -> 맵화면으로 이동
     if (paymentStr === undefined || paymentStr === null) {
       alert("비정상적인 접근");
-      // ElseUtils.moveMapPage();
+      ElseUtils.moveMapPage();
       return;
     }
 
@@ -48,25 +48,25 @@ export default function PaymentDonePage() {
     );
 
     // 결제 메타정보 꺼내기
-    const paymentInit = ElseUtils.getLocalStorageWithoutDecoding(
-      ElseUtils.localStoragePaymentMetaInfo
-    );
+    const paymentInitJson = ElseUtils.getPaymentMetaInfo();
 
-    console.log("paymentInit", paymentInit);
+    // ElseUtils.getLocalStorageWithoutDecoding(
+    //   ElseUtils.localStoragePaymentMetaInfo
+    // );
 
-    if (paymentInit === null) {
-      alert("비정상적인 접근");
-      // ElseUtils.moveMapPage();
-      return;
-    }
+    // console.log("paymentInit", paymentInit);
+
+    // if (paymentInit === null) {
+    //   alert("비정상적인 접근");
+    //   ElseUtils.moveMapPage();
+    //   return;
+    // }
+
+    // // 결제 메타정보 JSON데이터
+    // const paymentInitJson = JSON.parse(SecurityUtils.decryptText(paymentInit));
 
     // 한번만 실행하게 처리
     if (isCheckCount++ === 0) {
-      // 결제 메타정보 JSON데이터
-      const paymentInitJson = JSON.parse(
-        SecurityUtils.decryptText(paymentInit)
-      );
-
       // 결제 리턴값에 결제메타정보의 DB ID를 추가 -> DB에 업데이트 하기 위함
       paymentJson.id = paymentInitJson.id;
 
@@ -142,19 +142,18 @@ export default function PaymentDonePage() {
           data
         );
 
-        console.log(data);
-
         const order = JSON.parse(data);
         setOrderModel(order);
         setTimeout(() => {
           setIsLoading(false);
         }, 200);
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((e: any) => {
+        console.log(e.response.data.data);
         alert(e.response.data.data);
+
         // TODO: 배포전 아래 주석 풀어야 함
-        // location.href = "/service/payment/cancel";
+        location.href = "/service/payment/cancel";
       });
   };
 
@@ -185,6 +184,27 @@ export default function PaymentDonePage() {
     setUser(userInfo);
   }, []);
 
+  // 취소날리기
+  const PaymentCancel = () => {
+    const paymentInitJson = ElseUtils.getPaymentMetaInfo();
+    axios
+      .post(`${publicRuntimeConfig.APISERVER}/order/payment/cancel`, {
+        id: paymentInitJson.id,
+      })
+      .then((d) => {
+        console.log(d);
+        alert("결제가 정상 취소되었습니다.");
+        // ElseUtils.moveMapPage();
+        // setShowCancelModal(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        alert(
+          "관리자에게 문의 해주세요 [" + e.response.data.data.codeMessage + "]"
+        );
+        // ElseUtils.moveMapPage();
+      });
+  };
   return (
     <>
       {orderModel && isLoading === false ? (
@@ -406,7 +426,7 @@ export default function PaymentDonePage() {
           </div>
         </LayoutAuth>
       ) : (
-        ""
+        <SpinnerComponent />
       )}
       <div
         className={
@@ -433,6 +453,9 @@ export default function PaymentDonePage() {
               <div
                 className='flex items-center justify-center w-full h-full text-center text-gray-500'
                 style={{ font: "500 14px/24px 'Pretendard', sans-serif" }}
+                onClick={(e) => {
+                  setShowCancelModal(false);
+                }}
               >
                 Keep Call
               </div>
@@ -443,7 +466,7 @@ export default function PaymentDonePage() {
                 className='flex items-center justify-center w-full h-full text-center text-white '
                 style={{ font: "500 14px/24px 'Pretendard', sans-serif" }}
                 onClick={(e) => {
-                  setShowCancelModal(false);
+                  PaymentCancel();
                 }}
               >
                 Cancel the Call

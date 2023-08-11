@@ -45,7 +45,7 @@ export default async function handler(
       console.log(callResult.data);
       res.status(200).json({ success: true, data: callResult.data.data });
     } catch (err: any) {
-      console.log(err);
+      console.log(err.response.data.data.description.codeMessage);
       res.status(500).json({
         success: false,
         data: err.response.data.data.description.codeMessage,

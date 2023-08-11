@@ -105,4 +105,34 @@ export const ElseUtils = {
       location.href = `/service/map/path`;
     }, 200);
   },
+
+  getPaymentMetaInfo: () => {
+    // 결제 메타정보 꺼내기
+    const paymentInit = ElseUtils.getLocalStorageWithoutDecoding(
+      ElseUtils.localStoragePaymentMetaInfo
+    );
+
+    console.log("paymentInit", paymentInit);
+
+    if (paymentInit === null) {
+      alert("비정상적인 접근");
+      ElseUtils.moveMapPage();
+      return;
+    }
+    const paymentInitJson = JSON.parse(SecurityUtils.decryptText(paymentInit));
+
+    return paymentInitJson;
+  },
+
+  /**
+   *
+   */
+  removeLocalStorageForStart: () => {
+    localStorage.removeItem(ElseUtils.localStorageGoalInfo);
+    localStorage.removeItem(ElseUtils.localStorageStartInfo);
+    localStorage.removeItem(ElseUtils.localStorageOrderDetail);
+    localStorage.removeItem(ElseUtils.localStoragePaymentMetaInfo);
+    localStorage.removeItem(ElseUtils.localStoragePaymentResult);
+    localStorage.removeItem(ElseUtils.localStoragePrideInfo);
+  },
 };

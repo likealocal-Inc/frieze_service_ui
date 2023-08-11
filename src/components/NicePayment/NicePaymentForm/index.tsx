@@ -85,8 +85,6 @@ const NicePaymentForm: FC<IProps> = ({
   paymentViewData,
   getValues,
 }) => {
-  console.log("-------------");
-  console.log(paymentViewData);
   return (
     <form name='payForm' method='post' ref={formRef} acceptCharset='euc-kr'>
       <input type='hidden' name='GoodsName' value={`샌딩`} />
