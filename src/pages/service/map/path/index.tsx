@@ -8,7 +8,7 @@ import { ElseUtils } from "@/libs/else.utils";
 import LayoutAuth from "@/components/layouts/LayoutAuth";
 import { SecurityUtils } from "@/libs/security.utils";
 import { useRouter } from "next/router";
-import { IBookingFormData, PaymentMetaInfo } from "../../payment";
+import { IBookingFormData, PaymentMetaInfo } from "../../payment/index2";
 import { SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
 import getConfig from "next/config";

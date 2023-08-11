@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { PaymentMetaInfo } from "@/pages/service/payment";
+import { PaymentMetaInfo } from "@/pages/service/payment/index2";
 import getConfig from "next/config";
 import { FC, RefObject, useCallback, useEffect } from "react";
 import { UseFormGetValues } from "react-hook-form";
