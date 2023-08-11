@@ -169,7 +169,7 @@ export default function MapPathPage() {
   //   setPriceInfo(info.data);
   // };
 
-  const [paymentMetaInfo, setPaymentMetaInfo] = useState<PaymentMetaInfo>({});
+  const [paymentMetaInfo, setPaymentMetaInfo] = useState<PaymentMetaInfo>();
 
   const formRef = useRef<HTMLFormElement>(null);
   const mobileReturnUrlRef = useRef<HTMLInputElement>(null);

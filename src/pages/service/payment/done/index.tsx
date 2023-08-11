@@ -151,9 +151,15 @@ export default function PaymentDonePage() {
       .catch((e: any) => {
         console.log(e.response.data.data);
         alert(e.response.data.data);
-
-        // TODO: 배포전 아래 주석 풀어야 함
-        location.href = "/service/payment/cancel";
+        if (
+          (e.response.data.data =
+            "결제관련 데이터 오류발생:이미 처리된 결제입니다.")
+        ) {
+          ElseUtils.moveMapPage();
+        } else {
+          // TODO: 배포전 아래 주석 풀어야 함
+          location.href = "/service/payment/cancel";
+        }
       });
   };
 
@@ -194,7 +200,7 @@ export default function PaymentDonePage() {
       .then((d) => {
         console.log(d);
         alert("결제가 정상 취소되었습니다.");
-        // ElseUtils.moveMapPage();
+        ElseUtils.moveMapPage();
         // setShowCancelModal(false);
       })
       .catch((e) => {
@@ -202,7 +208,7 @@ export default function PaymentDonePage() {
         alert(
           "관리자에게 문의 해주세요 [" + e.response.data.data.codeMessage + "]"
         );
-        // ElseUtils.moveMapPage();
+        ElseUtils.moveMapPage();
       });
   };
   return (
