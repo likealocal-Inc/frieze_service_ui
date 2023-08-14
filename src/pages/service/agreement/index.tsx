@@ -15,10 +15,13 @@ import InformationModal from "@/components/modal/InformationModal";
 import { CODES } from "@/libs/codes";
 import { ElseUtils } from "@/libs/else.utils";
 import { SecurityUtils } from "@/libs/security.utils";
+import InternationalNumber from "@/components/InternationalNumber";
 
 export interface AgreementData {
   passportName: string;
   email: string;
+  phone: string;
+  phoneInternational: string;
   agreement: [boolean, boolean, boolean, boolean];
 }
 
@@ -30,11 +33,14 @@ export default function AgreementPage() {
   const [agreementData, setAgreementData] = useState<AgreementData>({
     passportName: "",
     email: "",
+    phoneInternational: "",
+    phone: "",
     agreement: [false, false, false, false],
   });
 
   const [errName, setErrName] = useState({ isError: false, errorMsg: "" });
   const [errEmail, setErrEmail] = useState({ isError: false, errorMsg: "" });
+  const [errPhone, setErrPhone] = useState({ isError: false, errorMsg: "" });
 
   const [accordion, setAccordion] = useState<AccordionInterface>();
   useEffect(() => {
@@ -117,6 +123,7 @@ export default function AgreementPage() {
     if (
       agreementData.passportName === "" ||
       agreementData.email === "" ||
+      agreementData.phone === "" ||
       agreementData.agreement.includes(false)
     ) {
       if (agreementData.agreement.includes(false)) {
@@ -155,6 +162,14 @@ export default function AgreementPage() {
       setErrEmail({ isError: false, errorMsg: "" });
     }
 
+    // const phoneCheck = ElseUtils.isValidEmail(agreementData.phone);
+    // if (phoneCheck === false) {
+    //   setErrPhone({ isError: true, errorMsg: "Insert phone number" });
+    //   isGood = false;
+    // } else {
+    //   setErrPhone({ isError: false, errorMsg: "" });
+    // }
+
     if (isGood === false) return;
 
     ElseUtils.setLocalStoragWithEncoding(
@@ -168,18 +183,15 @@ export default function AgreementPage() {
       .post("/api/user", {
         email: agreementData.email,
         name: agreementData.passportName,
+        phone: `${agreementData.phoneInternational} ${agreementData.phone}`,
       })
       .then((res) => {
-        console.log("--------------------------sdfsdf");
-        console.log(res);
         // 체크 비활성화
         upSelectAll();
         location.href = "/service/emailAuth";
         return;
       })
       .catch((err) => {
-        console.log("-----------------------");
-        console.log(err);
         // 이미 존재하는 이메일 -> 인증 여부에 때라서 처리함
         if (err.response.data.info.code === CODES.ALREADY_EXIST_EMAIL.code) {
           axios.get(`/api/user?email=${err.response.data.data}`).then((d) => {
@@ -287,6 +299,38 @@ export default function AgreementPage() {
                   onConfirm(false);
                 }}
               />
+              <div className={`mt-[16px]`} />
+              <div
+                className='text-[#c4c4c4] text-left relative flex items-center justify-start'
+                style={{ font: "500 12px/17px 'Pretendard', sans-serif" }}
+              >
+                Enter your Phone
+              </div>
+              <div className={`mt-[5px]`} />
+              <div className='flex justify-between w-full'>
+                <InternationalNumber
+                  onChange={(e: any) => {
+                    setAgreementData({
+                      ...agreementData,
+                      phoneInternational: e.target.value,
+                    });
+                  }}
+                />
+                <InputComponent
+                  isError={errPhone.isError}
+                  errorMsg={errPhone.errorMsg}
+                  value={agreementData.phone}
+                  required={true}
+                  placeholder='Insert phone address'
+                  onChange={(e: any) => {
+                    setAgreementData({
+                      ...agreementData,
+                      phone: e.target.value,
+                    });
+                    onConfirm(false);
+                  }}
+                />
+              </div>
             </div>
           </div>
           <div className={`mt-[56px]`} />

@@ -12,9 +12,11 @@ export default async function handler(
   if (req.method === "POST") {
     const email = req.body.email;
     const name = req.body.name;
+    const phone = req.body.phone;
 
     const emailEn = SecurityUtils.encryptText(email);
     const nameEn = SecurityUtils.encryptText(name);
+    const phoneEn = SecurityUtils.encryptText(phone);
 
     let callResult: any;
     try {
@@ -35,6 +37,7 @@ export default async function handler(
         callResult = await axios.post(`${CallInfo.urlBase}/c.user`, {
           email: emailEn,
           name: nameEn,
+          phone: phoneEn,
           authUrl: `${url}/user/auth`,
         });
 

@@ -125,7 +125,7 @@ export const ElseUtils = {
   },
 
   /**
-   *
+   * 초기화를 위한
    */
   removeLocalStorageForStart: () => {
     localStorage.removeItem(ElseUtils.localStorageGoalInfo);
