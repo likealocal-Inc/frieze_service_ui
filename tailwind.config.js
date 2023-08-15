@@ -8,6 +8,7 @@ module.exports = {
     "./src/libs/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/types/**/*.{js,ts,jsx,tsx,mdx}",
     "./node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
+    "./public/**/*.{html,ico,svg}",
   ],
   corePlugins: {
     preflight: false,
