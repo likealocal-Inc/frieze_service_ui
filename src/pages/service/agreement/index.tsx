@@ -307,7 +307,7 @@ export default function AgreementPage() {
                 Enter your Phone
               </div>
               <div className={`mt-[5px]`} />
-              <div className='flex justify-between w-full'>
+              <div className='flex w-full justify-stretch'>
                 <InternationalNumber
                   onChange={(e: any) => {
                     setAgreementData({
@@ -316,6 +316,7 @@ export default function AgreementPage() {
                     });
                   }}
                 />
+                <div className='ml-[10px]'></div>
                 <InputComponent
                   isError={errPhone.isError}
                   errorMsg={errPhone.errorMsg}

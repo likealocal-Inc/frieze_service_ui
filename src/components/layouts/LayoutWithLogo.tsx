@@ -47,7 +47,7 @@ const LayoutWithLogo = ({
         <title>{menuTitle}</title>
       </Head>
       <>
-        <div className={`w-[${widthSize}px]`}>
+        <div className={`w-[${widthSize}px] box-border`}>
           {loading ? (
             ""
           ) : (
