@@ -4,7 +4,7 @@ export default function InternationalNumber({ onChange }: any) {
       name='countryCode'
       id='internationalNumber'
       onChange={onChange}
-      className='w-[180px] placeholder-[#bbbbbb] text-[#262628] text-[16px] border-0 bg-[#f5f6fa] rounded-[10px] h-[56px] focus:shadow-none focus:outline-none focus:ring-2 focus:ring-[#BBBBBB]'
+      className='w-[150px] placeholder-[#bbbbbb] text-[#262628] text-[16px] border-0 bg-[#f5f6fa] rounded-[10px] h-[63px] focus:shadow-none focus:outline-none focus:ring-2 focus:ring-[#BBBBBB]'
     >
       <option data-countryCode='GB' value='44' selected>
         UK (+44)
