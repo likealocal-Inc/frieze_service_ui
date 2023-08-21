@@ -1,3 +1,4 @@
+import ChannelTalk from "@/components/chaneltalk/ChannelTalk";
 import LayoutAuth from "@/components/layouts/LayoutAuth";
 import { GoogleMapComponent } from "@/components/map/GoogleMapComponent";
 import AddressModal, { AddressInfo } from "@/components/modal/AddressModal";
@@ -238,6 +239,8 @@ export default function MapPage() {
           goalAccess={goalLocation}
           isMove={isMove}
         />
+
+        <ChannelTalk />
       </LayoutAuth>
     </>
   );
