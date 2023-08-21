@@ -4,6 +4,7 @@ import Image from "next/image";
 
 import "../../app/globals.css";
 import ChannelService from "@/libs/channel.utils";
+import { ElseUtils } from "@/libs/else.utils";
 
 interface AdminProps {
   children?: any;
@@ -32,13 +33,21 @@ const LayoutWithLogo = ({
   useEffect(() => {
     setWidthSize(window.innerWidth);
 
+    const user = ElseUtils.getLocalstorageUser();
     const obj = new ChannelService();
     obj.loadScript();
     obj.boot({
       pluginKey: "1c92aeb0-97cd-4046-bbb2-1b3beb594511", // fill your plugin key
-      customLauncherSelector: ".custom-button-1",
-      hideChannelButtonOnBoot: true,
+      memberId: user.id,
+      profile: {
+        // fill user's profile
+        name: user.email, // fill user's name
+        mobileNumber: user.phone, // fill user's mobile number
+        landlineNumber: "USER_LANDLINE_NUMBER", // fill user's landline number
+        CUSTOM_VALUE_1: user.name, // custom property
+      },
     });
+    // obj.openChat("76824", "tst");
   }, []);
 
   return (

@@ -13,7 +13,16 @@ export default function Map() {
 
   return (
     <>
-      <Layout menuTitle='지도'></Layout>
+      <Layout menuTitle='지도'>
+        <button
+          className=''
+          onClick={(e) =>
+            (location.href = "https://n14k9.channel.io/support-bots/76910")
+          }
+        >
+          test
+        </button>
+      </Layout>
     </>
   );
 }

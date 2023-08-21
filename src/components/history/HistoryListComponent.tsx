@@ -9,17 +9,19 @@ export interface HistoryListComponentProps {
   selectIndex: number;
 }
 export default function HistoryListComponent({
-  selectIndex,
+  selectIndex = -1,
 }: HistoryListComponentProps) {
   const [list, setList] = useState<OrderModel[]>([]);
   useEffect(() => {
+    if (selectIndex === -1) return;
     const userId = SecurityUtils.decryptText(
       ElseUtils.getLocalStorageWithoutDecoding(ElseUtils.localStorageUserIdKey)!
     );
-    axios.get(`/api/order?userId=${userId}`).then((d) => {
+    axios.get(`/api/order?userId=${userId}&status=${selectIndex}`).then((d) => {
       setList(d.data.data);
     });
-  }, []);
+  }, [selectIndex]);
+
   return (
     <>
       <div className=''>

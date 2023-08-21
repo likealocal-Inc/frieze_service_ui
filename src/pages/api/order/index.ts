@@ -57,18 +57,32 @@ export default async function handler(
   if (req.method === "GET") {
     const id: string = req.query.id as string;
     const userId: string = req.query.userId as string;
+    const status: string = req.query.status as string;
 
     let callResult: any;
     try {
       // 아이디로 단건조회
       if (id !== undefined) {
-        callResult = await axios.get(`${CallInfo.urlBase}/order/${id}`);
+        callResult = await axios.get(`${CallInfo.urlBase}/order/${id}/$}`);
       }
       // 사용자 아이디로 히스토리 조회
       else if (userId !== undefined) {
-        callResult = await axios.get(
-          `${CallInfo.urlBase}/order/userid/${userId}`
-        );
+        if (status === "1") {
+          callResult = await axios.get(
+            `${CallInfo.urlBase}/order/userid/${userId}`
+          );
+        } else {
+          const url = `${CallInfo.urlBase}/order/userid/${userId}/${
+            status === "2"
+              ? "PAYMENT"
+              : status === "3"
+              ? "DONE"
+              : status === "4"
+              ? "CANCEL"
+              : ""
+          }`;
+          callResult = await axios.get(url);
+        }
       }
       res.status(200).json({ success: true, data: callResult.data.data });
     } catch (err: any) {

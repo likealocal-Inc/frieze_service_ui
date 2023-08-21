@@ -11,6 +11,7 @@ import axios from "axios";
 import getConfig from "next/config";
 import { SpinnerComponent } from "@/components/spinner";
 const { publicRuntimeConfig } = getConfig();
+
 export default function PaymentDonePage() {
   const [orderModel, setOrderModel] = useState<OrderModel>();
   const [user, setUser] = useState<any>();
