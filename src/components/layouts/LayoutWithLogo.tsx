@@ -38,7 +38,6 @@ const LayoutWithLogo = ({
     obj.loadScript();
     obj.boot({
       pluginKey: "1c92aeb0-97cd-4046-bbb2-1b3beb594511", // fill your plugin key
-      memberId: user.id,
       profile: {
         // fill user's profile
         name: user.email, // fill user's name
