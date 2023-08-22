@@ -418,7 +418,7 @@ export default function AgreementPage() {
                         ],
                       });
                     }}
-                    pdfLink='/download/cookie.pdf'
+                    pdfLink='/download/service.pdf'
                   />
                   <div className={`mt-[15px]`} />
                   {/* 두번째 동의 */}
@@ -436,7 +436,7 @@ export default function AgreementPage() {
                         ],
                       });
                     }}
-                    pdfLink='/download/cookie.pdf'
+                    pdfLink='/download/private.pdf'
                   />
                   <div className={`mt-[15px]`} />
                   {/* 세번째 동의 */}
