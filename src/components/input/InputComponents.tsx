@@ -16,7 +16,7 @@ export default function InputComponent({
 }: InputComponentProps) {
   return (
     <>
-      <div className=''>
+      <div className='w-full'>
         <input
           className={
             isError

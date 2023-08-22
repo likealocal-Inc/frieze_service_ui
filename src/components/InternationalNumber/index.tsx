@@ -1,6 +1,6 @@
 export default function InternationalNumber({ onChange }: any) {
   return (
-    <div className='w-[150px] h-[63px]'>
+    <div className='w-[250px] h-[60px]'>
       <select
         name='countryCode'
         id='internationalNumber'

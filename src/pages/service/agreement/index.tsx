@@ -418,10 +418,7 @@ export default function AgreementPage() {
                         ],
                       });
                     }}
-                    onShowAgreement={() => {
-                      setOrderAgreement(1);
-                      setShowAgreement(true);
-                    }}
+                    pdfLink='/download/cookie.pdf'
                   />
                   <div className={`mt-[15px]`} />
                   {/* 두번째 동의 */}
@@ -439,10 +436,7 @@ export default function AgreementPage() {
                         ],
                       });
                     }}
-                    onShowAgreement={() => {
-                      setOrderAgreement(2);
-                      setShowAgreement(true);
-                    }}
+                    pdfLink='/download/cookie.pdf'
                   />
                   <div className={`mt-[15px]`} />
                   {/* 세번째 동의 */}
@@ -460,10 +454,7 @@ export default function AgreementPage() {
                         ],
                       });
                     }}
-                    onShowAgreement={() => {
-                      setOrderAgreement(3);
-                      setShowAgreement(true);
-                    }}
+                    pdfLink='/download/cookie.pdf'
                   />
                   <div className={`mt-[15px]`} />
                   {/* 네번쩨 동의 */}
@@ -481,10 +472,7 @@ export default function AgreementPage() {
                         ],
                       });
                     }}
-                    onShowAgreement={() => {
-                      setOrderAgreement(4);
-                      setShowAgreement(true);
-                    }}
+                    pdfLink='/download/location.pdf'
                   />
                 </div>
               </div>

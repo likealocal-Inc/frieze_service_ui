@@ -1,12 +1,14 @@
+import Link from "next/link";
+
 export interface AgreeComponentProp {
+  pdfLink: string;
   title: string;
   onClick: Function;
-  onShowAgreement: Function;
 }
 export const AgreeComponent = ({
   title,
   onClick,
-  onShowAgreement,
+  pdfLink,
 }: AgreeComponentProp) => {
   return (
     <div className='w-[350px]'>
@@ -17,16 +19,21 @@ export const AgreeComponent = ({
           className='bg-[#ffffff] rounded border-solid border-gray-3 border w-5 h-5'
           onClick={(e) => onClick(e)}
         />
-        <div
-          className='relative flex items-center justify-end text-right text-gray-6 ml-[5px]'
-          style={{
-            font: "400 15px/22px 'Pretendard', sans-serif",
-            textDecoration: "underline",
-          }}
-          onClick={(e) => onShowAgreement()}
-        >
-          {title}
-        </div>
+        <Link href={pdfLink} target='_blank'>
+          <div
+            // href={pdfLink}
+            // target='_blank'
+            rel='noopener noreferrer'
+            className='relative flex items-center justify-end text-right text-gray-6 ml-[5px] text-black no-underline'
+            style={{
+              font: "400 15px/22px 'Pretendard', sans-serif",
+              textDecoration: "underline",
+            }}
+            // onClick={(e) => onShowAgreement()}
+          >
+            {title}
+          </div>
+        </Link>
       </div>
     </div>
   );

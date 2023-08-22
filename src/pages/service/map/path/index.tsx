@@ -15,6 +15,7 @@ import getConfig from "next/config";
 import NicePaymentForm from "@/components/NicePayment/NicePaymentForm";
 import GlobalScript from "@/libs/GlobalScript";
 import { SpinnerComponent } from "@/components/spinner";
+import ChannelTalk from "@/components/chaneltalk/ChannelTalk";
 const { publicRuntimeConfig } = getConfig();
 
 let num = 0;
@@ -336,6 +337,9 @@ export default function MapPathPage() {
               </div>
             </div>
           </div>
+
+          {/* 채널톡 설정 */}
+          <ChannelTalk />
         </LayoutAuth>
       )}
 
@@ -435,10 +439,10 @@ export default function MapPathPage() {
                     font: "500 14px/22px 'Pretendard', sans-serif",
                     textDecoration: "underline",
                   }}
-                  onClick={(e) => {
-                    setOrderAgreement(1);
-                    setShowAgreement(true);
-                  }}
+                  // onClick={(e) => {
+                  //   setOrderAgreement(1);
+                  //   setShowAgreement(true);
+                  // }}
                 >
                   I checked both the email and the precautions.
                 </div>
