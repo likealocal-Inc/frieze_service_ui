@@ -454,7 +454,7 @@ export default function AgreementPage() {
                         ],
                       });
                     }}
-                    pdfLink='/download/cookie.pdf'
+                    pdfLink='/download/cookie2.pdf'
                   />
                   <div className={`mt-[15px]`} />
                   {/* 네번쩨 동의 */}
@@ -472,7 +472,7 @@ export default function AgreementPage() {
                         ],
                       });
                     }}
-                    pdfLink='/download/location.pdf'
+                    pdfLink='/download/location2.pdf'
                   />
                 </div>
               </div>
