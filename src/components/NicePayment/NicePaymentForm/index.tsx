@@ -128,6 +128,8 @@ const NicePaymentForm: FC<IProps> = ({
       />
       <input type='hidden' name='FailURL' value='' />
       <input type='hidden' name='GoodsCl' value='' />
+      {/* 결제 언어 설정 */}
+      <input type='hidden' name='NpLang' value='en' />
     </form>
   );
 };

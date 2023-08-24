@@ -79,6 +79,12 @@ export default function PaymentDonePage() {
     }
   }, [router]);
 
+  const sendAlertToAdmin = (msg: string) => {
+    axios.get(
+      `https://api.telegram.org/bot6467724420:AAHUlYtSHtkj-gAbIXHp2dXfHbvDgxZXbBU/sendMessage?chat_id=-1001932263437&text=주문접수[${msg}]`
+    );
+  };
+
   const saveDBOrderAndPayment = async (paymentParam: string) => {
     const priceInfoStr = ElseUtils.getLocalStorageWithoutDecoding(
       ElseUtils.localStoragePrideInfo
@@ -145,6 +151,7 @@ export default function PaymentDonePage() {
 
         const order = JSON.parse(data);
         setOrderModel(order);
+        sendAlertToAdmin(`주문번호:${order.id},사용자아이디:${order.userId}`);
         setTimeout(() => {
           setIsLoading(false);
         }, 200);
@@ -242,7 +249,7 @@ export default function PaymentDonePage() {
                   className='text-[#000000] text-center relative'
                   style={{ font: "500 14px/22px 'Pretendard', sans-serif" }}
                 >
-                  호출취소
+                  Cancel
                 </div>
               </div>
             </div>
