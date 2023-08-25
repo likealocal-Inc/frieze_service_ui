@@ -62,6 +62,21 @@ export default function MapPathPage() {
   // 주문 메타정보 가져 왔는지 여부
   const [isGetPayMetaInfo, setIsGetPayMetaInfo] = useState(false);
 
+  const [paymentMetaInfo, setPaymentMetaInfo] = useState<PaymentMetaInfo>();
+
+  const formRef = useRef<HTMLFormElement>(null);
+  const {
+    register,
+    control,
+    handleSubmit,
+    getValues,
+    setValue,
+    reset,
+    trigger,
+    watch,
+    formState: { errors, isValid },
+  } = useForm<IBookingFormData>({ mode: "onChange" });
+
   useEffect(() => {
     (document.body.style as any).zoom = "100%";
   });
@@ -125,7 +140,11 @@ export default function MapPathPage() {
       const priceInfo = SecurityUtils.decryptText(priceInfoStr);
 
       // 결제 정보 가져 왔으면 중단
-      if (isGetPayMetaInfo === true) return;
+      if (isGetPayMetaInfo === true) {
+        return;
+      } else {
+        num = 0;
+      }
 
       // 결제초기세팅
       const param = {
@@ -156,6 +175,9 @@ export default function MapPathPage() {
                 JSON.stringify(d.data)
               );
             }
+          })
+          .catch((e) => {
+            console.log(e);
           });
       }
 
@@ -169,22 +191,6 @@ export default function MapPathPage() {
   //   console.log(info);
   //   setPriceInfo(info.data);
   // };
-
-  const [paymentMetaInfo, setPaymentMetaInfo] = useState<PaymentMetaInfo>();
-
-  const formRef = useRef<HTMLFormElement>(null);
-  const mobileReturnUrlRef = useRef<HTMLInputElement>(null);
-  const {
-    register,
-    control,
-    handleSubmit,
-    getValues,
-    setValue,
-    reset,
-    trigger,
-    watch,
-    formState: { errors, isValid },
-  } = useForm<IBookingFormData>({ mode: "onChange" });
 
   useEffect(() => {
     const userInfo = ElseUtils.getLocalstorageUser();
@@ -227,6 +233,9 @@ export default function MapPathPage() {
               <GooglePathMapComponent
                 size={{ width: `${widthSize}px`, height: "280px" }}
                 setPathInfo={setPriceInfo}
+                setStart={setStartLocation}
+                setGoal={setGoalLocation}
+                setIsGetPayMetaInfo={setIsGetPayMetaInfo}
               />
 
               <div

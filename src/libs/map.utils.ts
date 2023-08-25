@@ -1,4 +1,5 @@
 import axios from "axios";
+import { LatLng } from "use-places-autocomplete";
 
 export interface StartGoalLgnLat {
   startLng: string;
@@ -21,6 +22,12 @@ export interface UtilReturn {
   data: any;
 }
 
+export interface LocationInfoRerutn {
+  desc: string;
+  placeId: any;
+  location: LatLng;
+  key: number;
+}
 export const MapUtils = {
   // 내위치 조회
   getMyLocation: async (returnCallback: Function) => {
@@ -79,5 +86,23 @@ export const MapUtils = {
     };
 
     return result;
+  },
+
+  getLocationInfo: async (
+    lat: number,
+    lng: number
+  ): Promise<LocationInfoRerutn> => {
+    const info = await axios.get(`/api/google.map/info?lat=${lat}&lng=${lng}`);
+    const temp = info.data.results[0];
+    const placeInfo = await axios.get(
+      `/api/google.map/latlng?place_id=${temp.place_id}`
+    );
+
+    return {
+      desc: temp.formatted_address,
+      placeId: temp.place_id,
+      location: placeInfo.data.result.geometry.location,
+      key: -1,
+    };
   },
 };
