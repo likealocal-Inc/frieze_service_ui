@@ -520,14 +520,14 @@ export default function AgreementPage() {
                 <div className='mt-[24px]' />
                 <div className='mt-[16px]' />
                 <div className='text-[19px] font-sans font-bold'>
-                  서비스 오픈안내
+                  information
                 </div>
                 <div className='mt-[24px]' />
                 <div className='font-sans text-[#bbbbbb] text-[16px] flex justify-center items-center text-center'>
-                  프리즈 멤버들을 위한 해당 서비스는 <br />
-                  2023-08-30에 오픈합니다.
+                  This service for Freeze members is <br />
+                  Open on 2023-08-30.
                   <br />
-                  현재는 실 서비스 운영이 불가합니다.
+                  Currently, actual service operation is not possible.
                 </div>
                 <div className='mt-[24px]' />
                 <button
@@ -536,7 +536,7 @@ export default function AgreementPage() {
                     setIsGongji(false);
                   }}
                 >
-                  확인
+                  Confirm
                 </button>
               </div>
             </div>
