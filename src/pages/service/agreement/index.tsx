@@ -42,6 +42,7 @@ export default function AgreementPage() {
   const [errEmail, setErrEmail] = useState({ isError: false, errorMsg: "" });
   const [errPhone, setErrPhone] = useState({ isError: false, errorMsg: "" });
 
+  const [isGongji, setIsGongji] = useState(true);
   const [accordion, setAccordion] = useState<AccordionInterface>();
   useEffect(() => {
     const accordionItems: AccordionItem[] = [
@@ -509,6 +510,38 @@ export default function AgreementPage() {
           </div>
         </div>
 
+        {/*  */}
+        {isGongji === false ? (
+          ""
+        ) : (
+          <div className='fixed inset-0 flex items-center justify-center bg-slate-600 Z-50 bg-opacity-30'>
+            <div className='flex items-center justify-center bg-white w-[328px] h-[272px]  rounded-[10px]'>
+              <div className='flex flex-col items-center w-full h-full'>
+                <div className='mt-[24px]' />
+                <div className='mt-[16px]' />
+                <div className='text-[19px] font-sans font-bold'>
+                  서비스 오픈안내
+                </div>
+                <div className='mt-[24px]' />
+                <div className='font-sans text-[#bbbbbb] text-[16px] flex justify-center items-center text-center'>
+                  프리즈 멤버들을 위한 해당 서비스는 <br />
+                  2023-08-30에 오픈합니다.
+                  <br />
+                  현재는 실 서비스 운영이 불가합니다.
+                </div>
+                <div className='mt-[24px]' />
+                <button
+                  className='h-[56px] w-[280px] border-0 rounded-lg bg-[#0085FE] text-white text-[14px]'
+                  onClick={(e) => {
+                    setIsGongji(false);
+                  }}
+                >
+                  확인
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         {/* 약관읽기 */}
         <InformationModal show={showAgreement} setShow={setShowAgreement}>
           {orderAgreement === 1 ? (
