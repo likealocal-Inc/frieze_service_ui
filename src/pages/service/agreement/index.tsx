@@ -519,15 +519,11 @@ export default function AgreementPage() {
               <div className='flex flex-col items-center w-full h-full'>
                 <div className='mt-[24px]' />
                 <div className='mt-[16px]' />
-                <div className='text-[19px] font-sans font-bold'>
-                  information
-                </div>
+                <div className='text-[24px] font-sans font-bold'>I'm sorry</div>
                 <div className='mt-[24px]' />
-                <div className='font-sans text-[#bbbbbb] text-[16px] flex justify-center items-center text-center'>
-                  This service for Freeze members is <br />
-                  Open on 2023-08-30.
-                  <br />
-                  Currently, actual service operation is not possible.
+                <div className='font-sans text-[#bbbbbb] text-[17px] flex justify-center items-center text-center w-[240px]'>
+                  The following service for frieze members will be launching on
+                  August 30th, 2023.
                 </div>
                 <div className='mt-[24px]' />
                 <button
@@ -536,7 +532,7 @@ export default function AgreementPage() {
                     setIsGongji(false);
                   }}
                 >
-                  Confirm
+                  Got it
                 </button>
               </div>
             </div>
