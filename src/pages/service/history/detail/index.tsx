@@ -1,4 +1,5 @@
 import "@/app/globals.css";
+import ChannelTalk from "@/components/chaneltalk/ChannelTalk";
 import LayoutAuth from "@/components/layouts/LayoutAuth";
 import { ElseUtils } from "@/libs/else.utils";
 import { SecurityUtils } from "@/libs/security.utils";
@@ -237,6 +238,7 @@ export default function HistoryDetailPage() {
               </div>
             </div>
           </div>
+          <ChannelTalk />
         </LayoutAuth>
       ) : (
         ""
