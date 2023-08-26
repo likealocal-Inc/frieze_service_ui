@@ -519,7 +519,9 @@ export default function AgreementPage() {
               <div className='flex flex-col items-center w-full h-full'>
                 <div className='mt-[24px]' />
                 <div className='mt-[16px]' />
-                <div className='text-[24px] font-sans font-bold'>I'm sorry</div>
+                <div className='text-[24px] font-sans font-bold'>
+                  I&apos;m sorry
+                </div>
                 <div className='mt-[24px]' />
                 <div className='font-sans text-[#bbbbbb] text-[17px] flex justify-center items-center text-center w-[240px]'>
                   The following service for frieze members will be launching on
