@@ -13,6 +13,7 @@ import { freizLocations } from "./GoogleMapComponent";
 import { AddressInfo } from "../modal/AddressModal";
 import { ElseUtils } from "@/libs/else.utils";
 import { SecurityUtils } from "@/libs/security.utils";
+import { LocationInfoRerutn, MapUtils } from "@/libs/map.utils";
 
 // 경로 타입
 export interface PathLocations {
@@ -28,6 +29,9 @@ export interface GooglePathMapComponentProp {
   setPathInfo: Function;
   zoom?: number;
   size?: { width: string; height: string };
+  setStart: Function;
+  setGoal: Function;
+  setIsGetPayMetaInfo: Function;
 }
 
 export interface FreizLocationInfo {
@@ -42,6 +46,9 @@ export function GooglePathMapComponent({
   lang = "en",
   zoom = 15,
   size = undefined,
+  setStart,
+  setGoal,
+  setIsGetPayMetaInfo,
 }: GooglePathMapComponentProp) {
   // 프리트 요청 마커
   const [freizLocation, setFreizLocation] = useState<FreizLocationInfo[]>([]);
@@ -55,8 +62,18 @@ export function GooglePathMapComponent({
   // 지도 중심
   const [center, setCenter] = useState<LatLng>();
 
-  const [startLocation, setStartLocation] = useState<AddressInfo>();
-  const [goalLocation, setGoalLocation] = useState<AddressInfo>();
+  const [startLocation, setStartLocation] = useState<AddressInfo>({
+    desc: "",
+    key: -1,
+    placeId: "",
+    location: undefined,
+  });
+  const [goalLocation, setGoalLocation] = useState<AddressInfo>({
+    desc: "",
+    key: -1,
+    placeId: "",
+    location: undefined,
+  });
 
   const mapRef = useRef(null);
   const [libraries, setlibraries] = useState<string[]>(["places"]);
@@ -69,7 +86,9 @@ export function GooglePathMapComponent({
     () => ({
       disableDefaultUI: true,
       clickableIcons: true,
-      scrollwheel: false,
+      scrollwheel: true,
+      gestureHandling: "greedy",
+      zoomControl: false,
     }),
     []
   );
@@ -79,6 +98,80 @@ export function GooglePathMapComponent({
     language: lang,
     region: country,
   });
+
+  const settingPathData = async ({ start, goal }: any) => {
+    const pathInfo = await axios.get(
+      "/api/naver.path?startLng=" +
+        start.lng +
+        "&startLat=" +
+        start.lat +
+        "&goalLng=" +
+        goal.lng +
+        "&goalLat=" +
+        goal.lat
+    );
+    if (pathInfo.data.code === 2 || pathInfo.data.code === 1) {
+      alert(pathInfo.data.message);
+      location.href = "/service/map";
+      return;
+    }
+
+    const priceInfo: any = await axios.post("/api/info");
+
+    const data = pathInfo.data.route.traoptimal[0];
+    const summary = data.summary;
+    const distance = summary.distance;
+    const duration = summary.duration;
+    const fuelPrice = summary.fuelPrice;
+    const taxiPrice = summary.taxiFare;
+    const tollFare = summary.tollFare;
+    const lastPrice = Math.ceil(
+      (taxiPrice + tollFare + (taxiPrice + tollFare) / 2) /
+        priceInfo.data.data.exchangeRate
+    );
+    // const lastPrice = 1;
+    const lastUSPrice = lastPrice * 100; // 테스트를 위해서 무조건 1달라로 처리
+    setPathInfo({
+      distance,
+      duration,
+      fuelPrice,
+      taxiPrice,
+      tollFare,
+      lastPrice,
+      lastUSPrice,
+    });
+
+    const tempPaths = [];
+    for (let index = 0; index < data.path.length; index++) {
+      const el = data.path[index];
+      tempPaths.push({ lat: el[1], lng: el[0] });
+    }
+    setPaths(tempPaths);
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  };
+
+  const bridgeSettingPathData = async () => {
+    settingPathData({
+      start: startLocation.location,
+      goal: goalLocation.location,
+    });
+  };
+  useEffect(() => {
+    if (startLocation.location === undefined) return;
+    setStart(startLocation);
+    bridgeSettingPathData();
+    setIsGetPayMetaInfo(false);
+  }, [startLocation]);
+
+  useEffect(() => {
+    if (goalLocation.location === undefined) return;
+    setGoal(goalLocation);
+    bridgeSettingPathData();
+    setIsGetPayMetaInfo(false);
+  }, [goalLocation]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -103,73 +196,78 @@ export function GooglePathMapComponent({
     setStartLocation(startJson);
     setGoalLocation(goalJaon);
 
-    axios
-      .get(
-        "/api/naver.path?startLng=" +
-          startJson!.location!.lng +
-          "&startLat=" +
-          startJson!.location!.lat +
-          "&goalLng=" +
-          goalJaon!.location!.lng +
-          "&goalLat=" +
-          goalJaon!.location!.lat
-      )
-      .then((res: any) => {
-        if (res.data.code === 2 || res.data.code === 1) {
-          alert(res.data.message);
-          location.href = "/service/map";
-          return;
-        }
+    settingPathData({
+      start: startJson!.location!,
+      goal: goalJaon!.location!,
+    });
 
-        axios
-          .post("/api/info")
-          .then((d) => {
-            const data = res.data.route.traoptimal[0];
-            const summary = data.summary;
-            const distance = summary.distance;
-            const duration = summary.duration;
-            const fuelPrice = summary.fuelPrice;
-            const taxiPrice = summary.taxiFare;
-            const tollFare = summary.tollFare;
-            const lastPrice = 1;
-            // const lastPrice = Math.ceil(
-            //   (taxiPrice + tollFare + (taxiPrice + tollFare) / 2) /
-            //     d.data.data.exchangeRate
-            // );
-            // const lastUSPrice =
-            //   Math.ceil(
-            //     (taxiPrice + tollFare + (taxiPrice + tollFare) / 2) /
-            //       d.data.data.exchangeRate
-            //   ) * 100;
-            const lastUSPrice = 100; // 테스트를 위해서 무조건 1달라로 처리
-            setPathInfo({
-              distance,
-              duration,
-              fuelPrice,
-              taxiPrice,
-              tollFare,
-              lastPrice,
-              lastUSPrice,
-            });
+    // axios
+    //   .get(
+    //     "/api/naver.path?startLng=" +
+    //       startJson!.location!.lng +
+    //       "&startLat=" +
+    //       startJson!.location!.lat +
+    //       "&goalLng=" +
+    //       goalJaon!.location!.lng +
+    //       "&goalLat=" +
+    //       goalJaon!.location!.lat
+    //   )
+    //   .then((res: any) => {
+    //     if (res.data.code === 2 || res.data.code === 1) {
+    //       alert(res.data.message);
+    //       location.href = "/service/map";
+    //       return;
+    //     }
 
-            const tempPaths = [];
-            for (let index = 0; index < data.path.length; index++) {
-              const el = data.path[index];
-              tempPaths.push({ lat: el[1], lng: el[0] });
-            }
-            setPaths(tempPaths);
+    //     axios
+    //       .post("/api/info")
+    //       .then((d) => {
+    //         const data = res.data.route.traoptimal[0];
+    //         const summary = data.summary;
+    //         const distance = summary.distance;
+    //         const duration = summary.duration;
+    //         const fuelPrice = summary.fuelPrice;
+    //         const taxiPrice = summary.taxiFare;
+    //         const tollFare = summary.tollFare;
+    //         const lastPrice = 1;
+    //         // const lastPrice = Math.ceil(
+    //         //   (taxiPrice + tollFare + (taxiPrice + tollFare) / 2) /
+    //         //     d.data.data.exchangeRate
+    //         // );
+    //         // const lastUSPrice =
+    //         //   Math.ceil(
+    //         //     (taxiPrice + tollFare + (taxiPrice + tollFare) / 2) /
+    //         //       d.data.data.exchangeRate
+    //         //   ) * 100;
+    //         const lastUSPrice = 100; // 테스트를 위해서 무조건 1달라로 처리
+    //         setPathInfo({
+    //           distance,
+    //           duration,
+    //           fuelPrice,
+    //           taxiPrice,
+    //           tollFare,
+    //           lastPrice,
+    //           lastUSPrice,
+    //         });
 
-            setTimeout(() => {
-              setIsLoading(false);
-            }, 300);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      })
-      .catch((err) => {
-        location.reload();
-      });
+    //         const tempPaths = [];
+    //         for (let index = 0; index < data.path.length; index++) {
+    //           const el = data.path[index];
+    //           tempPaths.push({ lat: el[1], lng: el[0] });
+    //         }
+    //         setPaths(tempPaths);
+
+    //         setTimeout(() => {
+    //           setIsLoading(false);
+    //         }, 300);
+    //       })
+    //       .catch((err) => {
+    //         console.log(err);
+    //       });
+    //   })
+    //   .catch((err) => {
+    //     location.reload();
+    //   });
   }, []);
 
   // 지도로딩후
@@ -270,11 +368,41 @@ export function GooglePathMapComponent({
             position={startLocation!.location!}
             onLoad={() => console.log("Marker Loaded")}
             icon={"/freiz_location/from.png"}
+            draggable
+            onDragEnd={async (e) => {
+              setIsLoading(true);
+              const { latLng } = e;
+              const info: LocationInfoRerutn = await MapUtils.getLocationInfo(
+                latLng!.lat(),
+                latLng!.lng()
+              );
+              setStartLocation({
+                desc: info.desc,
+                location: info.location,
+                placeId: info.placeId,
+                key: info.key,
+              });
+            }}
           />
           <MarkerF
             position={goalLocation!.location!}
             onLoad={() => console.log("Marker Loaded")}
             icon={"/freiz_location/to.png"}
+            draggable
+            onDragEnd={async (e) => {
+              setIsLoading(true);
+              const { latLng } = e;
+              const info: LocationInfoRerutn = await MapUtils.getLocationInfo(
+                latLng!.lat(),
+                latLng!.lng()
+              );
+              setGoalLocation({
+                desc: info.desc,
+                location: info.location,
+                placeId: info.placeId,
+                key: info.key,
+              });
+            }}
           />
 
           {paths.length > 0 ? (

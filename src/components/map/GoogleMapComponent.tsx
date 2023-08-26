@@ -13,6 +13,7 @@ import { LatLng } from "use-places-autocomplete";
 import { AddressInfo } from "../modal/AddressModal";
 import Image from "next/image";
 import { ElseUtils } from "@/libs/else.utils";
+import { LocationInfoRerutn, MapUtils } from "@/libs/map.utils";
 
 // 경로 결과 정보
 export interface PathInfoProp {
@@ -87,27 +88,37 @@ export function GoogleMapComponent({
     mapRef.current = map;
   };
 
-  const onMapMove = (isEnd = false) => {
+  // 지도 이동으로 중심값 설정
+  const onMapMove = async (isEnd = false) => {
     if (mapRef.current) {
       if (isEnd) {
         let lat = mapRef.current.getCenter()!.lat();
         let lng = mapRef.current.getCenter()!.lng();
-        axios.get(`/api/google.map/info?lat=${lat}&lng=${lng}`).then((d) => {
-          const temp = d.data.results[0];
-          axios
-            .get(`/api/google.map/latlng?place_id=${temp.place_id}`)
-            .then((d) => {
-              setStartLocation!({
-                desc: temp.formatted_address,
-                placeId: temp.place_id,
-                location: d.data.result.geometry.location,
-              });
-            });
-        });
+        const info: LocationInfoRerutn = await MapUtils.getLocationInfo(
+          lat,
+          lng
+        );
+
+        // console.log(info);
+        setStartLocation!(info);
+
+        // axios.get(`/api/google.map/info?lat=${lat}&lng=${lng}`).then((d) => {
+        //   const temp = d.data.results[0];
+        //   axios
+        //     .get(`/api/google.map/latlng?place_id=${temp.place_id}`)
+        //     .then((d) => {
+        //       setStartLocation!({
+        //         desc: temp.formatted_address,
+        //         placeId: temp.place_id,
+        //         location: d.data.result.geometry.location,
+        //       });
+        //     });
+        // });
         setCenter({ lat, lng });
       } else {
         let lat = mapRef.current.getCenter()!.lat();
         let lng = mapRef.current.getCenter()!.lng();
+        console.log("DDD");
         setCenter({ lat, lng });
       }
     }
@@ -301,7 +312,15 @@ export function GoogleMapComponent({
         {/* 중앙값이 있고 코엑스중앙값이 아닐때만 마커 출력 */}
         {center !== undefined && isCoexCenter === false ? (
           <>
-            {isMoving ? (
+            <div className={`z-50 absolute top-[34%] left-[46%]`}>
+              <Image
+                alt=''
+                src='/freiz_location/start.png'
+                width={33}
+                height={55}
+              />
+            </div>
+            {/* {isMoving ? (
               <div className={`z-50 absolute top-[34%] left-[46%]`}>
                 <Image
                   alt=''
@@ -314,29 +333,36 @@ export function GoogleMapComponent({
               <MarkerF
                 position={center}
                 icon={"/freiz_location/start.png"}
-                onLoad={() => console.log("Start Marker Loaded")}
+                onLoad={() => console.log("Start Marker Loaded!!!!")}
                 // draggable
-                onDragEnd={(e) => {
-                  const { latLng } = e;
-                  const lat = latLng!.lat();
-                  const lng = latLng!.lng();
-                  axios
-                    .get(`/api/google.map/info?lat=${lat}&lng=${lng}`)
-                    .then((d) => {
-                      const temp = d.data.results[0];
-                      axios
-                        .get(`/api/google.map/latlng?place_id=${temp.place_id}`)
-                        .then((d) => {
-                          setStartLocation!({
-                            desc: temp.formatted_address,
-                            placeId: temp.place_id,
-                            location: d.data.result.geometry.location,
-                          });
-                        });
-                    });
+                onDragEnd={async (e) => {
+                  // const { latLng } = e;
+                  // const lat = latLng!.lat();
+                  // const lng = latLng!.lng();
+                  // const info: LocationInfoRerutn =
+                  //   await MapUtils.getLocationInfo(lat, lng);
+                  // setStartLocation!({
+                  //   desc: info.desc,
+                  //   placeId: info.placeId,
+                  //   location: info.location,
+                  // });
+                  // axios
+                  //   .get(`/api/google.map/info?lat=${lat}&lng=${lng}`)
+                  //   .then((d) => {
+                  //     const temp = d.data.results[0];
+                  //     axios
+                  //       .get(`/api/google.map/latlng?place_id=${temp.place_id}`)
+                  //       .then((d) => {
+                  //         setStartLocation!({
+                  //           desc: temp.formatted_address,
+                  //           placeId: temp.place_id,
+                  //           location: d.data.result.geometry.location,
+                  //         });
+                  //       });
+                  //   });
                 }}
               />
-            )}
+            )} */}
           </>
         ) : (
           ""
