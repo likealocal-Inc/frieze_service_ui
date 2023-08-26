@@ -16,6 +16,7 @@ import { CODES } from "@/libs/codes";
 import { ElseUtils } from "@/libs/else.utils";
 import { SecurityUtils } from "@/libs/security.utils";
 import InternationalNumber from "@/components/InternationalNumber";
+import NotOpen from "../notopen";
 
 export interface AgreementData {
   passportName: string;
@@ -511,7 +512,7 @@ export default function AgreementPage() {
         </div>
 
         {/*  */}
-        {isGongji === false ? (
+        {/* {isGongji === false ? (
           ""
         ) : (
           <div className='fixed inset-0 flex items-center justify-center bg-slate-600 Z-50 bg-opacity-30'>
@@ -539,7 +540,7 @@ export default function AgreementPage() {
               </div>
             </div>
           </div>
-        )}
+        )} */}
         {/* 약관읽기 */}
         <InformationModal show={showAgreement} setShow={setShowAgreement}>
           {orderAgreement === 1 ? (
@@ -671,6 +672,7 @@ export default function AgreementPage() {
           )}
         </InformationModal>
       </LayoutWithLogo>
+      <NotOpen />
     </>
   );
 }

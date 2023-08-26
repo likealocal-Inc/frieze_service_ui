@@ -16,6 +16,7 @@ import NicePaymentForm from "@/components/NicePayment/NicePaymentForm";
 import GlobalScript from "@/libs/GlobalScript";
 import { SpinnerComponent } from "@/components/spinner";
 import ChannelTalk from "@/components/chaneltalk/ChannelTalk";
+import NotOpen from "../../notopen";
 const { publicRuntimeConfig } = getConfig();
 
 let num = 0;
@@ -546,6 +547,7 @@ export default function MapPathPage() {
           ""
         )}
       </InformationModal>
+      <NotOpen />
     </>
   );
 }

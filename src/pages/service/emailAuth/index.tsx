@@ -3,6 +3,7 @@ import "../../../app/globals.css";
 import { ElseUtils } from "@/libs/else.utils";
 import { SecurityUtils } from "../../../libs/security.utils";
 import axios from "axios";
+import NotOpen from "../notopen";
 
 export default function AuthEmailPage() {
   const [showModal, setShowModal] = useState<any>(false);
@@ -125,6 +126,7 @@ export default function AuthEmailPage() {
       ) : (
         ""
       )}
+      <NotOpen />
     </>
   );
 }

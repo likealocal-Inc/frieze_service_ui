@@ -3,6 +3,7 @@ import ChannelTalk from "@/components/chaneltalk/ChannelTalk";
 import HistoryListComponent from "@/components/history/HistoryListComponent";
 import LayoutAuth from "@/components/layouts/LayoutAuth";
 import { useState } from "react";
+import NotOpen from "../../notopen";
 export default function HistoryListPage() {
   const [selectTapIndex, setSelectTapIndex] = useState(1);
 
@@ -158,6 +159,7 @@ export default function HistoryListPage() {
         </div>
       </div>
       <ChannelTalk />
+      <NotOpen />
     </LayoutAuth>
   );
 }

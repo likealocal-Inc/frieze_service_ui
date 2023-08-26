@@ -6,6 +6,7 @@ import { SecurityUtils } from "@/libs/security.utils";
 import { OrderModel } from "@/models/order";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import NotOpen from "../../notopen";
 export default function HistoryDetailPage() {
   const [data, setdata] = useState<OrderModel>();
   const [user, setUser] = useState<any>();
@@ -239,6 +240,7 @@ export default function HistoryDetailPage() {
             </div>
           </div>
           <ChannelTalk />
+          <NotOpen />
         </LayoutAuth>
       ) : (
         ""
