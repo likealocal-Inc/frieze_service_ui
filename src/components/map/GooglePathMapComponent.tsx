@@ -125,11 +125,12 @@ export function GooglePathMapComponent({
     const fuelPrice = summary.fuelPrice;
     const taxiPrice = summary.taxiFare;
     const tollFare = summary.tollFare;
-    // const lastPrice = Math.ceil(
-    //   (taxiPrice + tollFare + (taxiPrice + tollFare) / 2) /
-    //     priceInfo.data.data.exchangeRate
-    // );
-    const lastPrice = 1;
+    let lastPrice;
+    lastPrice = Math.ceil(
+      (taxiPrice + tollFare + (taxiPrice + tollFare) / 2) /
+        priceInfo.data.data.exchangeRate
+    );
+    // lastPrice = 1;
     const lastUSPrice = lastPrice * 100; // 테스트를 위해서 무조건 1달라로 처리
     setPathInfo({
       distance,

@@ -6,6 +6,7 @@ import { ElseUtils } from "@/libs/else.utils";
 import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import NotOpen from "../notopen";
 
 export default function MapPage() {
   const [showAddressModal, setShowAddressModal] = useState(false);
@@ -241,6 +242,7 @@ export default function MapPage() {
         />
 
         <ChannelTalk />
+        <NotOpen />
       </LayoutAuth>
     </>
   );

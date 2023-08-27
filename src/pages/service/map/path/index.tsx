@@ -350,6 +350,7 @@ export default function MapPathPage() {
 
           {/* 채널톡 설정 */}
           <ChannelTalk />
+          <NotOpen />
         </LayoutAuth>
       )}
 
@@ -547,7 +548,6 @@ export default function MapPathPage() {
           ""
         )}
       </InformationModal>
-      <NotOpen />
     </>
   );
 }

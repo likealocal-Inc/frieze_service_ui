@@ -10,6 +10,7 @@ export default function NotOpen() {
   useEffect(() => {
     if (router.isReady === false) return;
 
+    console.log("SDFSD");
     const ddd = ElseUtils.getLocalStorageWithoutDecoding("adkfien3jnfdli");
     if (ddd !== undefined && ddd !== null) {
       if (SecurityUtils.decryptText(ddd) === "goodman") {

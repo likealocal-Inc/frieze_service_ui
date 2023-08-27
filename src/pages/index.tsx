@@ -2,6 +2,7 @@ import { ElseUtils } from "@/libs/else.utils";
 import { SecurityUtils } from "@/libs/security.utils";
 import axios from "axios";
 import React, { useEffect } from "react";
+import NotOpen from "./service/notopen";
 
 export default function Home() {
   useEffect(() => {
