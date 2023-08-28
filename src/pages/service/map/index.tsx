@@ -7,13 +7,13 @@ import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import NotOpen from "../notopen";
+import { useRouter } from "next/router";
 
 export default function MapPage() {
   const [showAddressModal, setShowAddressModal] = useState(false);
   const [isMove, setIsMove] = useState(false);
 
   const [widthSize, setWidthSize] = useState(0);
-
   const [startLocation, setStartLocation] = useState<AddressInfo>({
     desc: "Current location",
     key: -1,
@@ -24,6 +24,19 @@ export default function MapPage() {
     key: -1,
     placeId: "",
   });
+
+  const router = useRouter();
+  const [buttonTitleForDomain, setButtonTitleForDomain] = useState("");
+
+  useEffect(() => {
+    if (router.isReady === false) return;
+    const domain = window.location.hostname;
+    if (domain.includes("frieze")) {
+      setButtonTitleForDomain("Frieze Seoul");
+    } else if (domain.includes("kiaf")) {
+      setButtonTitleForDomain("Kiaf Seoul");
+    }
+  }, [router]);
 
   useEffect(() => {
     (document.body.style as any).zoom = "100%";
@@ -212,7 +225,7 @@ export default function MapPage() {
                 className='text-[#000000] text-center relative'
                 style={{ font: "500 14px/22px 'Pretendard', sans-serif" }}
               >
-                Frieze Seoul
+                {buttonTitleForDomain}
               </div>
             </button>
             {/* 

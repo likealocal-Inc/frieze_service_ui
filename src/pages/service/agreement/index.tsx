@@ -17,6 +17,7 @@ import { ElseUtils } from "@/libs/else.utils";
 import { SecurityUtils } from "@/libs/security.utils";
 import InternationalNumber from "@/components/InternationalNumber";
 import NotOpen from "../notopen";
+import { useRouter } from "next/router";
 
 export interface AgreementData {
   passportName: string;
@@ -45,6 +46,20 @@ export default function AgreementPage() {
 
   const [isGongji, setIsGongji] = useState(true);
   const [accordion, setAccordion] = useState<AccordionInterface>();
+
+  const [title, setTitle] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.isReady === false) return;
+    const domain = window.location.hostname;
+    if (domain.includes("frieze")) {
+      setTitle("For Frieze Members");
+    } else if (domain.includes("kiaf")) {
+      setTitle("For Kiaf Members");
+    }
+  }, [router]);
+
   useEffect(() => {
     const accordionItems: AccordionItem[] = [
       {
@@ -239,7 +254,7 @@ export default function AgreementPage() {
               className='text-[#0085fe] text-left relative'
               style={{ font: "600 14px 'Pretendard', sans-serif" }}
             >
-              For Frieze Members
+              {title}
             </div>
             <div className={`mt-[32px]`} />
             <div className='text-[#000000] text-left relative text-[24px] font-sans font-bold'>
