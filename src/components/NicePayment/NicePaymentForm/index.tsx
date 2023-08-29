@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { PaymentMetaInfo } from "@/pages/service/payment/index2";
 import getConfig from "next/config";
-import { FC, RefObject, useCallback, useEffect } from "react";
+import { useRouter } from "next/router";
+import { FC, RefObject, useCallback, useEffect, useState } from "react";
 import { UseFormGetValues } from "react-hook-form";
 const { publicRuntimeConfig } = getConfig();
 
@@ -85,6 +86,19 @@ const NicePaymentForm: FC<IProps> = ({
   paymentViewData,
   getValues,
 }) => {
+  const router = useRouter();
+  const [returnUrl, setReturnUrl] = useState(
+    `${publicRuntimeConfig.SERVERIPPORT}/api/payment.return`
+  );
+
+  useEffect(() => {
+    if (router.isReady === false) return;
+    const domain = window.location.hostname;
+    if (domain.includes("kiaf")) {
+      setReturnUrl(`https://kiaf.likealocal.kr/api/payment.return`);
+    }
+  }, [router]);
+
   return (
     <form name='payForm' method='post' ref={formRef} acceptCharset='euc-kr'>
       <input type='hidden' name='GoodsName' value={`샌딩`} />
