@@ -5,25 +5,24 @@ import { useEffect, useState } from "react";
 
 export default function NotOpen() {
   const router = useRouter();
-  const [isCheck, setIsCheck] = useState(false);
+  const [isCheck, setIsCheck] = useState(true);
 
-  useEffect(() => {
-    if (router.isReady === false) return;
+  // useEffect(() => {
+  //   if (router.isReady === false) return;
 
-    console.log("SDFSD");
-    const ddd = ElseUtils.getLocalStorageWithoutDecoding("adkfien3jnfdli");
-    if (ddd !== undefined && ddd !== null) {
-      if (SecurityUtils.decryptText(ddd) === "goodman") {
-        setIsCheck(true);
-        return;
-      }
-    }
+  //   const ddd = ElseUtils.getLocalStorageWithoutDecoding("adkfien3jnfdli");
+  //   if (ddd !== undefined && ddd !== null) {
+  //     if (SecurityUtils.decryptText(ddd) === "goodman") {
+  //       setIsCheck(true);
+  //       return;
+  //     }
+  //   }
 
-    if (router.asPath.endsWith("likea!@@dff") === false) return;
+  //   if (router.asPath.endsWith("likea!@@dff") === false) return;
 
-    ElseUtils.setLocalStoragWithEncoding("adkfien3jnfdli", "goodman");
-    setIsCheck(true);
-  }, [router]);
+  //   ElseUtils.setLocalStoragWithEncoding("adkfien3jnfdli", "goodman");
+  //   setIsCheck(true);
+  // }, [router]);
 
   return (
     <>
