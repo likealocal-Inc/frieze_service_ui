@@ -135,11 +135,7 @@ const NicePaymentForm: FC<IProps> = ({
       />
       <input type='hidden' name='BuyerEmail' value={getValues("email") || ""} />
       {/* MOBILE ONLY */}
-      <input
-        type='hidden'
-        name='ReturnURL'
-        value={`${publicRuntimeConfig.SERVERIPPORT}/api/payment.return`}
-      />
+      <input type='hidden' name='ReturnURL' value={returnUrl} />
       <input type='hidden' name='FailURL' value='' />
       <input type='hidden' name='GoodsCl' value='' />
       {/* 결제 언어 설정 */}
