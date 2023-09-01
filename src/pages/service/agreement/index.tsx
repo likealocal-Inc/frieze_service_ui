@@ -57,6 +57,8 @@ export default function AgreementPage() {
       setTitle("For Frieze Members");
     } else if (domain.includes("kiaf")) {
       setTitle("For Kiaf Members");
+    } else if (domain.includes("taxi")) {
+      setTitle("");
     }
   }, [router]);
 

@@ -35,6 +35,8 @@ export default function MapPage() {
       setButtonTitleForDomain("Frieze Seoul");
     } else if (domain.includes("kiaf")) {
       setButtonTitleForDomain("Kiaf Seoul");
+    } else if (domain.includes("taxi")) {
+      setButtonTitleForDomain("Coex");
     }
   }, [router]);
 
