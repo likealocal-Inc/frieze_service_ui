@@ -35,7 +35,7 @@ export default function AuthEmailPage() {
   return (
     <>
       <div className='mx-[20px] mt-[40px]'>
-        <div className=''>
+        <div className='font-bold text-black'>
           {/* <Image
             className='w-[44px] h-[44px]'
             src={"/img/home.svg"}
@@ -52,36 +52,31 @@ export default function AuthEmailPage() {
               className='text-center text-secondary font-sans text-[18px]'
               style={{ font: "700 28px/42px 'Pretendard', sans-serif" }}
             >
-              이메일 인증
+              Verification email
             </div>
           </div>
           <div className='mt-[40px]'></div>
           <div className='flex flex-col text-[15px] font-sans text-[#666] justify-center text-center items-center'>
             <div className='flex text-[#666666]'>
-              인증 메일이{" "}
-              <div className='text-[#262628] font-bold mx-[1px]'>{email}</div>
-              (으)로
+              The verification email has been sent to
             </div>
             <div className='mt-[5px]'></div>
-            <div className=''>
-              전송되었습니다. 받으신 이메일을 열어 버튼을 클
-            </div>
+            <div className='text-[#262628] font-bold mx-[1px]'>{email}</div>
             <div className='mt-[5px]'></div>
-            <div className=''>릭하면 가입이 완료됩니다.</div>
+            <div className=''>If you can&apos;t find th email,</div>
+            <div className='mt-[5px]'></div>
+            <div className=''>please check your spam folder or click the</div>
           </div>
-          <div className='mt-[24px]'></div>
-          <div className='flex flex-col text-[14px] justify-center text-center text-[#666]'>
-            <div className='font-sans '>이메일을 확인할 수 없나요?</div>
-            <div className='mt-[2px]'></div>
+          <div className='mt-[5px]'></div>
+          <div className='flex flex-col text-[17px] justify-center text-center text-[#666]'>
             <div className='flex justify-center font-sans'>
-              스팸편지함 확인 또는{" "}
               <button
                 onClick={(e) => {
                   sendAuthEmail();
                 }}
-                className='font-sans bg-white border-none text-[#0085FE] font-medium'
+                className='font-sans bg-white border-none text-[#0085FE] font-bold text-[16px]'
               >
-                인증 메일 다시 보내기
+                &apos;Resend Verification Email&apos;
               </button>
             </div>
           </div>
@@ -98,7 +93,7 @@ export default function AuthEmailPage() {
                 className='text-high-emphasis text-center absolute right-6 left-6 top-[calc(50%_-_12px)] flex items-center justify-center'
                 style={{ font: "700 19px/24px 'Pretendard', sans-serif" }}
               >
-                인증메일이 재전송 되었습니다.
+                Send verification email again
               </div>
             </div>
 
@@ -115,7 +110,7 @@ export default function AuthEmailPage() {
                       className='relative flex items-center justify-center text-center text-white'
                       style={{ font: "500 14px/24px 'Pretendard', sans-serif" }}
                     >
-                      확인
+                      Confirm
                     </div>
                   </div>
                 </div>

@@ -371,7 +371,7 @@ export default function MapPathPage() {
             : `fixed inset-x-0 bottom-0 flex items-end justify-center transform transition-all translate-y-0`
         }
       >
-        <div className={`bg-white rounded-t-xl h-[620px] w-[${widthSize}px]`}>
+        <div className={`bg-white rounded-t-xl h-[660px] w-[${widthSize}px]`}>
           <div className='flex flex-col px-[20px]'>
             <div className='mt-[30px] ' />
             <div className='flex justify-center'>
@@ -428,6 +428,12 @@ export default function MapPathPage() {
                     the &apos;Customer Support Office&apos; chat window.
                     <span className='text-[13px] font-bold leading-snug text-opacity-50 text-zinc-900'>
                       Please check the comments
+                    </span>
+                  </li>
+                  <li>
+                    <span className='font-medium text-red-400'>
+                      Only international credit cards accepted. To make payments
+                      with Korean credit cards, please use the i.M mobile app.
                     </span>
                   </li>
                 </ol>
