@@ -34,6 +34,7 @@ export default function PaymentDonePage() {
     if (paymentStr === undefined || paymentStr === null) {
       alert("비정상적인 접근");
       ElseUtils.moveMapPage();
+
       return;
     }
 
@@ -222,6 +223,7 @@ export default function PaymentDonePage() {
   return (
     <>
       {orderModel && isLoading === false ? (
+        // {true ? (
         <LayoutAuth menuTitle='' isLogo={false} isMargin={false}>
           <div
             className={`bg-[#F5F6FA] w-[${widthSize}px] h-screen px-[20px] pb-[130px]`}
@@ -239,17 +241,32 @@ export default function PaymentDonePage() {
                   alt=''
                 />
               </div>
-              <div
-                className='w-[87px] h-[38px] bg-[#e0e0e0] rounded-[40px] justify-center items-center flex flex-row gap-2.5 relative overflow-hidden'
-                onClick={(e) => {
-                  setShowCancelModal(true);
-                }}
-              >
+              <div className='flex'>
                 <div
-                  className='text-[#000000] text-center relative'
-                  style={{ font: "500 14px/22px 'Pretendard', sans-serif" }}
+                  className='w-[87px] h-[38px] bg-[#0085fe] rounded-[40px] justify-center items-center flex flex-row gap-2.5 relative overflow-hidden'
+                  onClick={(e) => {
+                    location.href = "/service/history/list";
+                  }}
                 >
-                  Cancel
+                  <div
+                    className='relative text-center text-white'
+                    style={{ font: "500 14px/22px 'Pretendard', sans-serif" }}
+                  >
+                    My Page
+                  </div>
+                </div>
+                <div
+                  className='ml-[20px] w-[87px] h-[38px] bg-[#e0e0e0] rounded-[40px] justify-center items-center flex flex-row gap-2.5 relative overflow-hidden'
+                  onClick={(e) => {
+                    setShowCancelModal(true);
+                  }}
+                >
+                  <div
+                    className='text-[#000000] text-center relative'
+                    style={{ font: "500 14px/22px 'Pretendard', sans-serif" }}
+                  >
+                    Cancel
+                  </div>
                 </div>
               </div>
             </div>
