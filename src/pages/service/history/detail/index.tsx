@@ -7,9 +7,14 @@ import { OrderModel } from "@/models/order";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import NotOpen from "../../notopen";
+import axios from "axios";
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
+
 export default function HistoryDetailPage() {
   const [data, setdata] = useState<OrderModel>();
   const [user, setUser] = useState<any>();
+  const [showCancelModal, setShowCancelModal] = useState(false);
   useEffect(() => {
     const data = ElseUtils.getLocalStorageWithoutDecoding(
       ElseUtils.localStorageOrderDetail
@@ -51,6 +56,25 @@ export default function HistoryDetailPage() {
         </div>
       </>
     );
+  };
+
+  const PaymentCancel = () => {
+    const paymentInitJson = ElseUtils.getPaymentMetaInfo();
+    axios
+      .post(`${publicRuntimeConfig.APISERVER}/order/payment/cancel/orderid`, {
+        id: data!.id,
+      })
+      .then((d) => {
+        console.log(d);
+        alert("결제가 정상 취소되었습니다.");
+        location.href = "/service/history/list";
+        // setShowCancelModal(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        alert("관리자에게 문의 해주세요");
+        ElseUtils.moveMapPage();
+      });
   };
   return (
     <>
@@ -100,6 +124,28 @@ export default function HistoryDetailPage() {
                       </div>
                     </div>
                   </div>
+                  {data.status === "PAYMENT" ? (
+                    <div className=''>
+                      <div
+                        className='bg-[#e0e0e0] rounded pt-1 pr-3 pb-1 pl-3 flex flex-row gap-2 items-center justify-center h-6 relative'
+                        onClick={(e) => {
+                          setShowCancelModal(true);
+                        }}
+                      >
+                        <div
+                          className='text-[#000000] text-center relative flex items-center justify-center'
+                          style={{
+                            font: "500 12px/16px 'Noto Sans KR', sans-serif",
+                          }}
+                        >
+                          Cancel
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+
                   <div className='flex items-center'>
                     <div className='text-[#000000] text-left relative flex items-center justify-start font-sans text-[12px] font-bold mr-[5px]'>
                       주문번호 {ElseUtils.stringCut(data.id, 13)}
@@ -241,6 +287,53 @@ export default function HistoryDetailPage() {
           </div>
           <ChannelTalk />
           <NotOpen />
+          <div
+            className={
+              showCancelModal === true
+                ? `absolute top-0 left-0 w-full h-full bg-gray-500 bg-opacity-60 flex justify-center items-center`
+                : `hidden`
+            }
+          >
+            <div className='bg-white rounded-2xl pt-2 flex flex-col gap-0 items-center justify-start w-[328px] h-[146px] relative overflow-hidden'>
+              <div className='relative self-stretch overflow-hidden shrink-0 h-14'>
+                <div className='absolute rounded-lg right-2 left-2 bottom-1 top-1'></div>
+
+                <div
+                  className='text-high-emphasis text-center absolute right-6 left-6 top-[calc(50%_-_24px)] flex items-center justify-center'
+                  style={{ font: "700 19px/24px 'Pretendard', sans-serif" }}
+                >
+                  Are you sure you want to cancel the call?
+                </div>
+              </div>
+              <div className='mt-[20px]'></div>
+
+              <div className='flex'>
+                <div className='w-[135px] h-[45px] border-gray-300 rounded-xl border-solid border-1'>
+                  <div
+                    className='flex items-center justify-center w-full h-full text-center text-gray-500'
+                    style={{ font: "500 14px/24px 'Pretendard', sans-serif" }}
+                    onClick={(e) => {
+                      setShowCancelModal(false);
+                    }}
+                  >
+                    Keep Call
+                  </div>
+                </div>
+                <div className='ml-[8px]'></div>
+                <div className='w-[135px] h-[45px] bg-[#0085fe] rounded-xl'>
+                  <div
+                    className='flex items-center justify-center w-full h-full text-center text-white '
+                    style={{ font: "500 14px/24px 'Pretendard', sans-serif" }}
+                    onClick={(e) => {
+                      PaymentCancel();
+                    }}
+                  >
+                    Cancel the Call
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </LayoutAuth>
       ) : (
         ""
