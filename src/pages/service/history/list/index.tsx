@@ -91,7 +91,7 @@ export default function HistoryListPage() {
                   setSelectTapIndex(2);
                 }}
               >
-                결제완료
+                Payment complete
               </button>
               <div className='mt-[10px]' />
               <div
@@ -113,7 +113,7 @@ export default function HistoryListPage() {
                   setSelectTapIndex(3);
                 }}
               >
-                이용완료
+                History
               </button>
               <div className='mt-[10px]' />
               <div
@@ -135,7 +135,7 @@ export default function HistoryListPage() {
                   setSelectTapIndex(4);
                 }}
               >
-                이용취소
+                Canceled service
               </button>
               <div className='mt-[10px]' />
               <div
